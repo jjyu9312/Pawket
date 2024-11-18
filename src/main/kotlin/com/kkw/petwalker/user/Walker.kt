@@ -1,4 +1,4 @@
-package com.kkw.petwalker.walker
+package com.kkw.petwalker.user
 
 data class walker(
     val id: Long,
