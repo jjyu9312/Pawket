@@ -1,6 +1,6 @@
 package com.kkw.petwalker.reservation
 
-data class walkCourse (
+data class WalkCourse (
     val id: Long,
     val pet: String,
     val walker: String,

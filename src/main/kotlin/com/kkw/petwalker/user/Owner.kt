@@ -1,6 +1,6 @@
 package com.kkw.petwalker.user
 
-data class owner(
+data class Owner(
     val id: Long,
     val name: String,
     val email: String,
