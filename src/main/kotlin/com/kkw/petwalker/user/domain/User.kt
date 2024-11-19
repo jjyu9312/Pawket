@@ -1,5 +1,6 @@
 package com.kkw.petwalker.user.domain
 
+import com.kkw.petwalker.common.domain.BaseEntity
 import jakarta.persistence.*
 import java.time.LocalDate
 import java.util.UUID
@@ -33,7 +34,7 @@ data class User(
     @Column
     val addressDetail: String,
 
-) {
+): BaseEntity() {
     fun isValidEmail(): Boolean {
         val emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$"
         val pattern = Pattern.compile(emailRegex)
