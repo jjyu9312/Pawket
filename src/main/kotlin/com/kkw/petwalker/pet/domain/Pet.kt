@@ -1,4 +1,4 @@
-package com.kkw.petwalker.pet
+package com.kkw.petwalker.pet.domain
 
 data class Pet(
     val id: Long,

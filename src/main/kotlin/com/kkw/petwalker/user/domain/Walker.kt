@@ -1,4 +1,4 @@
-package com.kkw.petwalker.user
+package com.kkw.petwalker.user.domain
 
 data class walker(
     val id: Long,

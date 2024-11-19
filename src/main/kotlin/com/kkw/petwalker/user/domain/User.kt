@@ -1,4 +1,4 @@
-package com.kkw.petwalker.user
+package com.kkw.petwalker.user.domain
 
 import jakarta.persistence.*
 import java.time.LocalDate
