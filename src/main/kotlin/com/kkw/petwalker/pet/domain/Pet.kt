@@ -1,11 +1,32 @@
 package com.kkw.petwalker.pet.domain
 
+import com.kkw.petwalker.common.domain.BaseEntity
+import com.kkw.petwalker.user.domain.Owner
+import jakarta.persistence.*
+import java.util.*
+
+@Entity
 data class Pet(
-    val id: Long,
-    val name: String,
-    val species: String,
-    val breed: String,
+    @Id
+    @Column(nullable = false, columnDefinition = "CHAR(36)")
+    val id: String = UUID.randomUUID().toString(),
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id", columnDefinition = "CHAR(36)")
+    val owner: Owner,
+
+    @Column(nullable = false)
+    val imageUrl: String,
+
+    @Column(nullable = false)
     val age: Int,
-    val weight: Double,
-    val owner: String,
-)
+
+    @Column(nullable = false)
+    val weight: Int,
+
+    @Column(nullable = false)
+    val sex: Sex,
+
+    @Column(nullable = false)
+    val isNeutered: Boolean = false,
+): BaseEntity()
