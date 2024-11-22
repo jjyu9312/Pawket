@@ -20,4 +20,7 @@ abstract class BaseEntity {
     @Column(nullable = false)
     var updatedAt: LocalDateTime = LocalDateTime.now()
         protected set
+
+    @Column(nullable = false)
+    val isDeleted: Boolean = false
 }
