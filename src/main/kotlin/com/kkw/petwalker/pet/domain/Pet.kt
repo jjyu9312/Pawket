@@ -25,6 +25,7 @@ data class Pet(
     val weight: Int,
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     val sex: Sex,
 
     @Column(nullable = false)
