@@ -1,4 +1,4 @@
-package com.kkw.petwalker.pet.domain
+package com.kkw.petwalker.dog.domain
 
 enum class Sex {
     MALE,

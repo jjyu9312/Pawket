@@ -1,7 +1,7 @@
-package com.kkw.petwalker.pet.controller
+package com.kkw.petwalker.dog.controller
 
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class PetController {
+class DogController {
 }

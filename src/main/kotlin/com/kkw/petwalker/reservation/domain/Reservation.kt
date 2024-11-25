@@ -18,7 +18,7 @@ data class Reservation(
     val walker: Walker,
 
     @Column(columnDefinition = "CHAR(36)")
-    val petId: String,
+    val dogId: String,
 
     @Column(nullable = false)
     val startDate: LocalDate,

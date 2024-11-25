@@ -1,4 +1,4 @@
-package com.kkw.petwalker.pet.domain
+package com.kkw.petwalker.dog.domain
 
 import com.kkw.petwalker.common.domain.BaseEntity
 import com.kkw.petwalker.user.domain.Owner
@@ -6,7 +6,7 @@ import jakarta.persistence.*
 import java.util.*
 
 @Entity
-data class Pet(
+data class Dog(
     @Id
     @Column(nullable = false, columnDefinition = "CHAR(36)")
     val id: String = UUID.randomUUID().toString(),
