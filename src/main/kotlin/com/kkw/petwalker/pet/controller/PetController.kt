@@ -1,4 +1,4 @@
-package com.kkw.petwalker.notice.controller
+package com.kkw.petwalker.pet.controller
 
 import org.springframework.web.bind.annotation.RestController
 
