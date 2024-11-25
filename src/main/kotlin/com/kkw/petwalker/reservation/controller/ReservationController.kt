@@ -1,4 +1,4 @@
-package com.kkw.petwalker.notice.controller
+package com.kkw.petwalker.reservation.controller
 
 import org.springframework.web.bind.annotation.RestController
 
