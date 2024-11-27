@@ -11,8 +11,8 @@ data class WalkCourse (
     val id: String = UUID.randomUUID().toString(),
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reservation_id", columnDefinition = "CHAR(36)")
-    val reservation: Reservation,
+    @JoinColumn(name = "reservation_class_id", columnDefinition = "CHAR(36)")
+    val reservationClass: ReservationClass,
 
     @Column(nullable = false)
     val name: String,
@@ -23,4 +23,4 @@ data class WalkCourse (
     @Column(nullable = false)
     val walkCourseLngList: String,
 
-): BaseEntity()
+    ): BaseEntity()
