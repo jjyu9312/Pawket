@@ -8,7 +8,7 @@ import java.time.LocalTime
 import java.util.*
 
 @Entity
-data class Reservation(
+data class Reservation (
     @Id
     @Column(nullable = false, columnDefinition = "CHAR(36)")
     val id: String = UUID.randomUUID().toString(),
