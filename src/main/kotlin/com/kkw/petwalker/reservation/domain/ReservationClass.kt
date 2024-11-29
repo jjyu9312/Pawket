@@ -13,10 +13,6 @@ data class ReservationClass (
     @Column(nullable = false, columnDefinition = "CHAR(36)")
     val id: String = UUID.randomUUID().toString(),
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "walker_id", columnDefinition = "CHAR(36)")
-    val walker: Walker,
-
     @Column(nullable = false)
     val startDate: LocalDate,
 

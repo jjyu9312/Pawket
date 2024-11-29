@@ -12,7 +12,11 @@ data class Reservation (
     @Column(nullable = false, columnDefinition = "CHAR(36)")
     val id: String = UUID.randomUUID().toString(),
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reservation_class_id", columnDefinition = "CHAR(36)")
+    val reservationClass: ReservationClass,
+
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "walker_id", columnDefinition = "CHAR(36)")
     val walker: Walker,
 
