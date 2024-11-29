@@ -4,7 +4,7 @@ import com.kkw.petwalker.common.domain.BaseEntity
 import jakarta.persistence.*
 
 @Entity
-data class Insurance(
+data class Insurance (
     @Id
     @Column(nullable = false, columnDefinition = "CHAR(36)")
     val id: String,
