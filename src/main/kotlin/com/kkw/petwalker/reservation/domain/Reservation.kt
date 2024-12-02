@@ -29,7 +29,7 @@ data class Reservation(
     @Column(nullable = false)
     val endDateTime: LocalDateTime,
 
-    ) : BaseEntity() {
+): BaseEntity() {
     constructor(
         reservationClass: ReservationClass,
         walker: Walker,
