@@ -40,4 +40,23 @@ data class User(
         val pattern = Pattern.compile(emailRegex)
         return pattern.matcher(email).matches()
     }
+
+    constructor(
+        name: String,
+        birth: LocalDate,
+        email: String,
+        addressBasic: String,
+        addressLat: Float,
+        addressLng: Float,
+        addressDetail: String
+    ) : this(
+        id = UUID.randomUUID().toString(),
+        name = name,
+        birth = birth,
+        email = email,
+        addressBasic = addressBasic,
+        addressLat = addressLat,
+        addressLng = addressLng,
+        addressDetail = addressDetail,
+    )
 }
