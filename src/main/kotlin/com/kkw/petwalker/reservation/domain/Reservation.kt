@@ -7,7 +7,7 @@ import java.time.LocalDateTime
 import java.util.*
 
 @Entity
-data class Reservation (
+data class Reservation(
     @Id
     @Column(nullable = false, columnDefinition = "CHAR(36)")
     val id: String = UUID.randomUUID().toString(),
@@ -29,4 +29,19 @@ data class Reservation (
     @Column(nullable = false)
     val endDateTime: LocalDateTime,
 
-): BaseEntity()
+    ) : BaseEntity() {
+    constructor(
+        reservationClass: ReservationClass,
+        walker: Walker,
+        dogId: String,
+        startDateTime: LocalDateTime,
+        endDateTime: LocalDateTime
+    ) : this(
+        UUID.randomUUID().toString(),
+        reservationClass,
+        walker,
+        dogId,
+        startDateTime,
+        endDateTime
+    )
+}
