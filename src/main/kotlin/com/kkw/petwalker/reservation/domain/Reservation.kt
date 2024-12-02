@@ -37,11 +37,11 @@ data class Reservation(
         startDateTime: LocalDateTime,
         endDateTime: LocalDateTime
     ) : this(
-        UUID.randomUUID().toString(),
-        reservationClass,
-        walker,
-        dogId,
-        startDateTime,
-        endDateTime
+        id = UUID.randomUUID().toString(),
+        reservationClass = reservationClass,
+        walker = walker,
+        dogId = dogId,
+        startDateTime = startDateTime,
+        endDateTime = endDateTime,
     )
 }
