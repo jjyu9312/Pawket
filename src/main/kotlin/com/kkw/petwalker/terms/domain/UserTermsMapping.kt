@@ -20,5 +20,5 @@ data class UserTermsMapping (
     val terms: Terms,
 
     @Column(nullable = false)
-    val isAgreed: Boolean,
+    val isAgreed: Boolean = false,
 ): BaseEntity()
