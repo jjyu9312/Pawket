@@ -23,4 +23,4 @@ data class RealWalkCourse (
     @Column(nullable = false)
     val realWalkCourseLngList: String,
 
-    ): BaseEntity()
+): BaseEntity()

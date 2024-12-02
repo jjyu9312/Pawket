@@ -23,4 +23,4 @@ data class WalkCourse (
     @Column(nullable = false)
     val walkCourseLngList: String,
 
-    ): BaseEntity()
+): BaseEntity()
