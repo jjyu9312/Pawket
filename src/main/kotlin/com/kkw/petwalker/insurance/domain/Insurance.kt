@@ -17,4 +17,5 @@ data class Insurance (
 
     @Column(nullable = false)
     val isRequired: Boolean = true,
+
 ): BaseEntity()
