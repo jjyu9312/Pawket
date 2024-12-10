@@ -25,4 +25,5 @@ data class Walker(
 
     @Column(nullable = false, columnDefinition = "MEDIUMTEXT")
     val petCareExperience: String,
+
 ): BaseEntity()

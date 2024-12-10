@@ -13,4 +13,5 @@ data class Owner (
 
     @Column(columnDefinition = "CHAR(36)")
     val userId: String,
+
 ): BaseEntity()

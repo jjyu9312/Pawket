@@ -25,4 +25,5 @@ data class Notice (
 
     @Column(nullable = false)
     val priority: Int,
+    
 ): BaseEntity()

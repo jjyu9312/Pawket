@@ -18,4 +18,5 @@ data class Terms(
 
     @Column(nullable = false)
     val isRequired: Boolean,
+
 ): BaseEntity()
