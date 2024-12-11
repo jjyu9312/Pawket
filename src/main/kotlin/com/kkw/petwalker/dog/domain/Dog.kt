@@ -30,4 +30,5 @@ data class Dog(
 
     @Column(nullable = false)
     val isNeutered: Boolean = false,
+
 ): BaseEntity()
