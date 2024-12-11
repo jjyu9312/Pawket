@@ -19,4 +19,11 @@ data class Terms(
     @Column(nullable = false)
     val isRequired: Boolean,
 
-): BaseEntity()
+    ) : BaseEntity() {
+    constructor(title: String, content: String, isRequired: Boolean) : this(
+        id = UUID.randomUUID().toString(),
+        title = title,
+        content = content,
+        isRequired = isRequired
+    )
+}

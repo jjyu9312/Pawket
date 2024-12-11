@@ -6,7 +6,7 @@ import jakarta.persistence.*
 import java.util.*
 
 @Entity
-data class UserTermsMapping (
+data class UserTermsMapping(
     @Id
     @Column(nullable = false, columnDefinition = "CHAR(36)")
     val id: String = UUID.randomUUID().toString(),
@@ -22,4 +22,11 @@ data class UserTermsMapping (
     @Column(nullable = false)
     val isAgreed: Boolean = false,
 
-): BaseEntity()
+    ) : BaseEntity() {
+    constructor(user: User, terms: Terms, isAgreed: Boolean) : this(
+        id = UUID.randomUUID().toString(),
+        user = user,
+        terms = terms,
+        isAgreed = isAgreed,
+    )
+}
