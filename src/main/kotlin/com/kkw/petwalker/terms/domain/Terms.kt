@@ -20,6 +20,7 @@ data class Terms(
     val isRequired: Boolean,
 
     ) : BaseEntity() {
+
     constructor(title: String, content: String, isRequired: Boolean) : this(
         id = UUID.randomUUID().toString(),
         title = title,

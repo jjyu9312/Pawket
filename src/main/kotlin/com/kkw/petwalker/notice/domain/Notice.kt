@@ -26,4 +26,14 @@ data class Notice (
     @Column(nullable = false)
     val priority: Int,
     
-): BaseEntity()
+): BaseEntity() {
+
+    constructor(title: String, content: String, targetGroup: TargetGroup, isRequired: Boolean, priority: Int) : this(
+        id = UUID.randomUUID().toString(),
+        title = title,
+        content = content,
+        targetGroup = targetGroup,
+        isRequired = isRequired,
+        priority = priority
+    )
+}
