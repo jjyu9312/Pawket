@@ -2,12 +2,17 @@ package com.kkw.petwalker.common.service
 
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
+import org.springframework.stereotype.Component
 import java.util.*
 
+@Component
 class JwtTokenProvider(
     secretKey: String,
     private val validityInMilliseconds: Long
 ) {
+
+    // 역할: JWT 토큰 생성, 유효성 검증, 토큰에서 사용자 정보 추출
+
     private val secretKey: String = Base64.getEncoder().encodeToString(secretKey.toByteArray())
 
     fun createToken(email: String, roles: List<String>): String {

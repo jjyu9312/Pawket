@@ -1,9 +1,9 @@
 package com.kkw.petwalker.common.service
 
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.core.Authentication
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
 
 class OAuth2SuccessHandler(
     private val jwtTokenProvider: JwtTokenProvider
@@ -13,11 +13,14 @@ class OAuth2SuccessHandler(
         response: HttpServletResponse,
         authentication: Authentication
     ) {
+
+        // 역할: OAuth2 로그인 성공 시 JWT 토큰을 생성하여 클라이언트로 반환하는 역할
+
         val principal = authentication.principal as org.springframework.security.oauth2.core.user.DefaultOAuth2User
         val email = principal.getAttribute<String>("email")
         val roles = listOf("ROLE_USER") // 기본 롤 추가
 
-        val token = jwtTokenProvider.createToken(email, roles)
+        val token = jwtTokenProvider.createToken(email!!, roles)
 
         // JWT를 클라이언트로 반환 (예: JSON 응답)
         response.contentType = "application/json"
