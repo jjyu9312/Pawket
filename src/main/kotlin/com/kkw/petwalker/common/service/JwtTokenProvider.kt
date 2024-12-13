@@ -5,13 +5,10 @@ import io.jsonwebtoken.SignatureAlgorithm
 import java.util.*
 
 class JwtTokenProvider(
-    private val secretKey: String,
+    secretKey: String,
     private val validityInMilliseconds: Long
 ) {
-    init {
-        // 비밀 키를 Base64로 인코딩
-        secretKey = Base64.getEncoder().encodeToString(secretKey.toByteArray())
-    }
+    private val secretKey: String = Base64.getEncoder().encodeToString(secretKey.toByteArray())
 
     fun createToken(email: String, roles: List<String>): String {
         val claims = Jwts.claims().setSubject(email)
@@ -29,11 +26,11 @@ class JwtTokenProvider(
     }
 
     fun validateToken(token: String): Boolean {
-        try {
+        return try {
             val claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token)
-            return !claims.body.expiration.before(Date())
+            !claims.body.expiration.before(Date())
         } catch (e: Exception) {
-            return false
+            false
         }
     }
 
