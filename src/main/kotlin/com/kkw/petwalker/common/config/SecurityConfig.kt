@@ -23,7 +23,7 @@ class SecurityConfig(
         http
             .authorizeHttpRequests { auth ->
                 auth
-                    .requestMatchers("/", "/login", "/oauth2/**").permitAll()  // 로그인 및 OAuth2 관련 경로 허용
+                    .requestMatchers("/", "/login", "/oauth2/**", "/test/*", "/common/*").permitAll()  // 로그인 및 OAuth2 관련 경로 허용
                     .anyRequest().authenticated()  // 나머지 경로는 인증 필요
             }
             .oauth2Login { oauth ->
