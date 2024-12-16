@@ -11,8 +11,13 @@ class UserController {
         println("User created")
     }
 
-    @GetMapping("/login")
+    @PotMapping("/login")
     fun loginPage(): String {
         return "login" // login.html 템플릿 렌더링
+    }
+
+    @PostMapping("/logout")
+    fun logout() {
+        println("User logged out")
     }
 }
