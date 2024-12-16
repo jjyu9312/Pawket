@@ -23,7 +23,6 @@ class JwtAuthenticationFilter(
 
         // 역할: 요청이 들어올 때마다 헤더에 포함된 JWT를 검증하고, 유효한 경우 Spring Security의 SecurityContext에 인증 정보를 설정하는 역할
         // 모든 요청에 대해 한 번만 실행되는 필터
-
         val token = resolveToken(request)
         if (token != null && jwtTokenProvider.validateToken(token)) {
             val email = jwtTokenProvider.getEmailFromToken(token)
