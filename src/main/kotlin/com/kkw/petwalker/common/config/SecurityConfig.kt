@@ -14,9 +14,7 @@ class SecurityConfig(
     private val jwtAuthenticationFilter: JwtAuthenticationFilter,
     private val jwtTokenProvider: JwtTokenProvider,
 
-) {
-
-    // 역할: Spring Security 설정
+) { // 역할: Spring Security 설정
 
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
