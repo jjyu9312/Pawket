@@ -13,7 +13,7 @@ class UserController {
 
     @PostMapping("/login")
     fun loginPage(): String {
-        return "login" // login.html 템플릿 렌더링
+        return "login"
     }
 
     @PostMapping("/logout")
