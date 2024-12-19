@@ -18,7 +18,7 @@ class JwtAuthenticationFilter(
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
-        filterChain: FilterChain
+        filterChain: FilterChain,
     ) {
         // 모든 요청에 대해 한 번만 실행되는 필터
         val token = resolveToken(request)

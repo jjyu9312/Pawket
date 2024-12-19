@@ -14,14 +14,21 @@ class SecurityConfig(
     private val jwtAuthenticationFilter: JwtAuthenticationFilter,
     private val jwtTokenProvider: JwtTokenProvider,
 
-) { // 역할: Spring Security 설정
+    ) { // 역할: Spring Security 설정
 
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         http
             .authorizeHttpRequests { auth ->
                 auth
-                    .requestMatchers("/", "/login", "/oauth2/**", "/test/*", "/common/*").permitAll()  // 로그인 및 OAuth2 관련 경로 허용
+                    .requestMatchers(
+                        "/",
+                        "/login",
+                        "/oauth2/**",
+                        "/test/*",
+                        "/common/*"
+                    ) // 허용할 경로
+                    .permitAll()  // 로그인 및 OAuth2 관련 경로 허용
                     .anyRequest().authenticated()  // 나머지 경로는 인증 필요
             }
             .oauth2Login { oauth ->
@@ -31,7 +38,10 @@ class SecurityConfig(
             }
 
         // JWT 필터 추가
-        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
+        http.addFilterBefore(
+            jwtAuthenticationFilter,
+            UsernamePasswordAuthenticationFilter::class.java,
+        )
 
         return http.build()
     }

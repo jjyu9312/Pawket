@@ -12,7 +12,7 @@ class OAuth2SuccessHandler(
     override fun onAuthenticationSuccess(
         request: HttpServletRequest,
         response: HttpServletResponse,
-        authentication: Authentication
+        authentication: Authentication,
     ) {
         val principal = authentication.principal as org.springframework.security.oauth2.core.user.DefaultOAuth2User
         val email = principal.getAttribute<String>("email")
