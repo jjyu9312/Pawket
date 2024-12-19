@@ -1,5 +1,6 @@
 package com.kkw.petwalker.user.controller
 
+import com.kkw.petwalker.user.dto.CreateUserDto
 import com.kkw.petwalker.user.service.UserService
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -11,7 +12,7 @@ class UserController (
     private val userService: UserService,
 ) {
     @PostMapping("")
-    fun createUser() = userService.createUser()
+    fun createUser(req: CreateUserDto.Req) = userService.createUser(req)
 
     @PostMapping("/login")
     fun loginPage(): String = userService.login()
