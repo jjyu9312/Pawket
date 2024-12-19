@@ -102,7 +102,7 @@ enum class DogType(val stringValue: String) {
 
     companion object {
         fun fromString(value: String): DogType? {
-            return values().find { it.stringValue.equals(value, ignoreCase = true) }
+            return entries.find { it.stringValue.equals(value, ignoreCase = true) }
         }
     }
 }
