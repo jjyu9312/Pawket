@@ -8,7 +8,7 @@ import java.util.*
 data class Walker(
     @Id
     @Column(nullable = false, columnDefinition = "CHAR(36)")
-    val id: String = UUID.randomUUID().toString(),
+    val id: String,
 
     @Column(columnDefinition = "CHAR(36)")
     val userId: String,
@@ -26,4 +26,20 @@ data class Walker(
     @Column(nullable = false, columnDefinition = "MEDIUMTEXT")
     val petCareExperience: String,
 
-): BaseEntity()
+): BaseEntity() {
+    constructor(
+        userId: String,
+        gender: Gender,
+        imageUrl: String,
+        isExperiencedWithPets: Boolean,
+        petCareExperience: String,
+    ): this(
+        id = UUID.randomUUID().toString(),
+        userId = userId,
+        gender = gender,
+        imageUrl = imageUrl,
+        isExperiencedWithPets = isExperiencedWithPets,
+        petCareExperience = petCareExperience,
+    )
+
+}

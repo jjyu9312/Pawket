@@ -9,9 +9,14 @@ data class Owner (
 
     @Id
     @Column(nullable = false, columnDefinition = "CHAR(36)")
-    val id: String = UUID.randomUUID().toString(),
+    val id: String,
 
     @Column(columnDefinition = "CHAR(36)")
     val userId: String,
 
-): BaseEntity()
+): BaseEntity() {
+    constructor(userId: String) : this(
+        id = UUID.randomUUID().toString(),
+        userId = userId
+    )
+}
