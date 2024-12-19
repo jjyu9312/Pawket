@@ -1,7 +1,8 @@
 package com.kkw.petwalker.user.controller
 
-import org.springframework.web.bind.annotation.GetMapping
+import com.kkw.petwalker.user.service.UserService
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -12,12 +13,8 @@ class UserController {
     }
 
     @PostMapping("/login")
-    fun loginPage(): String {
-        return "login"
-    }
+    fun loginPage(): String = userService.login()
 
     @PostMapping("/logout")
-    fun logout() {
-        println("User logged out")
-    }
+    fun logout() = userService.logout()
 }
