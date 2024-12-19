@@ -13,13 +13,6 @@ data class Walker(
     @Column(columnDefinition = "CHAR(36)")
     val userId: String,
 
-    @Column(nullable = false, length = 20)
-    @Enumerated(EnumType.STRING)
-    val gender: Gender,
-
-    @Column(nullable = false)
-    val imageUrl: String,
-
     @Column(nullable = false)
     val isExperiencedWithPets: Boolean = false,
 
@@ -29,15 +22,11 @@ data class Walker(
 ): BaseEntity() {
     constructor(
         userId: String,
-        gender: Gender,
-        imageUrl: String,
         isExperiencedWithPets: Boolean,
         petCareExperience: String,
     ): this(
         id = UUID.randomUUID().toString(),
         userId = userId,
-        gender = gender,
-        imageUrl = imageUrl,
         isExperiencedWithPets = isExperiencedWithPets,
         petCareExperience = petCareExperience,
     )
