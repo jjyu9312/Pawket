@@ -6,11 +6,12 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class UserController {
-    @PostMapping
-    fun createUser() {
-        println("User created")
-    }
+@RequestMapping("/api/v1/user")
+class UserController (
+    private val userService: UserService,
+) {
+    @PostMapping("")
+    fun createUser() = userService.createUser()
 
     @PostMapping("/login")
     fun loginPage(): String = userService.login()
