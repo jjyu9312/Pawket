@@ -1,18 +1,32 @@
 package com.kkw.petwalker.user.service
 
+import com.kkw.petwalker.common.service.S3Service
 import com.kkw.petwalker.dog.domain.Dog
+import com.kkw.petwalker.dog.domain.DogType
+import com.kkw.petwalker.dog.domain.Sex
 import com.kkw.petwalker.dog.domain.repository.DogRepository
+import com.kkw.petwalker.user.domain.Owner
 import com.kkw.petwalker.user.domain.User
 import com.kkw.petwalker.user.domain.repository.UserRepository
-import com.kkw.petwalker.user.dto.CreateUserDto
+import com.kkw.petwalker.user.dto.CreateOwnerDto
 import org.springframework.stereotype.Service
 
 @Service
 class UserService (
     private val userRepository: UserRepository,
     private val dogRepository: DogRepository,
+    private val s3Service: S3Service,
 ) {
-    fun createUser(req: CreateUserDto.Req): String {
+
+    fun login(): String {
+        TODO("Not yet implemented")
+    }
+
+    fun logout(): Any {
+        TODO("Not yet implemented")
+    }
+
+    fun createOwner(req: CreateOwnerDto.Req): String {
         val user = User(
             name = req.name,
             birth = req.birth,
@@ -23,22 +37,32 @@ class UserService (
             addressDetail = req.addressInfo.detail,
         )
 
+        val owner = Owner(userId = user.id)
 
-        val dog = Dog(
-            owner = User,
-
+        val dogImage = s3Service.uploadFile(
+            bucketName = "petwalker-image",
+            filePath = req.dogInfo.imageUrl.originalFilename!!,
+            key = "${user.id}/${req.dogInfo.imageUrl.originalFilename}"
         )
 
+        val dog = Dog(
+            owner = owner,
+            name = req.dogInfo.name,
+            type = DogType.fromString(req.dogInfo.type)!!,
+            imageUrl = dogImage,
+            age = req.dogInfo.age,
+            sex = Sex.fromString(req.dogInfo.sex)!!,
+            weight = req.dogInfo.weight,
+            isNeutered = req.dogInfo.isNeutered,
+            )
+
         userRepository.save(user)
+        dogRepository.save(dog)
 
         return user.id
     }
 
-    fun login(): String {
-        TODO("Not yet implemented")
-    }
-
-    fun logout(): Any {
+    fun createWalker(req: CreateOwnerDto.Req): Any {
         TODO("Not yet implemented")
     }
 
