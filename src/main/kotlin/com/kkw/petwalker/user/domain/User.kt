@@ -17,6 +17,10 @@ data class User(
     @Column(nullable = false)
     val birth: LocalDate,
 
+    @Column(nullable = false, length = 20)
+    @Enumerated(EnumType.STRING)
+    val gender: Gender,
+
     @Column(nullable = false, length = 50)
     val email: String,
 
@@ -36,6 +40,7 @@ data class User(
     constructor(
         name: String,
         birth: LocalDate,
+        gender: Gender,
         email: String,
         addressBasic: String,
         addressLat: Double,
@@ -45,6 +50,7 @@ data class User(
         id = UUID.randomUUID().toString(),
         name = name,
         birth = birth,
+        gender = gender,
         email = email,
         addressBasic = addressBasic,
         addressLat = addressLat,
