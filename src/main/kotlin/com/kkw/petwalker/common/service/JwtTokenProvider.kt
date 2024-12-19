@@ -4,7 +4,9 @@ import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
+import java.security.Key
 import java.util.*
+import javax.crypto.spec.SecretKeySpec
 
 @Component
 class JwtTokenProvider {
@@ -16,11 +18,11 @@ class JwtTokenProvider {
     @Value("\${jwt.validity-in-milliseconds}")
     private var validityInMilliseconds: Long = 0
 
-    // 클래스 초기화 시 secretKey를 Base64 인코딩
-    init {
-        // secretKey를 Base64로 인코딩하여 재설정
-        secretKey = Base64.getEncoder().encodeToString(secretKey.toByteArray())
+    // 클래스 초기화 시 secretKey를 Base64 디코딩 후 Key 객체로 변환
+    private val key: Key by lazy {
+        SecretKeySpec(Base64.getDecoder().decode(secretKey), SignatureAlgorithm.HS256.jcaName)
     }
+
 
     /**
      * JWT 토큰 생성
@@ -36,7 +38,7 @@ class JwtTokenProvider {
             .setClaims(claims)
             .setIssuedAt(now)
             .setExpiration(validity)
-            .signWith(SignatureAlgorithm.HS256, secretKey)
+            .signWith(key)  // Key 객체를 사용
             .compact()
     }
 
@@ -45,8 +47,9 @@ class JwtTokenProvider {
      */
     fun validateToken(token: String): Boolean {
         return try {
-            val claims = Jwts.parser()
-                .setSigningKey(secretKey)
+            val claims = Jwts.parserBuilder()
+                .setSigningKey(key) // Key 객체를 사용
+                .build()
                 .parseClaimsJws(token)
 
             !claims.body.expiration.before(Date()) // 만료 여부 확인
@@ -59,8 +62,9 @@ class JwtTokenProvider {
      * JWT 토큰에서 이메일(사용자 정보) 추출
      */
     fun getEmailFromToken(token: String): String {
-        return Jwts.parser()
-            .setSigningKey(secretKey)
+        return Jwts.parserBuilder()
+            .setSigningKey(key) // Key 객체를 사용
+            .build()
             .parseClaimsJws(token)
             .body
             .subject
