@@ -1,6 +1,7 @@
 package com.kkw.petwalker.user.controller
 
 import com.kkw.petwalker.user.dto.CreateOwnerDto
+import com.kkw.petwalker.user.dto.CreateWalkerDto
 import com.kkw.petwalker.user.service.UserService
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -22,7 +23,5 @@ class UserController (
     fun createOwner(req: CreateOwnerDto.Req) = userService.createOwner(req)
 
     @PostMapping("/walker")
-    fun createWalker(req: CreateOwnerDto.Req) = userService.createWalker(req)
-
-
+    fun createWalker(req: CreateWalkerDto.Req) = userService.createWalker(req)
 }

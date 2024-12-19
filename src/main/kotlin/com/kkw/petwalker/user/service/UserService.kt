@@ -5,16 +5,23 @@ import com.kkw.petwalker.dog.domain.Dog
 import com.kkw.petwalker.dog.domain.DogType
 import com.kkw.petwalker.dog.domain.Sex
 import com.kkw.petwalker.dog.domain.repository.DogRepository
+import com.kkw.petwalker.user.domain.Gender
 import com.kkw.petwalker.user.domain.Owner
 import com.kkw.petwalker.user.domain.User
+import com.kkw.petwalker.user.domain.Walker
+import com.kkw.petwalker.user.domain.repository.OwnerRepository
 import com.kkw.petwalker.user.domain.repository.UserRepository
+import com.kkw.petwalker.user.domain.repository.WalkerRepository
 import com.kkw.petwalker.user.dto.CreateOwnerDto
+import com.kkw.petwalker.user.dto.CreateWalkerDto
 import org.springframework.stereotype.Service
 
 @Service
 class UserService (
     private val userRepository: UserRepository,
     private val dogRepository: DogRepository,
+    private val ownerRepository: OwnerRepository,
+    private val walkerRepository: WalkerRepository,
     private val s3Service: S3Service,
 ) {
 
@@ -31,6 +38,7 @@ class UserService (
             name = req.name,
             birth = req.birth,
             email = req.email,
+            gender = Gender.fromString(req.gender)!!,
             addressBasic = req.addressInfo.basic,
             addressLat = req.addressInfo.lat,
             addressLng = req.addressInfo.lng,
@@ -57,13 +65,33 @@ class UserService (
             )
 
         userRepository.save(user)
+        ownerRepository.save(owner)
         dogRepository.save(dog)
 
         return user.id
     }
 
-    fun createWalker(req: CreateOwnerDto.Req): Any {
-        TODO("Not yet implemented")
-    }
+    fun createWalker(req: CreateWalkerDto.Req): String {
+        val user = User(
+            name = req.name,
+            birth = req.birth,
+            email = req.email,
+            gender = Gender.fromString(req.gender)!!,
+            addressBasic = req.addressInfo.basic,
+            addressLat = req.addressInfo.lat,
+            addressLng = req.addressInfo.lng,
+            addressDetail = req.addressInfo.detail,
+        )
 
+        val walker = Walker(
+            userId = user.id,
+            isExperiencedWithPets = req.walkerInfo.isExperiencedWithPets,
+            petCareExperience = req.walkerInfo.petCareExperience,
+        )
+
+        userRepository.save(user)
+        walkerRepository.save(walker)
+
+        return user.id
+    }
 }
