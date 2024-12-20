@@ -7,7 +7,6 @@ import com.kkw.petwalker.user.dto.CreateOwnerDto
 import com.kkw.petwalker.user.dto.CreateWalkerDto
 import com.kkw.petwalker.user.service.UserService
 import org.apache.coyote.BadRequestException
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping

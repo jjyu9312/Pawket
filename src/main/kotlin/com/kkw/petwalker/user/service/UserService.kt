@@ -1,7 +1,5 @@
 package com.kkw.petwalker.user.service
 
-import com.kkw.petwalker.common.response.ApiResponse
-import com.kkw.petwalker.common.response.ApiResponseFactory
 import com.kkw.petwalker.common.service.S3Service
 import com.kkw.petwalker.dog.domain.Dog
 import com.kkw.petwalker.dog.domain.DogType
