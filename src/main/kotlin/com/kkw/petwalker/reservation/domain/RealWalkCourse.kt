@@ -14,13 +14,13 @@ data class RealWalkCourse (
     @JoinColumn(name = "reservation_id", columnDefinition = "CHAR(36)")
     val reservation: Reservation,
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     val name: String,
 
-    @Column(nullable = false)
+    @Column(nullable = false) // ,로 연결
     val realWalkCourseLatList: String,
 
-    @Column(nullable = false)
+    @Column(nullable = false) // ,로 연결
     val realWalkCourseLngList: String,
 
 ): BaseEntity()
