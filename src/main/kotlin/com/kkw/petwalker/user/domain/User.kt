@@ -21,7 +21,7 @@ data class User(
     @Enumerated(EnumType.STRING)
     val gender: Gender,
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 50, unique = true)
     val email: String,
 
     @Column(nullable = false)
