@@ -1,7 +1,6 @@
 package com.kkw.petwalker.common.response
 
 import org.apache.coyote.BadRequestException
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
@@ -11,25 +10,16 @@ class GlobalExceptionHandler { // 전역 예외 처리기를 통해 예상치 �
 
     @ExceptionHandler(Exception::class)
     fun handleGenericException(ex: Exception): ResponseEntity<ApiResponse<Nothing>> {
-        return ApiResponseFactory.error(
-            HttpStatus.INTERNAL_SERVER_ERROR,
-            "An unexpected error occurred: ${ex.localizedMessage}"
-        )
+        return ApiResponseFactory.error(ResponseCode.INTERNAL_SERVER_ERROR)
     }
 
     @ExceptionHandler(IllegalArgumentException::class)
     fun handleIllegalArgumentException(ex: IllegalArgumentException): ResponseEntity<ApiResponse<Nothing>> {
-        return ApiResponseFactory.error(
-            HttpStatus.BAD_REQUEST,
-            ex.localizedMessage ?: "Invalid argument"
-        )
+        return ApiResponseFactory.error(ResponseCode.BAD_REQUEST)
     }
 
     @ExceptionHandler(BadRequestException::class)
     fun handleBadRequestException(ex: BadRequestException): ResponseEntity<ApiResponse<Nothing>> {
-        return ApiResponseFactory.error(
-            HttpStatus.BAD_REQUEST,
-            ex.localizedMessage ?: "Bad request"
-        )
+        return ApiResponseFactory.error(ResponseCode.BAD_REQUEST)
     }
 }

@@ -3,27 +3,33 @@ package com.kkw.petwalker.common.response
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 
-object ApiResponseFactory { // ResponseEntity를 포함한 반환 구조를 추가하여 API 응답을 생성
-    fun <T> success(data: T?, message: String = "success"): ResponseEntity<ApiResponse<T>> {
+object ApiResponseFactory {
+    fun <T> success(
+        data: T?,
+        responseCode: ResponseCode = ResponseCode.SUCCESS
+    ): ResponseEntity<ApiResponse<T>> {
         return ResponseEntity(
             ApiResponse(
-                statusCode = HttpStatus.OK.value(),
-                message = message,
+                code = responseCode.code,
+                message = responseCode.defaultMessage,
                 data = data
             ),
             HttpStatus.OK
         )
     }
 
-    fun <T> error(statusCode: HttpStatus, message: String): ResponseEntity<ApiResponse<T>> {
+    fun <T> error(
+        responseCode: ResponseCode,
+        httpStatus: HttpStatus = HttpStatus.INTERNAL_SERVER_ERROR,
+        customMessage: String? = null  // 커스텀 메시지 파라미터
+    ): ResponseEntity<ApiResponse<T>> {
         return ResponseEntity(
             ApiResponse(
-                statusCode = statusCode.value(),
-                message = message,
+                code = responseCode.code,
+                message = responseCode.withCustomMessage(customMessage),  // 커스텀 메시지와 기본 메시지 조합
                 data = null
             ),
-            statusCode
+            httpStatus
         )
     }
 }
-
