@@ -16,7 +16,7 @@ import com.kkw.petwalker.user.domain.repository.UserRepository
 import com.kkw.petwalker.user.domain.repository.WalkerRepository
 import com.kkw.petwalker.user.dto.CreateOwnerDto
 import com.kkw.petwalker.user.dto.CreateWalkerDto
-import org.springframework.http.ResponseEntity
+import org.apache.coyote.BadRequestException
 import org.springframework.stereotype.Service
 
 @Service
@@ -48,7 +48,19 @@ class UserService (
             addressDetail = req.addressInfo.detail,
         )
 
+        if (!user.isValidEmail()) {
+            throw BadRequestException("Invalid email format: ${user.email}")
+        }
+
+        if (userRepository.existsById(user.id)) {
+            throw BadRequestException("User ID already exists: ${user.id}")
+        }
+
         val owner = Owner(userId = user.id)
+
+        if (ownerRepository.existsById(owner.userId)) {
+            throw BadRequestException("Owner ID already exists: ${owner.id}")
+        }
 
         val dogImage = s3Service.uploadFile(
             bucketName = "petwalker-image",
@@ -65,7 +77,11 @@ class UserService (
             sex = Sex.fromString(req.dogInfo.sex)!!,
             weight = req.dogInfo.weight,
             isNeutered = req.dogInfo.isNeutered,
-            )
+        )
+
+        if (dogRepository.existsById(dog.id)) {
+            throw BadRequestException("Dog ID already exists: : ${dog.id}")
+        }
 
         userRepository.save(user)
         ownerRepository.save(owner)
