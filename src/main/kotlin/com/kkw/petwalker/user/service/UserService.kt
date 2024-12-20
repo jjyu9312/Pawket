@@ -1,5 +1,7 @@
 package com.kkw.petwalker.user.service
 
+import com.kkw.petwalker.common.response.ApiResponse
+import com.kkw.petwalker.common.response.ApiResponseFactory
 import com.kkw.petwalker.common.service.S3Service
 import com.kkw.petwalker.dog.domain.Dog
 import com.kkw.petwalker.dog.domain.DogType
@@ -14,6 +16,7 @@ import com.kkw.petwalker.user.domain.repository.UserRepository
 import com.kkw.petwalker.user.domain.repository.WalkerRepository
 import com.kkw.petwalker.user.dto.CreateOwnerDto
 import com.kkw.petwalker.user.dto.CreateWalkerDto
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 
 @Service
