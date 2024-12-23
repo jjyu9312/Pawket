@@ -1,4 +1,4 @@
-package com.kkw.petwalker.common.config
+package com.kkw.petwalker.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

@@ -1,4 +1,4 @@
-package com.kkw.petwalker.common.config
+package com.kkw.petwalker.config
 
 import com.kkw.petwalker.common.filter.JwtAuthenticationFilter
 import com.kkw.petwalker.common.service.JwtTokenProvider
