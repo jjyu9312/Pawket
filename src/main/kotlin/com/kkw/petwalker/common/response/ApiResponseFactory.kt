@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity
 object ApiResponseFactory {
     fun <T> success(
         data: T?,
-        responseCode: ResponseCode = ResponseCode.SUCCESS
+        responseCode: ResponseCode = ResponseCode.SUCCESS // 프로젝트에서 사용할 code 정리
     ): ResponseEntity<ApiResponse<T>> {
         return ResponseEntity(
             ApiResponse(
