@@ -17,10 +17,10 @@ data class RealWalkCourse (
     @Column(nullable = false, length = 50)
     val name: String,
 
-    @Column(nullable = false) // ,로 연결
+    @Column(nullable = false) // ,로 연결 (순서 중요)
     val realWalkCourseLatList: String,
 
-    @Column(nullable = false) // ,로 연결
+    @Column(nullable = false) // ,로 연결 (순서 중요)
     val realWalkCourseLngList: String,
 
 ): BaseEntity()
