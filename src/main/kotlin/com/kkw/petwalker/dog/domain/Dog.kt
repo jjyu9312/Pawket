@@ -22,7 +22,7 @@ data class Dog(
     @Enumerated(EnumType.STRING)
     val type: DogType,
 
-    @Column(nullable = false)
+    @Column(nullable = false) // ,로 연결
     val imageUrl: String,
 
     @Column(nullable = false)
