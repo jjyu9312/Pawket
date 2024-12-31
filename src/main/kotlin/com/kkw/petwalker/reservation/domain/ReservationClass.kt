@@ -1,7 +1,6 @@
 package com.kkw.petwalker.reservation.domain
 
 import com.kkw.petwalker.common.domain.BaseEntity
-import com.kkw.petwalker.user.domain.Walker
 import jakarta.persistence.*
 import java.time.LocalDate
 import java.time.LocalTime
