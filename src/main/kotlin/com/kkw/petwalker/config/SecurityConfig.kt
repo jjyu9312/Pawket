@@ -30,6 +30,12 @@ class SecurityConfig(
                     .permitAll()  // 로그인 및 OAuth2 관련 경로 허용
                     .anyRequest().authenticated()  // 나머지 경로는 인증 필요
             }
+            .logout {
+                it.logoutUrl("/logout") // 로그아웃 URL 설정
+                    .logoutSuccessUrl("/") // 로그아웃 성공 후 이동할 URL
+                    .invalidateHttpSession(true) // 세션 무효화
+                    .deleteCookies("JSESSIONID") // 쿠키 삭제
+            }
             .oauth2Login { oauth ->
                 oauth
                     .loginPage("/login")  // 커스텀 로그인 페이지
