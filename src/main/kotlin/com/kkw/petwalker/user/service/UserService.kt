@@ -1,5 +1,6 @@
 package com.kkw.petwalker.user.service
 
+import com.kkw.petwalker.common.response.ResponseCode
 import com.kkw.petwalker.common.service.S3Service
 import com.kkw.petwalker.dog.domain.Dog
 import com.kkw.petwalker.dog.domain.DogType
@@ -51,13 +52,19 @@ class UserService (
 
     fun createOwner(req: CreateOwnerDto.Req): String {
         val gender = Gender.fromString(req.gender)
-            ?: throw BadRequestException("Invalid gender value: ${req.gender}")
+            ?: throw BadRequestException(
+                ResponseCode.INVALID_GENDER_TYPE.withCustomMessage("- ${req.gender}")
+            )
 
         val dogType = DogType.fromString(req.dogInfo.type)
-            ?: throw BadRequestException("Invalid dog type: ${req.dogInfo.type}")
+            ?: throw BadRequestException(
+                ResponseCode.INVALID_DOG_TYPE.withCustomMessage("- ${req.dogInfo.type}")
+            )
 
         val sex = Sex.fromString(req.dogInfo.sex)
-            ?: throw BadRequestException("Invalid dog sex")
+            ?: throw BadRequestException(
+                ResponseCode.INVALID_SEX_TYPE.withCustomMessage("- ${req.dogInfo.sex}")
+            )
 
         val user = User(
             name = req.name,
@@ -117,7 +124,9 @@ class UserService (
 
     fun createWalker(req: CreateWalkerDto.Req): String {
         val gender = Gender.fromString(req.gender)
-            ?: throw BadRequestException("Invalid gender value: ${req.gender}")
+            ?: throw BadRequestException(
+                ResponseCode.INVALID_GENDER_TYPE.withCustomMessage("- ${req.gender}")
+            )
 
         val user = User(
             name = req.name,
