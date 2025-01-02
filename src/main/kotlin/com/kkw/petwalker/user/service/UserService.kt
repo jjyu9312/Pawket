@@ -50,11 +50,20 @@ class UserService (
     }
 
     fun createOwner(req: CreateOwnerDto.Req): String {
+        val gender = Gender.fromString(req.gender)
+            ?: throw BadRequestException("Invalid gender value: ${req.gender}")
+
+        val dogType = DogType.fromString(req.dogInfo.type)
+            ?: throw BadRequestException("Invalid dog type: ${req.dogInfo.type}")
+
+        val sex = Sex.fromString(req.dogInfo.sex)
+            ?: throw BadRequestException("Invalid dog sex")
+
         val user = User(
             name = req.name,
             birth = req.birth,
             email = req.email,
-            gender = Gender.fromString(req.gender)!!,
+            gender = gender,
             addressBasic = req.addressInfo.basic,
             addressLat = req.addressInfo.lat,
             addressLng = req.addressInfo.lng,
@@ -75,19 +84,22 @@ class UserService (
             throw BadRequestException("Owner ID already exists: ${owner.id}")
         }
 
+        val filePath = req.dogInfo.imageUrl.originalFilename
+            ?: throw BadRequestException("Image file not found")
+
         val dogImage = s3Service.uploadFile(
             bucketName = "petwalker-image",
-            filePath = req.dogInfo.imageUrl.originalFilename!!,
+            filePath = filePath,
             key = "${user.id}/${req.dogInfo.imageUrl.originalFilename}"
         )
 
         val dog = Dog(
             owner = owner,
             name = req.dogInfo.name,
-            type = DogType.fromString(req.dogInfo.type)!!,
+            type = dogType,
             imageUrl = dogImage,
             age = req.dogInfo.age,
-            sex = Sex.fromString(req.dogInfo.sex)!!,
+            sex = sex,
             weight = req.dogInfo.weight,
             isNeutered = req.dogInfo.isNeutered,
         )
@@ -104,11 +116,14 @@ class UserService (
     }
 
     fun createWalker(req: CreateWalkerDto.Req): String {
+        val gender = Gender.fromString(req.gender)
+            ?: throw BadRequestException("Invalid gender value: ${req.gender}")
+
         val user = User(
             name = req.name,
             birth = req.birth,
             email = req.email,
-            gender = Gender.fromString(req.gender)!!,
+            gender = gender,
             addressBasic = req.addressInfo.basic,
             addressLat = req.addressInfo.lat,
             addressLng = req.addressInfo.lng,
