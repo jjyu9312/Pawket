@@ -22,7 +22,14 @@ class UserController (
     fun loginPage(): String = userService.login()
 
     @PostMapping("/logout")
-    fun logout() = userService.logout()
+    fun logout(): ResponseEntity<ApiResponse<String>> {
+        return try {
+            val success = userService.logout()
+            ApiResponseFactory.success(success)
+        } catch (e: Exception) {
+            ApiResponseFactory.error(ResponseCode.INTERNAL_SERVER_ERROR, customMessage = e.message)
+        }
+    }
 
     @PostMapping("/owner")
     fun createOwner(req: CreateOwnerDto.Req): ResponseEntity<ApiResponse<String>> {

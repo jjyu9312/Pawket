@@ -14,6 +14,9 @@ import com.kkw.petwalker.user.domain.repository.UserRepository
 import com.kkw.petwalker.user.domain.repository.WalkerRepository
 import com.kkw.petwalker.user.dto.CreateOwnerDto
 import com.kkw.petwalker.user.dto.CreateWalkerDto
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
+import jakarta.servlet.http.Cookie
 import org.apache.coyote.BadRequestException
 import org.springframework.stereotype.Service
 
@@ -24,14 +27,26 @@ class UserService (
     private val ownerRepository: OwnerRepository,
     private val walkerRepository: WalkerRepository,
     private val s3Service: S3Service,
+    private val request: HttpServletRequest,
+    private val response: HttpServletResponse,
 ) {
 
     fun login(): String {
         TODO("Not yet implemented")
     }
 
-    fun logout(): Any {
-        TODO("Not yet implemented")
+    fun logout(): String {
+        // 세션 무효화
+        request.session.invalidate()
+
+        // 쿠키 삭제 (JSESSIONID)
+        val cookie = Cookie("JSESSIONID", null)
+        cookie.path = "/"
+        cookie.maxAge = 0
+        response.addCookie(cookie)
+
+        // 추가적인 로그아웃 로직 (예: 외부 SNS 로그아웃 처리) 필요 시 구현
+        return "로그아웃 성공"
     }
 
     fun createOwner(req: CreateOwnerDto.Req): String {
