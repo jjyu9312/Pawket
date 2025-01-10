@@ -19,7 +19,9 @@ import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.servlet.http.Cookie
 import org.apache.coyote.BadRequestException
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 
 @Service
 class UserService (
@@ -31,12 +33,15 @@ class UserService (
     private val request: HttpServletRequest,
     private val response: HttpServletResponse,
 ) {
+    private val logger = LoggerFactory.getLogger(this::class.java)
 
     fun login(): String {
         TODO("Not yet implemented")
     }
 
     fun logout(): String {
+        logger.info("Logging out user with session ID: ${request.session.id}")
+
         // 세션 무효화
         request.session.invalidate()
 
@@ -46,11 +51,15 @@ class UserService (
         cookie.maxAge = 0
         response.addCookie(cookie)
 
+        logger.info("로그아웃 시간: ${LocalDateTime.now()}")
+
         // 추가적인 로그아웃 로직 (예: 외부 SNS 로그아웃 처리) 필요 시 구현
         return "로그아웃 성공"
     }
 
     fun createOwner(req: CreateOwnerDto.Req): String {
+        logger.info("Creating owner with name: ${req.name}, email: ${req.email}")
+
         val gender = Gender.fromString(req.gender)
             ?: throw BadRequestException(
                 ResponseCode.INVALID_GENDER_TYPE.withCustomMessage("- ${req.gender}")
@@ -78,16 +87,19 @@ class UserService (
         )
 
         if (!user.isValidEmail()) {
+            logger.error("Invalid email format: ${user.email}")
             throw BadRequestException("Invalid email format: ${user.email}")
         }
 
         if (userRepository.existsById(user.id)) {
+            logger.error("User ID already exists: ${user.id}")
             throw BadRequestException("User ID already exists: ${user.id}")
         }
 
         val owner = Owner(userId = user.id)
 
         if (ownerRepository.existsById(owner.userId)) {
+            logger.error("Owner ID already exists: ${owner.id}")
             throw BadRequestException("Owner ID already exists: ${owner.id}")
         }
 
@@ -112,6 +124,7 @@ class UserService (
         )
 
         if (dogRepository.existsById(dog.id)) {
+            logger.error("Dog ID already exists: ${dog.id}")
             throw BadRequestException("Dog ID already exists: : ${dog.id}")
         }
 
@@ -123,6 +136,8 @@ class UserService (
     }
 
     fun createWalker(req: CreateWalkerDto.Req): String {
+        logger.info("Creating walker with name: ${req.name}, email: ${req.email}")
+
         val gender = Gender.fromString(req.gender)
             ?: throw BadRequestException(
                 ResponseCode.INVALID_GENDER_TYPE.withCustomMessage("- ${req.gender}")
