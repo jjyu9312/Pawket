@@ -26,6 +26,7 @@ class SecurityConfig(
                         "/login",
                         "/auth/**",
                         "/test/*",
+                        "/common/*",
                     ) // 허용할 경로
                     .permitAll()  // 로그인 및 OAuth2 관련 경로 허용
                     .anyRequest().authenticated()  // 나머지 경로는 인증 필요
