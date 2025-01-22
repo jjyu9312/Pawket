@@ -36,7 +36,7 @@ class UserService (
     private val logger = LoggerFactory.getLogger(this::class.java)
 
     fun login(): String {
-        TODO("Not yet implemented")
+        TODO("Not yet implemented login")
     }
 
     fun logout(): String {
