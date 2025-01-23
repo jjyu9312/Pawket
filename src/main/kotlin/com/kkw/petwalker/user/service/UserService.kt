@@ -51,7 +51,7 @@ class UserService (
         cookie.maxAge = 0
         response.addCookie(cookie)
 
-        logger.info("로그아웃 시간: ${LocalDateTime.now()}")
+        logger.info("Logout time: ${LocalDateTime.now()}")
 
         // 추가적인 로그아웃 로직 (예: 외부 SNS 로그아웃 처리) 필요 시 구현
         return "로그아웃 성공"
