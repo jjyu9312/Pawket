@@ -11,6 +11,7 @@ class WebMvcConfig(
 ) : WebMvcConfigurer {
     override fun addInterceptors(registry: InterceptorRegistry) {
         registry.addInterceptor(loggingInterceptor)
-            .addPathPatterns("/**") // 모든 경로에 적용
+            .addPathPatterns("/**")
+            .excludePathPatterns("/test/**")
     }
 }
