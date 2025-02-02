@@ -5,7 +5,7 @@ import jakarta.persistence.*
 import java.util.*
 
 @Entity
-data class Notice (
+data class Notice(
     @Id
     @Column(nullable = false, columnDefinition = "CHAR(36)")
     val id: String = UUID.randomUUID().toString(),
@@ -25,10 +25,16 @@ data class Notice (
 
     @Column(nullable = false)
     val priority: Int,
-    
-): BaseEntity() {
 
-    constructor(title: String, content: String, targetGroup: TargetGroup, isRequired: Boolean, priority: Int) : this(
+    ) : BaseEntity() {
+
+    constructor(
+        title: String,
+        content: String,
+        targetGroup: TargetGroup,
+        isRequired: Boolean,
+        priority: Int
+    ) : this(
         id = UUID.randomUUID().toString(),
         title = title,
         content = content,

@@ -16,7 +16,7 @@ data class Feed(
     @Column(nullable = false)
     val content: String,
 
-) : BaseEntity() {
+    ) : BaseEntity() {
     constructor(
         name: String,
         content: String
