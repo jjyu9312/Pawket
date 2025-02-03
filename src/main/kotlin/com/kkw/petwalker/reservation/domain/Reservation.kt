@@ -13,10 +13,6 @@ data class Reservation(
     val id: String = UUID.randomUUID().toString(),
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reservation_class_id", columnDefinition = "CHAR(36)")
-    val reservationClass: ReservationClass,
-
-    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "walker_id", columnDefinition = "CHAR(36)")
     val walker: Walker,
 
@@ -31,14 +27,12 @@ data class Reservation(
 
 ): BaseEntity() {
     constructor(
-        reservationClass: ReservationClass,
         walker: Walker,
         dogId: String,
         startDateTime: LocalDateTime,
         endDateTime: LocalDateTime
     ) : this(
         id = UUID.randomUUID().toString(),
-        reservationClass = reservationClass,
         walker = walker,
         dogId = dogId,
         startDateTime = startDateTime,
