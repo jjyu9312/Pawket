@@ -1,11 +1,11 @@
-package com.kkw.petwalker.insurance.domain
+package com.kkw.petwalker.insurance.feed
 
 import com.kkw.petwalker.common.domain.BaseEntity
 import jakarta.persistence.*
 import java.util.*
 
 @Entity
-data class Insurance (
+data class Feed(
     @Id
     @Column(nullable = false, columnDefinition = "CHAR(36)")
     val id: String = UUID.randomUUID().toString(),
@@ -16,14 +16,13 @@ data class Insurance (
     @Column(nullable = false)
     val content: String,
 
-    @Column(nullable = false)
-    val isRequired: Boolean = true,
-
-): BaseEntity() {
-    constructor(name: String, content: String, isRequired: Boolean) : this(
+    ) : BaseEntity() {
+    constructor(
+        name: String,
+        content: String
+    ) : this(
         id = UUID.randomUUID().toString(),
         name = name,
         content = content,
-        isRequired = isRequired
     )
 }
