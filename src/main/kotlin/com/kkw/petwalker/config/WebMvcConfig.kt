@@ -13,5 +13,6 @@ class WebMvcConfig(
         registry.addInterceptor(loggingInterceptor)
             .addPathPatterns("/**")
             .excludePathPatterns("/test/**")
+            .excludePathPatterns("/common/**")
     }
 }
