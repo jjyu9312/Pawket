@@ -1,9 +1,8 @@
 package com.kkw.petwalker.dog.domain
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
 import com.kkw.petwalker.common.domain.BaseEntity
-import com.kkw.petwalker.user.domain.Owner
+import com.kkw.petwalker.user.domain.User
 import jakarta.persistence.*
 import java.util.*
 
@@ -14,11 +13,11 @@ data class Dog(
     val id: String,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "owner_id", columnDefinition = "CHAR(36)")
-    val owner: Owner,
+    @JoinColumn(name = "user_id", columnDefinition = "CHAR(36)")
+    val user: User,
 
-    @Column(nullable = false, length = 50, unique = true)
-    val registrationNum: String,
+    @Column(nullable = true, length = 50, unique = true)
+    var registrationNum: String? = null,
 
     @Column(nullable = false, length = 50)
     val name: String,
@@ -27,11 +26,11 @@ data class Dog(
     @Enumerated(value = EnumType.STRING)
     val type: DogType,
 
-    @Column(nullable = false, unique = true)
-    val mainImageUrl: String,
+    @Column(nullable = true, unique = true)
+    var mainImageUrl: String? = null,
 
-    @Column(nullable = false) // ,로 연결
-    val imageUrls: String,
+    @Column(nullable = true, unique = true) // ,로 연결
+    var imageUrls: String? = null,
 
     @Column(nullable = false)
     val age: Int,
@@ -71,15 +70,15 @@ data class Dog(
     }
 
     constructor(
-        owner: Owner,
-        registrationNum: String,
+        user: User,
+        registrationNum: String? = null,
         name: String,
         type: DogType,
-        mainImageUrl: String,
-        imageUrls: String,
+        mainImageUrl: String? = null,
+        imageUrls: String? = null,
         age: Int,
-        weight: Int,
         sex: Sex,
+        weight: Int,
         isNeutered: Boolean,
         dogDescription: String,
         foodBrand: String,
@@ -87,15 +86,14 @@ data class Dog(
         foodType: String,
     ) : this(
         id = UUID.randomUUID().toString(),
-        owner = owner,
-        registrationNum = registrationNum,
+        user = user,
         name = name,
         type = type,
         mainImageUrl = mainImageUrl,
         imageUrls = imageUrls,
         age = age,
-        weight = weight,
         sex = sex,
+        weight = weight,
         isNeutered = isNeutered,
         dogDetail = createDogDetailJson(dogDescription, foodBrand, foodName, foodType) // JSON 변환 후 저장
     )
