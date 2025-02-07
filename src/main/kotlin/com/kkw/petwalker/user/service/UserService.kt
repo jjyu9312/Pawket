@@ -7,14 +7,9 @@ import com.kkw.petwalker.dog.domain.DogType
 import com.kkw.petwalker.dog.domain.Sex
 import com.kkw.petwalker.dog.domain.repository.DogRepository
 import com.kkw.petwalker.user.domain.Gender
-import com.kkw.petwalker.user.domain.Owner
 import com.kkw.petwalker.user.domain.User
-import com.kkw.petwalker.user.domain.Walker
-import com.kkw.petwalker.user.domain.repository.OwnerRepository
 import com.kkw.petwalker.user.domain.repository.UserRepository
-import com.kkw.petwalker.user.domain.repository.WalkerRepository
-import com.kkw.petwalker.user.dto.CreateOwnerDto
-import com.kkw.petwalker.user.dto.CreateWalkerDto
+import com.kkw.petwalker.user.dto.CreateUserDto
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.servlet.http.Cookie
@@ -27,8 +22,6 @@ import java.time.LocalDateTime
 class UserService (
     private val userRepository: UserRepository,
     private val dogRepository: DogRepository,
-    private val ownerRepository: OwnerRepository,
-    private val walkerRepository: WalkerRepository,
     private val s3Service: S3Service,
     private val request: HttpServletRequest,
     private val response: HttpServletResponse,
@@ -57,7 +50,7 @@ class UserService (
         return "로그아웃 성공"
     }
 
-    fun createOwner(req: CreateOwnerDto.Req): String {
+    fun createUser(req: CreateUserDto.Req): String {
         logger.info("Creating owner with name: ${req.name}, email: ${req.email}")
 
         val gender = Gender.fromString(req.gender)
@@ -96,31 +89,36 @@ class UserService (
             throw BadRequestException("User ID already exists: ${user.id}")
         }
 
-        val owner = Owner(userId = user.id)
+        var dogImage = ""
 
-        if (ownerRepository.existsById(owner.userId)) {
-            logger.error("Owner ID already exists: ${owner.id}")
-            throw BadRequestException("Owner ID already exists: ${owner.id}")
+        req.dogInfo.imageUrls.forEach {
+            val filePath = it.originalFilename
+                ?: throw BadRequestException("Image file not found")
+
+            val imageUrl = s3Service.uploadFile(
+                bucketName = "petwalker-image",
+                filePath = filePath,
+                key = "${user.id}/${it.originalFilename}"
+            )
+
+            dogImage = if (dogImage.isEmpty()) imageUrl else "$dogImage,$imageUrl"
         }
 
-        val filePath = req.dogInfo.imageUrl.originalFilename
-            ?: throw BadRequestException("Image file not found")
-
-        val dogImage = s3Service.uploadFile(
-            bucketName = "petwalker-image",
-            filePath = filePath,
-            key = "${user.id}/${req.dogInfo.imageUrl.originalFilename}"
-        )
-
         val dog = Dog(
-            owner = owner,
+            user = user,
+            registrationNum = req.dogInfo.registrationNum,
             name = req.dogInfo.name,
             type = dogType,
-            imageUrl = dogImage,
+            mainImageUrl = if (dogImage == "") null else dogImage.split(",")[0],
+            imageUrls = if (dogImage == "") null else dogImage,
             age = req.dogInfo.age,
             sex = sex,
             weight = req.dogInfo.weight,
             isNeutered = req.dogInfo.isNeutered,
+            dogDescription = req.dogInfo.dogDescription,
+            foodBrand = req.dogInfo.foodBrand,
+            foodName = req.dogInfo.foodName,
+            foodType = req.dogInfo.foodType,
         )
 
         if (dogRepository.existsById(dog.id)) {
@@ -129,40 +127,9 @@ class UserService (
         }
 
         userRepository.save(user)
-        ownerRepository.save(owner)
         dogRepository.save(dog)
 
         return user.id
     }
 
-    fun createWalker(req: CreateWalkerDto.Req): String {
-        logger.info("Creating walker with name: ${req.name}, email: ${req.email}")
-
-        val gender = Gender.fromString(req.gender)
-            ?: throw BadRequestException(
-                ResponseCode.INVALID_GENDER_TYPE.withCustomMessage("- ${req.gender}")
-            )
-
-        val user = User(
-            name = req.name,
-            birth = req.birth,
-            email = req.email,
-            gender = gender,
-            addressBasic = req.addressInfo.basic,
-            addressLat = req.addressInfo.lat,
-            addressLng = req.addressInfo.lng,
-            addressDetail = req.addressInfo.detail,
-        )
-
-        val walker = Walker(
-            userId = user.id,
-            isExperiencedWithPets = req.walkerInfo.isExperiencedWithPets,
-            petCareExperience = req.walkerInfo.petCareExperience,
-        )
-
-        userRepository.save(user)
-        walkerRepository.save(walker)
-
-        return user.id
-    }
 }
