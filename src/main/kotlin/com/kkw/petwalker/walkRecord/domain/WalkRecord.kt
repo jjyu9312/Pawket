@@ -1,20 +1,20 @@
-package com.kkw.petwalker.reservation.domain
+package com.kkw.petwalker.walkRecord.domain
 
 import com.kkw.petwalker.common.domain.BaseEntity
-import com.kkw.petwalker.user.domain.Walker
+import com.kkw.petwalker.user.domain.User
 import jakarta.persistence.*
 import java.time.LocalDateTime
 import java.util.*
 
 @Entity
-data class Reservation(
+data class WalkRecord(
     @Id
     @Column(nullable = false, columnDefinition = "CHAR(36)")
     val id: String = UUID.randomUUID().toString(),
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "walker_id", columnDefinition = "CHAR(36)")
-    val walker: Walker,
+    @JoinColumn(name = "user_id", columnDefinition = "CHAR(36)")
+    val user: User,
 
     @Column(columnDefinition = "CHAR(36)")
     val dogId: String,
@@ -27,13 +27,13 @@ data class Reservation(
 
 ): BaseEntity() {
     constructor(
-        walker: Walker,
+        user: User,
         dogId: String,
         startDateTime: LocalDateTime,
         endDateTime: LocalDateTime
     ) : this(
         id = UUID.randomUUID().toString(),
-        walker = walker,
+        user = user,
         dogId = dogId,
         startDateTime = startDateTime,
         endDateTime = endDateTime,

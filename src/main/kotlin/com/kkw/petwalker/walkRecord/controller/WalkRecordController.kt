@@ -1,9 +1,9 @@
-package com.kkw.petwalker.reservation.controller
+package com.kkw.petwalker.walkRecord.controller
 
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/v1/reservation")
-class ReservationController {
+@RequestMapping("/api/v1/walk-record")
+class WalkRecordController {
 }
