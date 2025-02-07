@@ -3,7 +3,7 @@ package com.kkw.petwalker.user.dto
 import org.springframework.web.multipart.MultipartFile
 import java.time.LocalDate
 
-class CreateOwnerDto {
+class CreateUserDto {
 
     data class Req (
         val name: String,
@@ -23,13 +23,18 @@ class CreateOwnerDto {
         )
 
         data class DogInfo (
+            val registrationNum: String? = null,
             val name: String,
             val type: String,
-            val imageUrl: MultipartFile,
+            val imageUrls: List<MultipartFile>,
             val age: Int,
             val sex: String,
             val weight: Int,
             val isNeutered: Boolean,
+            val dogDescription: String,
+            val foodBrand: String,
+            val foodName: String,
+            val foodType: String,
         )
     }
 
