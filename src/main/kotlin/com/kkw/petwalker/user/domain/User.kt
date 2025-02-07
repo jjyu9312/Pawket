@@ -18,7 +18,7 @@ data class User(
     val birth: LocalDate,
 
     @Column(nullable = false, length = 20)
-    @Enumerated(EnumType.STRING)
+    @Enumerated(value = EnumType.STRING)
     val gender: Gender,
 
     @Column(nullable = false, length = 50, unique = true)

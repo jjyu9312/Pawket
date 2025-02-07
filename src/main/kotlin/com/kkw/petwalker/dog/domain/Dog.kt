@@ -24,7 +24,7 @@ data class Dog(
     val name: String,
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
+    @Enumerated(value = EnumType.STRING)
     val type: DogType,
 
     @Column(nullable = false, unique = true)
@@ -40,7 +40,7 @@ data class Dog(
     val weight: Int,
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
+    @Enumerated(value = EnumType.STRING)
     val sex: Sex,
 
     @Column(nullable = false)

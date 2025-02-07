@@ -17,7 +17,7 @@ data class Notice(
     val content: String,
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
+    @Enumerated(value = EnumType.STRING)
     val targetGroup: TargetGroup,
 
     @Column(nullable = false)
