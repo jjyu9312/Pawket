@@ -6,10 +6,11 @@ enum class ResponseCode(val code: Int, val defaultMessage: String) {
     USER_CREATION_FAILED(40001, "user 생성에 실패했습니다"),
     OWNER_CREATION_FAILED(40002, "owner 생성에 실패했습니다"),
     WALKER_CREATION_FAILED(40003, "walker 생성에 실패했습니다"),
-    INVALID_SEX_TYPE(40004, "강아지 성별 유형이 맞지 않습니다."),
+    INVALID_SEX_TYPE(40004, "강아지 성별 유형이 맞지 않습니다"),
     INVALID_GENDER_TYPE(40005, "성별 유형이 맞지 않습니다."),
-    INVALID_DOG_TYPE(40006, "강아지 종류가 맞지 않습니다."),
-    NOT_FOUND(40400, "리소스를 찾을 수 없습니다"),
+    INVALID_DOG_TYPE(40006, "강아지 종류가 맞지 않습니다"),
+    NOT_FOUND_IMAGE(40007, "이미지를 찾을 수 없습니다"),
+    INVALID_EMAIL_FORMAT(40007, "이메일 포맷이 맞지 않습니다"),
     INTERNAL_SERVER_ERROR(50000, "서버 내부 오류가 발생했습니다"),
     ;
 

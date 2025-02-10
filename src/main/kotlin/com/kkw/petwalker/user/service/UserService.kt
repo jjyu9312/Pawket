@@ -81,19 +81,25 @@ class UserService (
 
         if (!user.isValidEmail()) {
             logger.error("Invalid email format: ${user.email}")
-            throw BadRequestException("Invalid email format: ${user.email}")
+            throw BadRequestException(
+                ResponseCode.INVALID_EMAIL_FORMAT.withCustomMessage(" - ${user.email}")
+            )
         }
 
         if (userRepository.existsById(user.id)) {
-            logger.error("User ID already exists: ${user.id}")
-            throw BadRequestException("User ID already exists: ${user.id}")
+            logger.error("User already exists: ${user.id}")
+            throw BadRequestException(
+                ResponseCode.USER_CREATION_FAILED.withCustomMessage("이미 존재하는 user - ${user.id}")
+            )
         }
 
         var dogImage = ""
 
         req.dogInfo.imageUrls.forEach {
             val filePath = it.originalFilename
-                ?: throw BadRequestException("Image file not found")
+                ?: throw BadRequestException(
+                    ResponseCode.NOT_FOUND_IMAGE.withCustomMessage("- ${it.originalFilename}")
+                )
 
             val imageUrl = s3Service.uploadFile(
                 bucketName = "petwalker-image",
@@ -122,7 +128,7 @@ class UserService (
         )
 
         if (dogRepository.existsById(dog.id)) {
-            logger.error("Dog ID already exists: ${dog.id}")
+            logger.error("ID already exists: ${dog.id}")
             throw BadRequestException("Dog ID already exists: : ${dog.id}")
         }
 
