@@ -129,7 +129,9 @@ class UserService (
 
         if (dogRepository.existsById(dog.id)) {
             logger.error("ID already exists: ${dog.id}")
-            throw BadRequestException("Dog ID already exists: : ${dog.id}")
+            throw BadRequestException(
+                ResponseCode.DOG_CREATION_FAILED.withCustomMessage("이미 존재하는 dog - ${dog.id}")
+            )
         }
 
         userRepository.save(user)

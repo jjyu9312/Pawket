@@ -5,7 +5,7 @@ enum class ResponseCode(val code: Int, val defaultMessage: String) {
     BAD_REQUEST(40000, "잘못된 요청입니다"),
     USER_CREATION_FAILED(40001, "user 생성에 실패했습니다"),
     OWNER_CREATION_FAILED(40002, "owner 생성에 실패했습니다"),
-    WALKER_CREATION_FAILED(40003, "walker 생성에 실패했습니다"),
+    DOG_CREATION_FAILED(40003, "dog 생성에 실패했습니다"),
     INVALID_SEX_TYPE(40004, "강아지 성별 유형이 맞지 않습니다"),
     INVALID_GENDER_TYPE(40005, "성별 유형이 맞지 않습니다."),
     INVALID_DOG_TYPE(40006, "강아지 종류가 맞지 않습니다"),
