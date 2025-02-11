@@ -12,7 +12,7 @@ class CreateUserDto {
         val gender: String,
         val imageUrl: MultipartFile,
         val addressInfo: AddressInfo,
-        val dogInfo: DogInfo,
+        val petInfo: PetInfo,
 
     ) {
         data class AddressInfo (
@@ -22,7 +22,7 @@ class CreateUserDto {
             val lng: Double
         )
 
-        data class DogInfo (
+        data class PetInfo (
             val registrationNum: String? = null,
             val name: String,
             val type: String,

@@ -1,7 +1,7 @@
-package com.kkw.petwalker.dog.service
+package com.kkw.petwalker.pet.service
 
 import org.springframework.stereotype.Service
 
 @Service
-class DogService {
+class PetService {
 }
