@@ -36,7 +36,7 @@ data class User(
     @Column
     val addressDetail: String,
 
-): BaseEntity() {
+    ) : BaseEntity() {
     constructor(
         name: String,
         birth: LocalDate,

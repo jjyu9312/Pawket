@@ -87,6 +87,7 @@ data class Dog(
     ) : this(
         id = UUID.randomUUID().toString(),
         user = user,
+        registrationNum = registrationNum,
         name = name,
         type = type,
         mainImageUrl = mainImageUrl,
@@ -95,6 +96,11 @@ data class Dog(
         sex = sex,
         weight = weight,
         isNeutered = isNeutered,
-        dogDetail = createDogDetailJson(dogDescription, foodBrand, foodName, foodType) // JSON 변환 후 저장
+        dogDetail = createDogDetailJson(
+            dogDescription,
+            foodBrand,
+            foodName,
+            foodType
+        ) // JSON 변환 후 저장
     )
 }
