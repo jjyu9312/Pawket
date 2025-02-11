@@ -1,4 +1,4 @@
-package com.kkw.petwalker.dog.domain
+package com.kkw.petwalker.pet.domain
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.kkw.petwalker.common.domain.BaseEntity
@@ -7,7 +7,7 @@ import jakarta.persistence.*
 import java.util.*
 
 @Entity
-data class Dog(
+data class Pet(
     @Id
     @Column(nullable = false, columnDefinition = "CHAR(36)")
     val id: String,

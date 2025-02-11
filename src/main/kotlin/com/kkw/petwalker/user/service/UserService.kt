@@ -2,10 +2,10 @@ package com.kkw.petwalker.user.service
 
 import com.kkw.petwalker.common.response.ResponseCode
 import com.kkw.petwalker.common.service.S3Service
-import com.kkw.petwalker.dog.domain.Dog
-import com.kkw.petwalker.dog.domain.DogType
-import com.kkw.petwalker.dog.domain.Sex
-import com.kkw.petwalker.dog.domain.repository.DogRepository
+import com.kkw.petwalker.pet.domain.Pet
+import com.kkw.petwalker.pet.domain.DogType
+import com.kkw.petwalker.pet.domain.Sex
+import com.kkw.petwalker.pet.domain.repository.PetRepository
 import com.kkw.petwalker.user.domain.Gender
 import com.kkw.petwalker.user.domain.User
 import com.kkw.petwalker.user.domain.repository.UserRepository
@@ -21,7 +21,7 @@ import java.time.LocalDateTime
 @Service
 class UserService (
     private val userRepository: UserRepository,
-    private val dogRepository: DogRepository,
+    private val petRepository: PetRepository,
     private val s3Service: S3Service,
     private val request: HttpServletRequest,
     private val response: HttpServletResponse,
@@ -58,14 +58,14 @@ class UserService (
                 ResponseCode.INVALID_GENDER_TYPE.withCustomMessage("- ${req.gender}")
             )
 
-        val dogType = DogType.fromString(req.dogInfo.type)
+        val dogType = DogType.fromString(req.petInfo.type)
             ?: throw BadRequestException(
-                ResponseCode.INVALID_DOG_TYPE.withCustomMessage("- ${req.dogInfo.type}")
+                ResponseCode.INVALID_DOG_TYPE.withCustomMessage("- ${req.petInfo.type}")
             )
 
-        val sex = Sex.fromString(req.dogInfo.sex)
+        val sex = Sex.fromString(req.petInfo.sex)
             ?: throw BadRequestException(
-                ResponseCode.INVALID_SEX_TYPE.withCustomMessage("- ${req.dogInfo.sex}")
+                ResponseCode.INVALID_SEX_TYPE.withCustomMessage("- ${req.petInfo.sex}")
             )
 
         val user = User(
@@ -95,7 +95,7 @@ class UserService (
 
         var dogImage = ""
 
-        req.dogInfo.imageUrls.forEach {
+        req.petInfo.imageUrls.forEach {
             val filePath = it.originalFilename
                 ?: throw BadRequestException(
                     ResponseCode.NOT_FOUND_IMAGE.withCustomMessage("- ${it.originalFilename}")
@@ -110,32 +110,32 @@ class UserService (
             dogImage = if (dogImage.isEmpty()) imageUrl else "$dogImage,$imageUrl"
         }
 
-        val dog = Dog(
+        val pet = Pet(
             user = user,
-            registrationNum = req.dogInfo.registrationNum,
-            name = req.dogInfo.name,
+            registrationNum = req.petInfo.registrationNum,
+            name = req.petInfo.name,
             type = dogType,
             mainImageUrl = if (dogImage == "") null else dogImage.split(",")[0],
             imageUrls = if (dogImage == "") null else dogImage,
-            age = req.dogInfo.age,
+            age = req.petInfo.age,
             sex = sex,
-            weight = req.dogInfo.weight,
-            isNeutered = req.dogInfo.isNeutered,
-            dogDescription = req.dogInfo.dogDescription,
-            foodBrand = req.dogInfo.foodBrand,
-            foodName = req.dogInfo.foodName,
-            foodType = req.dogInfo.foodType,
+            weight = req.petInfo.weight,
+            isNeutered = req.petInfo.isNeutered,
+            dogDescription = req.petInfo.dogDescription,
+            foodBrand = req.petInfo.foodBrand,
+            foodName = req.petInfo.foodName,
+            foodType = req.petInfo.foodType,
         )
 
-        if (dogRepository.existsById(dog.id)) {
-            logger.error("ID already exists: ${dog.id}")
+        if (petRepository.existsById(pet.id)) {
+            logger.error("ID already exists: ${pet.id}")
             throw BadRequestException(
-                ResponseCode.DOG_CREATION_FAILED.withCustomMessage("이미 존재하는 dog - ${dog.id}")
+                ResponseCode.DOG_CREATION_FAILED.withCustomMessage("이미 존재하는 dog - ${pet.id}")
             )
         }
 
         userRepository.save(user)
-        dogRepository.save(dog)
+        petRepository.save(pet)
 
         return user.id
     }

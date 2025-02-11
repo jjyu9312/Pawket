@@ -1,4 +1,4 @@
-package com.kkw.petwalker.dog.domain
+package com.kkw.petwalker.pet.domain
 
 import com.kkw.petwalker.common.domain.BaseDateTimeEntity
 import jakarta.persistence.*
@@ -6,14 +6,14 @@ import java.util.*
 
 @Entity
 @Table(name = "dog_details_history")
-data class DogDetailsHistory (
+data class PetDetailsHistory (
     @Id
     @Column(nullable = false, columnDefinition = "CHAR(36)")
     val id: String,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dog_id", columnDefinition = "CHAR(36)")
-    val dog: Dog,
+    val pet: Pet,
 
     @Column(nullable = false)
     val dogDescription: String,
@@ -28,14 +28,14 @@ data class DogDetailsHistory (
     val foodType: String,
 ): BaseDateTimeEntity() {
     constructor(
-        dog: Dog,
+        pet: Pet,
         dogDescription: String,
         foodBrand: String,
         foodName: String,
         foodType: String,
     ) : this(
         id = UUID.randomUUID().toString(),
-        dog = dog,
+        pet = pet,
         dogDescription = dogDescription,
         foodBrand = foodBrand,
         foodName = foodName,
