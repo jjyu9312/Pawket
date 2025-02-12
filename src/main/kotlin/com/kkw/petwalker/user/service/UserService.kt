@@ -1,8 +1,8 @@
 package com.kkw.petwalker.user.service
 
 import com.kkw.petwalker.common.response.ResponseCode
+import com.kkw.petwalker.common.service.JwtTokenProvider
 import com.kkw.petwalker.common.service.S3Service
-import com.kkw.petwalker.common.util.JwtUtil
 import com.kkw.petwalker.pet.domain.Pet
 import com.kkw.petwalker.pet.domain.DogType
 import com.kkw.petwalker.pet.domain.Sex
@@ -32,7 +32,7 @@ class UserService (
     private val s3Service: S3Service,
     private val request: HttpServletRequest,
     private val response: HttpServletResponse,
-    private val jwtUtil: JwtUtil,
+    private val jwtTokenProvider: JwtTokenProvider,
 ) {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
@@ -48,7 +48,8 @@ class UserService (
     fun handleOAuthCallback(provider: String, code: String): LoginUserDto {
         val tokenResponse = getAccessToken(provider, code)
         val userInfo = getUserInfo(provider, tokenResponse.accessToken)
-        val jwtToken = jwtUtil.generateToken(userInfo.email)
+        val jwtToken = jwtTokenProvider.createToken(userInfo.email)
+        logger.info("User info: $userInfo, JWT token: $jwtToken")
 
         return LoginUserDto(
             email = userInfo.email,
