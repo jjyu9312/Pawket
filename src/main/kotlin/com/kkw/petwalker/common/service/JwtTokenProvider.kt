@@ -23,13 +23,11 @@ class JwtTokenProvider {
         SecretKeySpec(Base64.getDecoder().decode(secretKey), SignatureAlgorithm.HS256.jcaName)
     }
 
-
     /**
      * JWT 토큰 생성
      */
-    fun createToken(email: String, roles: List<String>): String {
+    fun createToken(email: String): String {
         val claims = Jwts.claims().setSubject(email)
-        claims["roles"] = roles // 사용자 역할 설정
 
         val now = Date()
         val validity = Date(now.time + validityInMilliseconds)
