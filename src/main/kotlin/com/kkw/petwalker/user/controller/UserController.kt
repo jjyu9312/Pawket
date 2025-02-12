@@ -17,19 +17,21 @@ class UserController (
     private val userService: UserService,
 ) {
 
+    // 로그인 요청을 처리하는 API
     @GetMapping("/login")
     fun login(@RequestParam provider: String, response: HttpServletResponse) {
         val redirectUrl = userService.getOAuthRedirectUrl(provider)
         response.sendRedirect(redirectUrl)
     }
 
+    // OAuth 콜백 요청을 처리하는 API
     @GetMapping("/oauth/callback/{provider}")
     fun oauthCallback(
         @PathVariable provider: String,
         @RequestParam code: String
-    ): ResponseEntity<LoginUserDto> {
+    ): ResponseEntity<ApiResponse<LoginUserDto>> {
         val loginUser = userService.handleOAuthCallback(provider, code)
-        return ResponseEntity.ok(loginUser)
+        return ApiResponseFactory.success(loginUser)
     }
 
     @PostMapping("/logout")
