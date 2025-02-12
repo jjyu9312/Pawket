@@ -1,10 +1,10 @@
 plugins {
     kotlin("jvm") version "1.9.25"
     kotlin("plugin.spring") version "1.9.25"
+    kotlin("plugin.jpa") version "1.9.25"
     id("org.springframework.boot") version "3.3.5"
     id("io.spring.dependency-management") version "1.1.6"
     id("org.asciidoctor.jvm.convert") version "3.3.2"
-    kotlin("plugin.jpa") version "1.9.25"
 }
 
 group = "com.kkw"
@@ -12,7 +12,7 @@ version = "0.0.1-SNAPSHOT"
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion.set(JavaLanguageVersion.of(17))
     }
 }
 
@@ -23,27 +23,42 @@ repositories {
 extra["snippetsDir"] = file("build/generated-snippets")
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-batch")
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-data-rest")
-    implementation("org.springframework.boot:spring-boot-starter-jdbc")
-    implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
-    implementation("org.springframework.boot:spring-boot-starter-security")
+    // ✅ Spring Boot Starter Dependencies
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-jdbc")
+    implementation("org.springframework.boot:spring-boot-starter-data-rest")
+    implementation("org.springframework.boot:spring-boot-starter-batch")
+
+    // ✅ Jackson + Kotlin
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+
+    // ✅ Kotlin Reflect (Spring에서 Kotlin 사용 시 필수)
     implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("javax.servlet:javax.servlet-api:4.0.1")
+
+    // ✅ Auth0 JWT (HMAC256, RSA 등 사용 가능)
+    implementation("com.auth0:java-jwt:4.4.0")
+
+    // ✅ JWT Authentication (최신 jjwt 라이브러리 사용)
     implementation("io.jsonwebtoken:jjwt-api:0.11.5")
-    implementation("software.amazon.awssdk:s3:2.20.74")
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
+
+    // ✅ AWS SDK for S3
+    implementation("software.amazon.awssdk:s3:2.20.74")
+
+    // ✅ Database Connector
     runtimeOnly("com.mysql:mysql-connector-j")
+
+    // ✅ Test Dependencies
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testImplementation("org.springframework:spring-webflux")
     testImplementation("org.springframework.batch:spring-batch-test")
-    testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
     testImplementation("org.springframework.security:spring-security-test")
+    testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
