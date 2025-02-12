@@ -4,12 +4,12 @@ import com.kkw.petwalker.common.response.ApiResponse
 import com.kkw.petwalker.common.response.ApiResponseFactory
 import com.kkw.petwalker.common.response.ResponseCode
 import com.kkw.petwalker.user.dto.CreateUserDto
+import com.kkw.petwalker.user.dto.LoginUserDto
 import com.kkw.petwalker.user.service.UserService
+import jakarta.servlet.http.HttpServletResponse
 import org.apache.coyote.BadRequestException
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -17,8 +17,20 @@ class UserController (
     private val userService: UserService,
 ) {
 
-    @PostMapping("/login")
-    fun loginPage(): String = userService.login()
+    @GetMapping("/login")
+    fun login(@RequestParam provider: String, response: HttpServletResponse) {
+        val redirectUrl = userService.getOAuthRedirectUrl(provider)
+        response.sendRedirect(redirectUrl)
+    }
+
+    @GetMapping("/oauth/callback/{provider}")
+    fun oauthCallback(
+        @PathVariable provider: String,
+        @RequestParam code: String
+    ): ResponseEntity<LoginUserDto> {
+        val loginUser = userService.handleOAuthCallback(provider, code)
+        return ResponseEntity.ok(loginUser)
+    }
 
     @PostMapping("/logout")
     fun logout(): ResponseEntity<ApiResponse<String>> {
