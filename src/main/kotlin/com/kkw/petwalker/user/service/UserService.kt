@@ -2,6 +2,8 @@ package com.kkw.petwalker.user.service
 
 import com.kkw.petwalker.common.response.ResponseCode
 import com.kkw.petwalker.common.service.JwtTokenProvider
+import com.kkw.petwalker.common.service.OAuthProviderEndpoints
+import com.kkw.petwalker.common.service.OAuthProviderProperties
 import com.kkw.petwalker.common.service.S3Service
 import com.kkw.petwalker.pet.domain.Pet
 import com.kkw.petwalker.pet.domain.DogType
@@ -17,6 +19,7 @@ import jakarta.servlet.http.HttpServletResponse
 import jakarta.servlet.http.Cookie
 import org.apache.coyote.BadRequestException
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
@@ -26,23 +29,30 @@ import java.time.LocalDateTime
 
 @Service
 class UserService (
-    private val userRepository: UserRepository,
-    private val petRepository: PetRepository,
+    private val oauthProviderProperties: OAuthProviderProperties,
+    private val oauthProviderEndpoints: OAuthProviderEndpoints,
     private val restTemplate: RestTemplate,
-    private val s3Service: S3Service,
+    private val jwtTokenProvider: JwtTokenProvider,
     private val request: HttpServletRequest,
     private val response: HttpServletResponse,
-    private val jwtTokenProvider: JwtTokenProvider,
+    private val userRepository: UserRepository,
+    private val petRepository: PetRepository,
+    private val s3Service: S3Service,
 ) {
+    @Value("\${backend.url}")
+    private lateinit var backendUrl: String
+    
     private val logger = LoggerFactory.getLogger(this::class.java)
 
     fun getOAuthRedirectUrl(provider: String): String {
-        return when (provider) {
-            "google" -> "https://accounts.google.com/o/oauth2/auth?client_id=YOUR_GOOGLE_CLIENT_ID&response_type=code&scope=email%20profile&redirect_uri=YOUR_BACKEND_URL/user/oauth/callback/google"
-            "kakao" -> "https://kauth.kakao.com/oauth/authorize?client_id=YOUR_KAKAO_CLIENT_ID&response_type=code&redirect_uri=YOUR_BACKEND_URL/user/oauth/callback/kakao"
-            "apple" -> "https://appleid.apple.com/auth/authorize?client_id=YOUR_APPLE_CLIENT_ID&response_type=code&redirect_uri=YOUR_BACKEND_URL/user/oauth/callback/apple"
-            else -> throw IllegalArgumentException("Unsupported provider: $provider")
-        }
+        val providerInfo = providerInfo(provider)
+
+        val providerEndpoint = providerEndpoints(provider)
+
+        return "${providerEndpoint.authorizationUri}?client_id=${providerInfo.clientId}" +
+                "&response_type=code" +
+                "&scope=${providerInfo.scope.joinToString(",")}" +
+                "&redirect_uri=${backendUrl}/oauth2/callback/$provider"
     }
 
     fun handleOAuthCallback(provider: String, code: String): LoginUserDto {
@@ -59,39 +69,31 @@ class UserService (
     }
 
     private fun getAccessToken(provider: String, code: String): OAuthTokenResponse {
-        val url = when (provider) {
-            "google" -> "https://oauth2.googleapis.com/token"
-            "kakao" -> "https://kauth.kakao.com/oauth/token"
-            "apple" -> "https://appleid.apple.com/auth/token"
-            else -> throw IllegalArgumentException("Unsupported provider: $provider")
-        }
+        val providerInfo = providerInfo(provider)
+
+        val providerEndpoint = providerEndpoints(provider)
 
         val requestBody = mapOf(
-            "client_id" to "YOUR_${provider.uppercase()}_CLIENT_ID",
-            "client_secret" to "YOUR_${provider.uppercase()}_CLIENT_SECRET",
+            "client_id" to providerInfo.clientId,
+            "client_secret" to providerInfo.clientSecret,
             "code" to code,
             "grant_type" to "authorization_code",
-            "redirect_uri" to "YOUR_BACKEND_URL/user/oauth/callback/$provider"
+            "redirect_uri" to "${backendUrl}/oauth2/callback/$provider"
         )
 
-        val response = restTemplate.postForEntity(url, requestBody, OAuthTokenResponse::class.java)
+        val response = restTemplate.postForEntity(providerEndpoint.tokenUri, requestBody, OAuthTokenResponse::class.java)
         return response.body ?: throw RuntimeException("Failed to retrieve access token")
     }
 
     private fun getUserInfo(provider: String, accessToken: String): OAuthUser {
-        val url = when (provider) {
-            "google" -> "https://www.googleapis.com/oauth2/v2/userinfo"
-            "kakao" -> "https://kapi.kakao.com/v2/user/me"
-            "apple" -> "https://appleid.apple.com/auth/userinfo"
-            else -> throw IllegalArgumentException("Unsupported provider: $provider")
-        }
+        val providerEndpoint = providerEndpoints(provider)
 
         val headers = HttpHeaders().apply {
             add("Authorization", "Bearer $accessToken")
         }
 
         val entity = HttpEntity(null, headers)
-        val response = restTemplate.exchange(url, HttpMethod.GET, entity, Map::class.java)
+        val response = restTemplate.exchange(providerEndpoint.userInfoUri, HttpMethod.GET, entity, Map::class.java)
         val body = response.body ?: throw RuntimeException("Failed to retrieve user info")
 
         return OAuthUser(
@@ -208,6 +210,27 @@ class UserService (
         return user.id
     }
 
+    private fun providerInfo(provider: String): OAuthProviderProperties.ProviderInfo {
+        val providerInfo = when (provider) {
+            "google" -> oauthProviderProperties.google
+            "kakao" -> oauthProviderProperties.kakao
+            "apple" -> oauthProviderProperties.apple
+            else -> throw IllegalArgumentException("OAuth2 Provider 정보를 찾을 수 없습니다: $provider")
+        }
+        logger.info("Provider info: $providerInfo")
+        return providerInfo
+    }
+
+    private fun providerEndpoints(provider: String): OAuthProviderEndpoints.ProviderEndpoints {
+        val providerEndpoint = when (provider) {
+            "google" -> oauthProviderEndpoints.google
+            "kakao" -> oauthProviderEndpoints.kakao
+            "apple" -> oauthProviderEndpoints.apple
+            else -> throw IllegalArgumentException("OAuth2 Provider 설정을 찾을 수 없습니다: $provider")
+        }
+        logger.info("Provider endpoints: $providerEndpoint")
+        return providerEndpoint
+    }
 }
 
 data class OAuthTokenResponse(val accessToken: String)
