@@ -22,8 +22,7 @@ class SecurityConfig(
             .authorizeHttpRequests { auth ->
                 auth
                     .requestMatchers(
-                        "/",
-                        "/login",
+                        "/user/login",
                         "/auth/**",
                         "/test/*",
                         "/common/*",
