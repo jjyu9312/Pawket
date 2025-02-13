@@ -60,10 +60,10 @@ data class Pet(
             foodType: String
         ): String {
             val detailMap = mapOf(
-                "dog_description" to dogDescription,
-                "food_brand" to foodBrand,
-                "food_name" to foodName,
-                "food_type" to foodType
+                "dogDescription" to dogDescription,
+                "foodBrand" to foodBrand,
+                "foodName" to foodName,
+                "foodType" to foodType
             )
             return objectMapper.writeValueAsString(detailMap)
         }
