@@ -16,28 +16,37 @@ spring:
   security:
     oauth2:
       client:
-        registration:
-          google:
-            client-id: YOUR_GOOGLE_CLIENT_ID
-            client-secret: YOUR_GOOGLE_CLIENT_SECRET
-            scope: profile, email
-          kakao:
-            client-id: YOUR_KAKAO_CLIENT_ID
-            client-secret: YOUR_KAKAO_CLIENT_SECRET
-            client-authentication-method: POST
-            authorization-grant-type: authorization_code
-            redirect-uri: "{baseUrl}/oauth2/callback/kakao"
-            scope: profile_nickname, profile_image, account_email
-          apple:
-            client-id: YOUR_APPLE_CLIENT_ID
-            client-secret: YOUR_APPLE_CLIENT_SECRET
-            authorization-grant-type: authorization_code
-            redirect-uri: "{baseUrl}/oauth2/callback/apple"
         provider:
           google:
             authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
             token-uri: https://oauth2.googleapis.com/token
             user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+          apple:
+            authorization-uri: https://appleid.apple.com/auth/authorize
+            token-uri: https://appleid.apple.com/auth/token
+            user-info-uri: https://appleid.apple.com/auth/userinfo
+app:
+  backend-url: http://localhost:8080
+  oauth:
+    google:
+      client-id: YOUR_GOOGLE_CLIENT_ID
+      client-secret: YOUR_GOOGLE_CLIENT_SECRET
+      redirect-uri: "{baseUrl}/oauth2/callback/google"
+      scope: profile, email
+    kakao:
+      client-id: YOUR_KAKAO_CLIENT_ID
+      client-secret: YOUR_KAKAO_CLIENT_SECRET
+      redirect-uri: "{baseUrl}/oauth2/callback/kakao"
+      scope: profile_nickname, profile_image, account_email
+    apple:
+      client-id: YOUR_APPLE_CLIENT_ID
+      client-secret: YOUR_APPLE_CLIENT_SECRET
+      redirect-uri: "{baseUrl}/oauth2/callback/apple"
+
 jwt:
   secret-key: your-jwt-secret
   validity-in-milliseconds: 36000000
