@@ -33,8 +33,8 @@ data class User(
     @Column(nullable = false)
     val addressLng: Double,
 
-    @Column
-    val addressDetail: String,
+    @Column()
+    val addressDetail: String? = null,
 
     ) : BaseEntity() {
     constructor(
