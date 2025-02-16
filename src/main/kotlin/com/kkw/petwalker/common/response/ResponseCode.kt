@@ -11,6 +11,8 @@ enum class ResponseCode(val code: Int, val defaultMessage: String) {
     NOT_FOUND_IMAGE(40007, "이미지를 찾을 수 없습니다"),
     INVALID_EMAIL_FORMAT(40007, "이메일 포맷이 맞지 않습니다"),
     INTERNAL_SERVER_ERROR(50000, "서버 내부 오류가 발생했습니다"),
+    OAUTH_TOKEN_INVALID(50001, "Oauth 토큰이 유효하지 않습니다"),
+    OAUTH_USERINFO_INVALID(50002, "Oauth 유저 정보가 유효하지 않습니다"),
     ;
 
     fun withCustomMessage(customMessage: String?): String {
