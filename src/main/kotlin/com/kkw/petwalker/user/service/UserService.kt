@@ -50,9 +50,9 @@ class UserService (
         val providerEndpoint = providerEndpoints(provider)
 
         return "${providerEndpoint.authorizationUri}?client_id=${providerInfo.clientId}" +
-                "&response_type=code" +
-                "&scope=${providerInfo.scope.joinToString(",")}" +
-                "&redirect_uri=${backendUrl}/oauth2/callback/$provider"
+                "&response_type = code" +
+                "&scope = ${providerInfo.scope.joinToString(",")}" +
+                "&redirect_uri = ${backendUrl}/oauth2/callback/$provider"
     }
 
     fun handleOAuthCallback(provider: String, code: String): LoginUserDto {
@@ -82,7 +82,9 @@ class UserService (
         )
 
         val response = restTemplate.postForEntity(providerEndpoint.tokenUri, requestBody, OAuthTokenResponse::class.java)
-        return response.body ?: throw RuntimeException("Failed to retrieve access token")
+        return response.body ?: throw RuntimeException(
+            ResponseCode.OAUTH_TOKEN_INVALID.defaultMessage
+        )
     }
 
     private fun getUserInfo(provider: String, accessToken: String): OAuthUser {
@@ -94,7 +96,9 @@ class UserService (
 
         val entity = HttpEntity(null, headers)
         val response = restTemplate.exchange(providerEndpoint.userInfoUri, HttpMethod.GET, entity, Map::class.java)
-        val body = response.body ?: throw RuntimeException("Failed to retrieve user info")
+        val body = response.body ?: throw RuntimeException(
+            ResponseCode.OAUTH_USERINFO_INVALID.defaultMessage
+        )
 
         return OAuthUser(
             email = body["email"] as? String ?: "unknown@${provider}.com",
