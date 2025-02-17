@@ -50,3 +50,10 @@ app:
 jwt:
   secret-key: your-jwt-secret
   validity-in-milliseconds: 36000000
+
+cloud:
+  aws:
+      s3:
+        credentials:
+          access-key: YOUR_AWS_ACCESS_KEY
+          secret-key: YOUR_AWS_SECRET_KEY
