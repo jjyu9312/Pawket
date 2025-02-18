@@ -40,7 +40,7 @@ data class Pet(
     val age: Int,
 
     @Column(nullable = false)
-    val weight: Int,
+    var weight: Int,
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
