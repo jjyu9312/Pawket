@@ -50,7 +50,7 @@ data class Pet(
     val isNeutered: Boolean = false,
 
     @Column(nullable = false, columnDefinition = "TEXT") // JSON 데이터 저장
-    val dogDetail: String,
+    var dogDetail: String,
 
     ) : BaseEntity() {
     companion object {
