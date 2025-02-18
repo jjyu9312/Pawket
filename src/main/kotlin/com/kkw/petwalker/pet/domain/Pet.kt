@@ -24,7 +24,11 @@ data class Pet(
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
-    val type: DogType,
+    val type: PetType,
+
+    @Column(nullable = true)
+    @Enumerated(value = EnumType.STRING)
+    val dogType: DogType? = null,
 
     @Column(nullable = true, unique = true)
     var mainImageUrl: String? = null,
@@ -73,7 +77,8 @@ data class Pet(
         user: User,
         registrationNum: String? = null,
         name: String,
-        type: DogType,
+        type: PetType,
+        dogType: DogType? = null,
         mainImageUrl: String? = null,
         imageUrls: String? = null,
         age: Int,
@@ -90,6 +95,7 @@ data class Pet(
         registrationNum = registrationNum,
         name = name,
         type = type,
+        dogType = dogType,
         mainImageUrl = mainImageUrl,
         imageUrls = imageUrls,
         age = age,
