@@ -26,6 +26,7 @@ class CreateUserDto {
             val registrationNum: String? = null,
             val name: String,
             val type: String,
+            val dogType: String? = null,
             val imageUrls: List<MultipartFile>,
             val age: Int,
             val sex: String,
