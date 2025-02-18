@@ -7,6 +7,7 @@ import com.kkw.petwalker.common.service.OAuthProviderProperties
 import com.kkw.petwalker.common.service.S3Service
 import com.kkw.petwalker.pet.domain.Pet
 import com.kkw.petwalker.pet.domain.DogType
+import com.kkw.petwalker.pet.domain.PetType
 import com.kkw.petwalker.pet.domain.Sex
 import com.kkw.petwalker.pet.domain.repository.PetRepository
 import com.kkw.petwalker.user.domain.Gender
@@ -132,7 +133,7 @@ class UserService (
                 ResponseCode.INVALID_GENDER_TYPE.withCustomMessage("- ${req.gender}")
             )
 
-        val dogType = DogType.fromString(req.petInfo.type)
+        val type = PetType.fromString(req.petInfo.type)
             ?: throw BadRequestException(
                 ResponseCode.INVALID_DOG_TYPE.withCustomMessage("- ${req.petInfo.type}")
             )
@@ -188,7 +189,8 @@ class UserService (
             user = user,
             registrationNum = req.petInfo.registrationNum,
             name = req.petInfo.name,
-            type = dogType,
+            type = type,
+            dogType = req.petInfo.dogType?.let { DogType.fromString(it) },
             mainImageUrl = if (dogImage == "") null else dogImage.split(",")[0],
             imageUrls = if (dogImage == "") null else dogImage,
             age = req.petInfo.age,
