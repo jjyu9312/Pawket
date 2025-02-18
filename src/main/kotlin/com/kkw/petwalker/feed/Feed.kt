@@ -1,4 +1,4 @@
-package com.kkw.petwalker.insurance.feed
+package com.kkw.petwalker.feed
 
 import com.kkw.petwalker.common.domain.BaseEntity
 import jakarta.persistence.*
