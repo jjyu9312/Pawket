@@ -47,7 +47,7 @@ data class Pet(
     val sex: Sex,
 
     @Column(nullable = false)
-    val isNeutered: Boolean = false,
+    var isNeutered: Boolean = false,
 
     @Column(nullable = false, columnDefinition = "TEXT") // JSON 데이터 저장
     var dogDetail: String,
