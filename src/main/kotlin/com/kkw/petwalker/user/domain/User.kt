@@ -65,4 +65,17 @@ data class User(
         val emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$"
         return email.matches(emailRegex.toRegex())
     }
+
+    fun addCoin(coin: Int): Int {
+        require(coin > 0) { "추가할 코인은 양수여야 합니다." }
+        this.totalCoin += coin
+        return this.totalCoin
+    }
+
+    fun subtractCoin(coin: Int): Int {
+        require(coin > 0) { "차감할 코인은 양수여야 합니다." }
+        require(this.totalCoin >= coin) { "보유 코인보다 많은 코인은 차감할 수 없습니다." }
+        this.totalCoin -= coin
+        return this.totalCoin
+    }
 }
