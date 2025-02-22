@@ -25,7 +25,7 @@ data class User(
     val email: String,
 
     @Column(nullable = false)
-    var totalReward: Int = 0,
+    var totalCoin: Int = 0,
 
     @Column(nullable = false)
     val addressBasic: String,
