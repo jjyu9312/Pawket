@@ -59,9 +59,9 @@ data class Pet(
         // Dog 상세 정보를 JSON으로 변환
         fun createDogDetailJson(
             dogDescription: String,
-            foodBrand: String,
-            foodName: String,
-            foodType: String
+            foodBrand: String, // ,로 연결
+            foodName: String, // ,로 연결
+            foodType: String // ,로 연결
         ): String {
             val detailMap = mapOf(
                 "dogDescription" to dogDescription,
