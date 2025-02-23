@@ -13,8 +13,6 @@ class CustomOAuth2UserService : DefaultOAuth2UserService() { // 역할: OAuth2 �
 
         // 사용자 정보 처리
         val attributes = oAuth2User.attributes
-        val email = attributes["email"] as String
-        val name = attributes["name"] as String
 
         return DefaultOAuth2User(oAuth2User.authorities, attributes, "email")
     }

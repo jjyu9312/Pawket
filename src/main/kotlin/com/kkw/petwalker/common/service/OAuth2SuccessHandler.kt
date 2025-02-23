@@ -16,9 +16,8 @@ class OAuth2SuccessHandler(
     ) {
         val principal = authentication.principal as org.springframework.security.oauth2.core.user.DefaultOAuth2User
         val email = principal.getAttribute<String>("email")
-        val roles = listOf("ROLE_USER") // 기본 롤 추가
 
-        val token = jwtTokenProvider.createToken(email!!, roles)
+        val token = jwtTokenProvider.createToken(email!!)
 
         // JWT를 클라이언트로 반환 (예: JSON 응답)
         response.contentType = "application/json"
