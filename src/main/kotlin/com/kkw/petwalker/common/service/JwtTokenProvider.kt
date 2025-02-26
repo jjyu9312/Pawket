@@ -28,7 +28,6 @@ class JwtTokenProvider {
      */
     fun createToken(email: String): String {
         val claims = Jwts.claims().setSubject(email)
-
         val now = Date()
         val validity = Date(now.time + validityInMilliseconds)
 

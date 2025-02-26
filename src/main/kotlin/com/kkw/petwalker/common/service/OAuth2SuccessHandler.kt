@@ -14,7 +14,8 @@ class OAuth2SuccessHandler(
         response: HttpServletResponse,
         authentication: Authentication,
     ) {
-        val principal = authentication.principal as org.springframework.security.oauth2.core.user.DefaultOAuth2User
+        val principal =
+            authentication.principal as org.springframework.security.oauth2.core.user.DefaultOAuth2User
         val email = principal.getAttribute<String>("email")
 
         val token = jwtTokenProvider.createToken(email!!)

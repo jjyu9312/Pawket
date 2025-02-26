@@ -7,7 +7,8 @@ import org.springframework.security.oauth2.core.user.OAuth2User
 import org.springframework.stereotype.Service
 
 @Service
-class CustomOAuth2UserService : DefaultOAuth2UserService() { // 역할: OAuth2 로그인 시 사용자 정보를 가져와서 처리하는 역할
+class CustomOAuth2UserService :
+    DefaultOAuth2UserService() { // 역할: OAuth2 로그인 시 사용자 정보를 가져와서 처리하는 역할
     override fun loadUser(userRequest: OAuth2UserRequest): OAuth2User {
         val oAuth2User = super.loadUser(userRequest)
 
