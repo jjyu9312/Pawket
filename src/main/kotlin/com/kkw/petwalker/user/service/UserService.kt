@@ -42,6 +42,9 @@ class UserService (
 ) {
     @Value("\${backend.url}")
     private lateinit var backendUrl: String
+
+    @Value("\${aws.s3.bucket.name}")
+    private lateinit var bucketName: String
     
     private val logger = LoggerFactory.getLogger(this::class.java)
 
@@ -177,7 +180,7 @@ class UserService (
                 )
 
             val imageUrl = s3Service.uploadFile(
-                bucketName = "petwalker-image",
+                bucketName = bucketName,
                 filePath = filePath,
                 key = "${user.id}/${it.originalFilename}"
             )
