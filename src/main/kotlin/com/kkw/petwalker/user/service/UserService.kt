@@ -129,21 +129,11 @@ class UserService (
     }
 
     fun createUser(req: CreateUserDto.Req): String {
-        logger.info("Creating owner with name: ${req.name}, email: ${req.email}")
+        logger.info("Creating user with name: ${req.name}, email: ${req.email}")
 
         val gender = Gender.fromString(req.gender)
             ?: throw BadRequestException(
                 ResponseCode.INVALID_GENDER_TYPE.withCustomMessage("- ${req.gender}")
-            )
-
-        val type = PetType.fromString(req.petInfo.type)
-            ?: throw BadRequestException(
-                ResponseCode.INVALID_DOG_TYPE.withCustomMessage("- ${req.petInfo.type}")
-            )
-
-        val sex = Sex.fromString(req.petInfo.sex)
-            ?: throw BadRequestException(
-                ResponseCode.INVALID_SEX_TYPE.withCustomMessage("- ${req.petInfo.sex}")
             )
 
         val user = User(
@@ -173,7 +163,7 @@ class UserService (
 
         var dogImage = ""
 
-        req.petInfo.imageUrls.forEach {
+        req.petInfo?.imageUrls?.forEach {
             val filePath = it.originalFilename
                 ?: throw BadRequestException(
                     ResponseCode.NOT_FOUND_IMAGE.withCustomMessage("- ${it.originalFilename}")
@@ -188,33 +178,37 @@ class UserService (
             dogImage = if (dogImage.isEmpty()) imageUrl else "$dogImage,$imageUrl"
         }
 
-        val pet = Pet(
-            user = user,
-            registrationNum = req.petInfo.registrationNum,
-            name = req.petInfo.name,
-            type = type,
-            dogType = req.petInfo.dogType?.let { DogType.fromString(it) },
-            mainImageUrl = if (dogImage == "") null else dogImage.split(",")[0],
-            imageUrls = if (dogImage == "") null else dogImage,
-            age = req.petInfo.age,
-            sex = sex,
-            weight = req.petInfo.weight,
-            isNeutered = req.petInfo.isNeutered,
-            dogDescription = req.petInfo.dogDescription,
-            foodBrand = req.petInfo.foodBrand,
-            foodName = req.petInfo.foodName,
-            foodType = req.petInfo.foodType,
-        )
-
-        if (petRepository.existsById(pet.id)) {
-            logger.error("ID already exists: ${pet.id}")
-            throw BadRequestException(
-                ResponseCode.DOG_CREATION_FAILED.withCustomMessage("이미 존재하는 dog - ${pet.id}")
+        if (req.petInfo != null) {
+            val type = PetType.fromString(req.petInfo.type)!!
+            val sex = Sex.fromString(req.petInfo.sex)!!
+            val pet = Pet(
+                user = user,
+                registrationNum = req.petInfo.registrationNum,
+                name = req.petInfo.name,
+                type = type,
+                dogType = req.petInfo.dogType?.let { DogType.fromString(it) },
+                mainImageUrl = if (dogImage == "") null else dogImage.split(",")[0],
+                imageUrls = if (dogImage == "") null else dogImage,
+                age = req.petInfo.age,
+                sex = sex,
+                weight = req.petInfo.weight,
+                isNeutered = req.petInfo.isNeutered,
+                dogDescription = req.petInfo.dogDescription,
+                foodBrand = req.petInfo.foodBrand,
+                foodName = req.petInfo.foodName,
+                foodType = req.petInfo.foodType,
             )
+
+            if (petRepository.existsById(pet.id)) {
+                logger.error("ID already exists: ${pet.id}")
+                throw BadRequestException(
+                    ResponseCode.DOG_CREATION_FAILED.withCustomMessage("이미 존재하는 dog - ${pet.id}")
+                )
+            }
+            petRepository.save(pet)
         }
 
         userRepository.save(user)
-        petRepository.save(pet)
 
         return user.id
     }
