@@ -169,13 +169,17 @@ class UserService (
                     ResponseCode.NOT_FOUND_IMAGE.withCustomMessage("- ${it.originalFilename}")
                 )
 
-            val imageUrl = s3Service.uploadFile(
-                bucketName = bucketName,
-                filePath = filePath,
-                key = "${user.id}/${it.originalFilename}"
-            )
+            try {
+                val imageUrl = s3Service.uploadFile(
+                    bucketName = bucketName,
+                    filePath = filePath,
+                    key = "${user.id}/${it.originalFilename}"
+                )
 
-            dogImage = if (dogImage.isEmpty()) imageUrl else "$dogImage,$imageUrl"
+                dogImage = if (dogImage.isEmpty()) imageUrl else "$dogImage,$imageUrl"
+            } catch (e: Exception) {
+                logger.error("Failed to upload image to S3: $e")
+            }
         }
 
         if (req.petInfo != null) {
