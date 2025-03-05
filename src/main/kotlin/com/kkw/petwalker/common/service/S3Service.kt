@@ -19,7 +19,7 @@ class S3Service(private val s3Client: S3Client) {
 
             if (!file.exists()) {
                 logger.error("File not found: $filePath")
-                throw IllegalArgumentException("File not found: $filePath")
+                throw Exception("File not found: $filePath")
             }
 
             val putObjectRequest = PutObjectRequest.builder()
