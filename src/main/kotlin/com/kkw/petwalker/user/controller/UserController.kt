@@ -40,12 +40,15 @@ class UserController (
             val success = userService.logout()
             ApiResponseFactory.success(success)
         } catch (e: Exception) {
-            ApiResponseFactory.error(ResponseCode.INTERNAL_SERVER_ERROR, customMessage = e.message)
+            ApiResponseFactory.error(
+                ResponseCode.INTERNAL_SERVER_ERROR,
+                customMessage = e.message
+            )
         }
     }
 
     @PostMapping("")
-    fun createOwner(req: CreateUserDto.Req): ResponseEntity<ApiResponse<String>> {
+    fun createUser(req: CreateUserDto.Req): ResponseEntity<ApiResponse<String>> {
         return try {
             val userId = userService.createUser(req)
             ApiResponseFactory.success(userId)
