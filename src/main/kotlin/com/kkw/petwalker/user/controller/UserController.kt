@@ -30,8 +30,15 @@ class UserController (
         @PathVariable provider: String,
         @RequestParam code: String
     ): ResponseEntity<ApiResponse<LoginUserDto>> {
-        val loginUser = userService.handleOAuthCallback(provider, code)
-        return ApiResponseFactory.success(loginUser)
+        return try {
+            val loginUser = userService.handleOAuthCallback(provider, code)
+            ApiResponseFactory.success(loginUser)
+        } catch (e: Exception) {
+            ApiResponseFactory.error(
+                responseCode = ResponseCode.INTERNAL_SERVER_ERROR,
+                customMessage = e.message
+            )
+        }
     }
 
     @PostMapping("/logout")
