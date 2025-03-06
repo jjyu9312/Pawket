@@ -48,7 +48,7 @@ data class User(
         addressBasic: String,
         addressLat: Double,
         addressLng: Double,
-        addressDetail: String,
+        addressDetail: String? = null,
     ) : this(
         id = UUID.randomUUID().toString(),
         name = name,
