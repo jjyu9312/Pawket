@@ -17,7 +17,7 @@ class CreateUserDto {
     ) {
         data class AddressInfo (
             val basic: String,
-            val detail: String,
+            val detail: String? = null,
             val lat: Double,
             val lng: Double
         )
