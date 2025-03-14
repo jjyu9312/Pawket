@@ -4,6 +4,7 @@ import com.kkw.petwalker.common.response.ApiResponse
 import com.kkw.petwalker.common.response.ApiResponseFactory
 import com.kkw.petwalker.common.response.ResponseCode
 import com.kkw.petwalker.terms.model.req.TermsCreateReq
+import com.kkw.petwalker.terms.model.res.RequiredTermsAgreeCheckRes
 import com.kkw.petwalker.terms.model.res.TermsListRes
 import com.kkw.petwalker.terms.service.TermsService
 import io.swagger.v3.oas.annotations.Operation
@@ -84,4 +85,28 @@ class TermsController (
             )
         }
     }
+
+    @Operation(summary = "유저의 필수 약관 동의 여부 체크", description = "유저가 필수 약관 동의를 했는지 확인합니다.")
+    @GetMapping("/agreed-check")
+    fun checkAgreedTerms(
+        @RequestParam userId: String,
+    ): ResponseEntity<ApiResponse<RequiredTermsAgreeCheckRes>> {
+        return try {
+            val result = termsService.checkAgreedTerms(userId)
+            ApiResponseFactory.success(result)
+        } catch (e: BadRequestException) {
+            ApiResponseFactory.error(
+                responseCode = ResponseCode.BAD_REQUEST,  // 400 응답 코드
+                httpStatus = HttpStatus.BAD_REQUEST,
+                customMessage = e.message
+            )
+        } catch (e: Exception) {
+            ApiResponseFactory.error(
+                responseCode = ResponseCode.INTERNAL_SERVER_ERROR,  // 500 응답 코드
+                httpStatus = HttpStatus.INTERNAL_SERVER_ERROR,
+                customMessage = e.message
+            )
+        }
+    }
+
 }

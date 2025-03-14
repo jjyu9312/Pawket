@@ -7,6 +7,7 @@ import com.kkw.petwalker.terms.domain.UserTermsMapping
 import com.kkw.petwalker.terms.domain.repository.TermsRepository
 import com.kkw.petwalker.terms.domain.repository.UserTermsMappingRepository
 import com.kkw.petwalker.terms.model.req.TermsCreateReq
+import com.kkw.petwalker.terms.model.res.RequiredTermsAgreeCheckRes
 import com.kkw.petwalker.terms.model.res.TermsListRes
 import com.kkw.petwalker.user.domain.repository.UserRepository
 import org.apache.coyote.BadRequestException
@@ -69,6 +70,26 @@ class TermsService(
                 isAgreed = true,
             )
         }
+
         userTermsMappingRepository.saveAll(newAgreeUserTermsMappingList)
+    }
+
+    fun checkAgreedTerms(userId: String): RequiredTermsAgreeCheckRes? {
+        userRepository.findById(userId).orElseThrow {
+            throw BadRequestException("사용자가 존재하지 않습니다.")
+        }
+
+        val notAgreedTermsList = termsRepository.findRequiredTermsNotAgreedByUser(userId)
+
+        return if (notAgreedTermsList.isNotEmpty()) {
+            RequiredTermsAgreeCheckRes(
+                isAgreed = false,
+                notAgreedRequiredTerms = notAgreedTermsList.map {
+                    it.id
+                }
+            )
+        } else {
+            RequiredTermsAgreeCheckRes(isAgreed = true, null)
+        }
     }
 }
