@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository
 @Repository
 
 interface TermsRepository: JpaRepository<Terms, String> {
+    fun findAllByIsRequiredTrue(): List<Terms>
 }
