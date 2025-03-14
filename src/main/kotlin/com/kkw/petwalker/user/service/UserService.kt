@@ -13,8 +13,9 @@ import com.kkw.petwalker.pet.domain.repository.PetRepository
 import com.kkw.petwalker.user.domain.Gender
 import com.kkw.petwalker.user.domain.User
 import com.kkw.petwalker.user.domain.repository.UserRepository
-import com.kkw.petwalker.user.dto.CreateUserDto
-import com.kkw.petwalker.user.dto.LoginUserDto
+import com.kkw.petwalker.user.model.req.CreateUserReq
+import com.kkw.petwalker.user.model.res.CreateUserRes
+import com.kkw.petwalker.user.model.res.LoginUserRes
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.servlet.http.Cookie
@@ -59,13 +60,13 @@ class UserService (
                 "&redirect_uri = ${backendUrl}/oauth2/callback/$provider"
     }
 
-    fun handleOAuthCallback(provider: String, code: String): LoginUserDto {
+    fun handleOAuthCallback(provider: String, code: String): LoginUserRes {
         val tokenResponse = getAccessToken(provider, code)
         val userInfo = getUserInfo(provider, tokenResponse.accessToken)
         val jwtToken = jwtTokenProvider.createToken(userInfo.email)
         logger.info("User info: $userInfo, JWT token: $jwtToken")
 
-        return LoginUserDto(
+        return LoginUserRes(
             email = userInfo.email,
             provider = provider,
             token = jwtToken
@@ -128,7 +129,7 @@ class UserService (
         return "로그아웃 성공"
     }
 
-    fun createUser(req: CreateUserDto.Req): String {
+    fun createUser(req: CreateUserReq): CreateUserRes {
         logger.info("Creating user with name: ${req.name}, email: ${req.email}")
 
         val gender = Gender.fromString(req.gender)
@@ -214,7 +215,7 @@ class UserService (
 
         userRepository.save(user)
 
-        return user.id
+        return CreateUserRes(userId = user.id)
     }
 
     private fun providerInfo(provider: String): OAuthProviderProperties.ProviderInfo {
