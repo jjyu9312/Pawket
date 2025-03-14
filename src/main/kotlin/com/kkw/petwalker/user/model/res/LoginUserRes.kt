@@ -1,6 +1,6 @@
-package com.kkw.petwalker.user.dto
+package com.kkw.petwalker.user.model.res
 
-data class LoginUserDto(
+data class LoginUserRes(
     val email: String,
     val provider: String,
     val token: String
