@@ -1,19 +1,20 @@
 package com.kkw.petwalker.common.filter
 
+import jakarta.servlet.*
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
-import javax.servlet.FilterChain
-import javax.servlet.ServletRequest
-import javax.servlet.ServletResponse
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
-import javax.servlet.Filter
 
 @Component
 class SecurityFilter : Filter {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
-    override fun doFilter(request: ServletRequest, response: ServletResponse, chain: FilterChain) {
+    override fun doFilter(
+        request: ServletRequest,
+        response: ServletResponse,
+        chain: FilterChain
+    ) {
         val httpRequest = request as HttpServletRequest
         val httpResponse = response as HttpServletResponse
 

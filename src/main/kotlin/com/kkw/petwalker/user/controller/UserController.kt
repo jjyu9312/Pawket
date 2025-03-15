@@ -3,11 +3,13 @@ package com.kkw.petwalker.user.controller
 import com.kkw.petwalker.common.response.ApiResponse
 import com.kkw.petwalker.common.response.ApiResponseFactory
 import com.kkw.petwalker.common.response.ResponseCode
-import com.kkw.petwalker.user.dto.CreateUserDto
-import com.kkw.petwalker.user.dto.LoginUserDto
+import com.kkw.petwalker.user.model.req.CreateUserReq
+import com.kkw.petwalker.user.model.res.CreateUserRes
+import com.kkw.petwalker.user.model.res.LoginUserRes
 import com.kkw.petwalker.user.service.UserService
 import jakarta.servlet.http.HttpServletResponse
 import org.apache.coyote.BadRequestException
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -29,9 +31,16 @@ class UserController (
     fun oauthCallback(
         @PathVariable provider: String,
         @RequestParam code: String
-    ): ResponseEntity<ApiResponse<LoginUserDto>> {
-        val loginUser = userService.handleOAuthCallback(provider, code)
-        return ApiResponseFactory.success(loginUser)
+    ): ResponseEntity<ApiResponse<LoginUserRes>> {
+        return try {
+            val loginUser = userService.handleOAuthCallback(provider, code)
+            ApiResponseFactory.success(loginUser)
+        } catch (e: Exception) {
+            ApiResponseFactory.error(
+                responseCode = ResponseCode.INTERNAL_SERVER_ERROR,
+                customMessage = e.message
+            )
+        }
     }
 
     @PostMapping("/logout")
@@ -39,13 +48,23 @@ class UserController (
         return try {
             val success = userService.logout()
             ApiResponseFactory.success(success)
+        } catch (e: BadRequestException) {
+            ApiResponseFactory.error(
+                responseCode = ResponseCode.BAD_REQUEST,  // 400 응답 코드
+                httpStatus = HttpStatus.BAD_REQUEST,
+                customMessage = e.message
+            )
         } catch (e: Exception) {
-            ApiResponseFactory.error(ResponseCode.INTERNAL_SERVER_ERROR, customMessage = e.message)
+            ApiResponseFactory.error(
+                responseCode = ResponseCode.INTERNAL_SERVER_ERROR,  // 500 응답 코드
+                httpStatus = HttpStatus.INTERNAL_SERVER_ERROR,
+                customMessage = e.message
+            )
         }
     }
 
     @PostMapping("")
-    fun createOwner(req: CreateUserDto.Req): ResponseEntity<ApiResponse<String>> {
+    fun createUser(req: CreateUserReq): ResponseEntity<ApiResponse<CreateUserRes>> {
         return try {
             val userId = userService.createUser(req)
             ApiResponseFactory.success(userId)

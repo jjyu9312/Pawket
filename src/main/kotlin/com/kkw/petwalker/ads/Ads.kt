@@ -21,19 +21,19 @@ data class Ads(
     val content: String? = null,
 
     @Column(nullable = true)
-    val reward: Int = 0,
+    val coin: Int = 0,
 
     ) : BaseEntity() {
     constructor(
         company: Company,
         title: String,
         content: String?,
-        reward: Int,
+        coin: Int,
     ) : this(
         id = UUID.randomUUID().toString(),
         company = company,
         title = title,
         content = content,
-        reward = reward,
+        coin = coin,
     )
 }

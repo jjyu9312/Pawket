@@ -13,8 +13,9 @@ import com.kkw.petwalker.pet.domain.repository.PetRepository
 import com.kkw.petwalker.user.domain.Gender
 import com.kkw.petwalker.user.domain.User
 import com.kkw.petwalker.user.domain.repository.UserRepository
-import com.kkw.petwalker.user.dto.CreateUserDto
-import com.kkw.petwalker.user.dto.LoginUserDto
+import com.kkw.petwalker.user.model.req.CreateUserReq
+import com.kkw.petwalker.user.model.res.CreateUserRes
+import com.kkw.petwalker.user.model.res.LoginUserRes
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.servlet.http.Cookie
@@ -42,6 +43,9 @@ class UserService (
 ) {
     @Value("\${backend.url}")
     private lateinit var backendUrl: String
+
+    @Value("\${aws.s3.bucket.name}")
+    private lateinit var bucketName: String
     
     private val logger = LoggerFactory.getLogger(this::class.java)
 
@@ -56,13 +60,13 @@ class UserService (
                 "&redirect_uri = ${backendUrl}/oauth2/callback/$provider"
     }
 
-    fun handleOAuthCallback(provider: String, code: String): LoginUserDto {
+    fun handleOAuthCallback(provider: String, code: String): LoginUserRes {
         val tokenResponse = getAccessToken(provider, code)
         val userInfo = getUserInfo(provider, tokenResponse.accessToken)
         val jwtToken = jwtTokenProvider.createToken(userInfo.email)
         logger.info("User info: $userInfo, JWT token: $jwtToken")
 
-        return LoginUserDto(
+        return LoginUserRes(
             email = userInfo.email,
             provider = provider,
             token = jwtToken
@@ -125,22 +129,12 @@ class UserService (
         return "로그아웃 성공"
     }
 
-    fun createUser(req: CreateUserDto.Req): String {
-        logger.info("Creating owner with name: ${req.name}, email: ${req.email}")
+    fun createUser(req: CreateUserReq): CreateUserRes {
+        logger.info("Creating user with name: ${req.name}, email: ${req.email}")
 
         val gender = Gender.fromString(req.gender)
             ?: throw BadRequestException(
                 ResponseCode.INVALID_GENDER_TYPE.withCustomMessage("- ${req.gender}")
-            )
-
-        val type = PetType.fromString(req.petInfo.type)
-            ?: throw BadRequestException(
-                ResponseCode.INVALID_DOG_TYPE.withCustomMessage("- ${req.petInfo.type}")
-            )
-
-        val sex = Sex.fromString(req.petInfo.sex)
-            ?: throw BadRequestException(
-                ResponseCode.INVALID_SEX_TYPE.withCustomMessage("- ${req.petInfo.sex}")
             )
 
         val user = User(
@@ -170,50 +164,58 @@ class UserService (
 
         var dogImage = ""
 
-        req.petInfo.imageUrls.forEach {
+        req.petInfo?.imageUrls?.forEach {
             val filePath = it.originalFilename
                 ?: throw BadRequestException(
                     ResponseCode.NOT_FOUND_IMAGE.withCustomMessage("- ${it.originalFilename}")
                 )
 
-            val imageUrl = s3Service.uploadFile(
-                bucketName = "petwalker-image",
-                filePath = filePath,
-                key = "${user.id}/${it.originalFilename}"
-            )
+            try {
+                val imageUrl = s3Service.uploadFile(
+                    bucketName = bucketName,
+                    filePath = filePath,
+                    key = "${user.id}/${it.originalFilename}"
+                )
 
-            dogImage = if (dogImage.isEmpty()) imageUrl else "$dogImage,$imageUrl"
+                dogImage = if (dogImage.isEmpty()) imageUrl else "$dogImage,$imageUrl"
+            } catch (e: Exception) {
+                logger.error("Failed to upload image to S3: $e")
+            }
         }
 
-        val pet = Pet(
-            user = user,
-            registrationNum = req.petInfo.registrationNum,
-            name = req.petInfo.name,
-            type = type,
-            dogType = req.petInfo.dogType?.let { DogType.fromString(it) },
-            mainImageUrl = if (dogImage == "") null else dogImage.split(",")[0],
-            imageUrls = if (dogImage == "") null else dogImage,
-            age = req.petInfo.age,
-            sex = sex,
-            weight = req.petInfo.weight,
-            isNeutered = req.petInfo.isNeutered,
-            dogDescription = req.petInfo.dogDescription,
-            foodBrand = req.petInfo.foodBrand,
-            foodName = req.petInfo.foodName,
-            foodType = req.petInfo.foodType,
-        )
-
-        if (petRepository.existsById(pet.id)) {
-            logger.error("ID already exists: ${pet.id}")
-            throw BadRequestException(
-                ResponseCode.DOG_CREATION_FAILED.withCustomMessage("이미 존재하는 dog - ${pet.id}")
+        if (req.petInfo != null) {
+            val type = PetType.fromString(req.petInfo.type)!!
+            val sex = Sex.fromString(req.petInfo.sex)!!
+            val pet = Pet(
+                user = user,
+                registrationNum = req.petInfo.registrationNum,
+                name = req.petInfo.name,
+                type = type,
+                dogType = req.petInfo.dogType?.let { DogType.fromString(it) },
+                mainImageUrl = if (dogImage == "") null else dogImage.split(",")[0],
+                imageUrls = if (dogImage == "") null else dogImage,
+                age = req.petInfo.age,
+                sex = sex,
+                weight = req.petInfo.weight,
+                isNeutered = req.petInfo.isNeutered,
+                dogDescription = req.petInfo.dogDescription,
+                foodBrand = req.petInfo.foodBrand,
+                foodName = req.petInfo.foodName,
+                foodType = req.petInfo.foodType,
             )
+
+            if (petRepository.existsById(pet.id)) {
+                logger.error("ID already exists: ${pet.id}")
+                throw BadRequestException(
+                    ResponseCode.DOG_CREATION_FAILED.withCustomMessage("이미 존재하는 dog - ${pet.id}")
+                )
+            }
+            petRepository.save(pet)
         }
 
         userRepository.save(user)
-        petRepository.save(pet)
 
-        return user.id
+        return CreateUserRes(userId = user.id)
     }
 
     private fun providerInfo(provider: String): OAuthProviderProperties.ProviderInfo {
