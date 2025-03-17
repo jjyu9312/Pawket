@@ -32,10 +32,6 @@ class TermsService(
     fun getTerms(): List<TermsListRes> {
         val termsList = termsRepository.findAll()
 
-        if (termsList.isEmpty()) {
-            throw BadRequestException("약관이 존재하지 않습니다.")
-        }
-
         return termsList.map {
             TermsListRes(
                 id = it.id,
