@@ -30,7 +30,7 @@ import org.springframework.web.client.RestTemplate
 import java.time.LocalDateTime
 
 @Service
-class UserService (
+class UserService(
     private val oauthProviderProperties: OAuthProviderProperties,
     private val oauthProviderEndpoints: OAuthProviderEndpoints,
     private val restTemplate: RestTemplate,
@@ -46,7 +46,7 @@ class UserService (
 
     @Value("\${aws.s3.bucket.name}")
     private lateinit var bucketName: String
-    
+
     private val logger = LoggerFactory.getLogger(this::class.java)
 
     fun getOAuthRedirectUrl(provider: String): String {
@@ -86,7 +86,11 @@ class UserService (
             "redirect_uri" to "${backendUrl}/oauth2/callback/$provider"
         )
 
-        val response = restTemplate.postForEntity(providerEndpoint.tokenUri, requestBody, OAuthTokenResponse::class.java)
+        val response = restTemplate.postForEntity(
+            providerEndpoint.tokenUri,
+            requestBody,
+            OAuthTokenResponse::class.java
+        )
         return response.body ?: throw RuntimeException(
             ResponseCode.OAUTH_TOKEN_INVALID.defaultMessage
         )
@@ -100,7 +104,12 @@ class UserService (
         }
 
         val entity = HttpEntity(null, headers)
-        val response = restTemplate.exchange(providerEndpoint.userInfoUri, HttpMethod.GET, entity, Map::class.java)
+        val response = restTemplate.exchange(
+            providerEndpoint.userInfoUri,
+            HttpMethod.GET,
+            entity,
+            Map::class.java
+        )
         val body = response.body ?: throw RuntimeException(
             ResponseCode.OAUTH_USERINFO_INVALID.defaultMessage
         )
