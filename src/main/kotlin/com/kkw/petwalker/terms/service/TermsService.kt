@@ -1,7 +1,5 @@
 package com.kkw.petwalker.terms.service
 
-import com.kkw.petwalker.common.response.ApiResponseFactory
-import com.kkw.petwalker.common.response.ResponseCode
 import com.kkw.petwalker.terms.domain.Terms
 import com.kkw.petwalker.terms.domain.UserTermsMapping
 import com.kkw.petwalker.terms.domain.repository.TermsRepository
