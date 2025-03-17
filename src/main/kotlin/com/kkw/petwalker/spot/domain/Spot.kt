@@ -1,5 +1,6 @@
 package com.kkw.petwalker.spot.domain
 
+import com.kkw.petwalker.ads.Company
 import com.kkw.petwalker.common.domain.BaseEntity
 import jakarta.persistence.*
 import java.util.*
@@ -10,11 +11,15 @@ data class Spot(
     @Column(nullable = false, columnDefinition = "CHAR(36)")
     val id: String = UUID.randomUUID().toString(),
 
+    @JoinColumn(name = "company_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    val company: Company,
+
     @Column(nullable = false)
     val name: String,
 
     @Column(nullable = false)
-    val details: String,
+    val detail: String,
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -35,8 +40,9 @@ data class Spot(
     ) : BaseEntity() {
 
     constructor(
+        company: Company,
         name: String,
-        details: String,
+        detail: String,
         importanceLevel: ImportanceLevel,
         addressBasic: String,
         addressLat: Double,
@@ -44,8 +50,9 @@ data class Spot(
         addressDetail: String? = null,
     ) : this(
         id = UUID.randomUUID().toString(),
+        company = company,
         name = name,
-        details = details,
+        detail = detail,
         importanceLevel = importanceLevel,
         addressBasic = addressBasic,
         addressLat = addressLat,
