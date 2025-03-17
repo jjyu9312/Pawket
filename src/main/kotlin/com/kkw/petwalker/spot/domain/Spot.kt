@@ -21,10 +21,16 @@ data class Spot(
     val importanceLevel: ImportanceLevel = ImportanceLevel.LOW,
 
     @Column(nullable = false)
-    val lat: Double,
+    val addressBasic: String,
 
     @Column(nullable = false)
-    val lng: Double,
+    val addressLat: Double,
+
+    @Column(nullable = false)
+    val addressLng: Double,
+
+    @Column()
+    val addressDetail: String? = null,
 
     ) : BaseEntity() {
 
@@ -32,14 +38,18 @@ data class Spot(
         name: String,
         details: String,
         importanceLevel: ImportanceLevel,
-        lat: Double,
-        lng: Double,
+        addressBasic: String,
+        addressLat: Double,
+        addressLng: Double,
+        addressDetail: String? = null,
     ) : this(
         id = UUID.randomUUID().toString(),
         name = name,
         details = details,
         importanceLevel = importanceLevel,
-        lat = lat,
-        lng = lng,
+        addressBasic = addressBasic,
+        addressLat = addressLat,
+        addressLng = addressLng,
+        addressDetail = addressDetail,
     )
 }
