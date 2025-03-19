@@ -7,5 +7,5 @@ data class CreateSpotReq(
     val addressBasic: String,
     val addressLat: Double,
     val addressLng: Double,
-    val addressDetail: String
+    val addressDetail: String? = null,
 )
