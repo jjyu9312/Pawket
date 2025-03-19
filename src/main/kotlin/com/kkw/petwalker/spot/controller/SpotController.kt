@@ -40,5 +40,20 @@ class SpotController(private val spotService: SpotService) {
         }
     }
 
+    /*
+    TODO 스팟 정보 수정
+     */
+
+    /*
+    TODO 스팟 정보 조회
+     */
+
+    /*
+    TODO companyId로 스팟 정보 조회
+     */
+
+    /*
+    TODO spotId로 리워드 조회
+     */
 
 }
