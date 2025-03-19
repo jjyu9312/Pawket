@@ -1,6 +1,8 @@
 package com.kkw.petwalker.reservation.domain
 
 import com.kkw.petwalker.common.domain.BaseEntity
+import com.kkw.petwalker.hospital.domain.Hospital
+import com.kkw.petwalker.user.domain.User
 import jakarta.persistence.*
 import java.util.*
 
@@ -10,25 +12,25 @@ data class Reservation(
     @Column(nullable = false, columnDefinition = "CHAR(36)")
     val id: String = UUID.randomUUID().toString(),
 
+    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    val user: User,
+
+    @JoinColumn(name = "hospital_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    val hospital: Hospital,
+
     @Column(nullable = false)
-    val name: String,
-
-    @Column(nullable = false, columnDefinition = "MEDIUMTEXT")
-    val directorName: String,
-
-    @Column(nullable = false)
-    val contactNumber: String,
-
-    ) : BaseEntity() {
-
+    val reservationDate: Date,
+) : BaseEntity() {
     constructor(
-        name: String,
-        directorName: String,
-        contactNumber: String,
+        user: User,
+        hospital: Hospital,
+        reservationDate: Date,
     ) : this(
         id = UUID.randomUUID().toString(),
-        name = name,
-        directorName = directorName,
-        contactNumber = contactNumber,
+        user = user,
+        hospital = hospital,
+        reservationDate = reservationDate,
     )
 }
