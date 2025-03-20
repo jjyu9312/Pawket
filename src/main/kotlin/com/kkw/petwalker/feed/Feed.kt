@@ -16,13 +16,23 @@ data class Feed(
     @Column(nullable = false)
     val content: String,
 
+    @Column(nullable = false)
+    var likeCount: Int = 0,
+
     ) : BaseEntity() {
     constructor(
         name: String,
-        content: String
+        content: String,
     ) : this(
         id = UUID.randomUUID().toString(),
         name = name,
         content = content,
     )
+
+    fun updateLikeCnt(type: String) {
+        if (type == "like")
+            this.likeCount += 1
+        else if (type == "dislike")
+            this.likeCount -= 1
+    }
 }
