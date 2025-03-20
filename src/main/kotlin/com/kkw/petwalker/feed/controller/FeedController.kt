@@ -23,4 +23,12 @@ class FeedController {
     /*
     TODO 인기 상위 5개 피드 목록 조회
      */
+
+    /*
+    TODO 피드 좋아요
+     */
+
+    /*
+    TODO 피드 좋아요 취소
+     */
 }
