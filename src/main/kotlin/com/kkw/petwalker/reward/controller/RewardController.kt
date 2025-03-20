@@ -6,4 +6,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/v1/reward")
 class RewardController {
+    /*
+    TODO 보상 등록
+     */
 }
