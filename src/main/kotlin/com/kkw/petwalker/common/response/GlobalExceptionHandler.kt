@@ -13,6 +13,11 @@ class GlobalExceptionHandler { // 전역 예외 처리기를 통해 예상치 �
         return ApiResponseFactory.error(ResponseCode.INTERNAL_SERVER_ERROR)
     }
 
+    @ExceptionHandler(RuntimeException::class)
+    fun handleRuntimeException(ex: RuntimeException): ResponseEntity<ApiResponse<Nothing>> {
+        return ApiResponseFactory.error(ResponseCode.INTERNAL_SERVER_ERROR)
+    }
+
     @ExceptionHandler(IllegalArgumentException::class)
     fun handleIllegalArgumentException(ex: IllegalArgumentException): ResponseEntity<ApiResponse<Nothing>> {
         return ApiResponseFactory.error(ResponseCode.BAD_REQUEST)
