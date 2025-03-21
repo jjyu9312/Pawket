@@ -18,7 +18,7 @@ data class Notice(
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
-    val targetGroup: TargetGroup,
+    val targetGroup: TargetGroup = TargetGroup.ALL,
 
     @Column(nullable = false)
     val isRequired: Boolean = false,
