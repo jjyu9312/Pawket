@@ -20,7 +20,7 @@ object ApiResponseFactory {
 
     fun <T> error(
         responseCode: ResponseCode,
-        httpStatus: HttpStatus = HttpStatus.INTERNAL_SERVER_ERROR,
+        httpStatus: HttpStatus = HttpStatus.BAD_REQUEST,
         customMessage: String? = null  // 커스텀 메시지 파라미터
     ): ResponseEntity<ApiResponse<T>> {
         return ResponseEntity(
