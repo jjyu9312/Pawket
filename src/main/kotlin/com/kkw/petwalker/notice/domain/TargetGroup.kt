@@ -2,8 +2,9 @@ package com.kkw.petwalker.notice.domain
 
 enum class TargetGroup(val stringValue: String) {
     ALL("all"),
-    OWNER("owner"),
-    WALKER("walker")
+    USER("user"),
+    COMPANY("company"),
+    HOSPITAL("hospital"),
     ;
 
     companion object {
