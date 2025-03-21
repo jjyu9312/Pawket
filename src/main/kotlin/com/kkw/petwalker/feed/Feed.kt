@@ -16,7 +16,7 @@ data class Feed(
     val user: User,
 
     @Column(nullable = false)
-    val dogId: String,
+    val petId: String,
 
     @Column(nullable = false)
     val title: String,
@@ -30,13 +30,13 @@ data class Feed(
     ) : BaseEntity() {
     constructor(
         user: User,
-        dogId: String,
+        petId: String,
         title: String,
         content: String,
     ) : this(
         id = UUID.randomUUID().toString(),
         user = user,
-        dogId = dogId,
+        petId = petId,
         title = title,
         content = content,
     )
