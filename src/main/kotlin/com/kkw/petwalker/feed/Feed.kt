@@ -1,6 +1,7 @@
 package com.kkw.petwalker.feed
 
 import com.kkw.petwalker.common.domain.BaseEntity
+import com.kkw.petwalker.user.domain.User
 import jakarta.persistence.*
 import java.util.*
 
@@ -10,8 +11,15 @@ data class Feed(
     @Column(nullable = false, columnDefinition = "CHAR(36)")
     val id: String = UUID.randomUUID().toString(),
 
+    @JoinColumn(name = "user_id", columnDefinition = "CHAR(36)")
+    @ManyToOne(fetch = FetchType.LAZY)
+    val user: User,
+
     @Column(nullable = false)
-    val name: String,
+    val dogId: String,
+
+    @Column(nullable = false)
+    val title: String,
 
     @Column(nullable = false)
     val content: String,
@@ -21,11 +29,15 @@ data class Feed(
 
     ) : BaseEntity() {
     constructor(
-        name: String,
+        user: User,
+        dogId: String,
+        title: String,
         content: String,
     ) : this(
         id = UUID.randomUUID().toString(),
-        name = name,
+        user = user,
+        dogId = dogId,
+        title = title,
         content = content,
     )
 
