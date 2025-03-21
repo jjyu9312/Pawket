@@ -1,8 +1,10 @@
 package com.kkw.petwalker.feed.controller
 
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
+@RequestMapping("/api/v1/feed")
 class FeedController {
     /*
     TODO 피드 등록
