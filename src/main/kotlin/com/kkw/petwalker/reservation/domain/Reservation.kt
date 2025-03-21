@@ -22,15 +22,20 @@ data class Reservation(
 
     @Column(nullable = false)
     val reservationDate: Date,
+
+    @Column(nullable = false)
+    val totalFee: Int = 0,
 ) : BaseEntity() {
     constructor(
         user: User,
         hospital: Hospital,
         reservationDate: Date,
+        totalFee: Int,
     ) : this(
         id = UUID.randomUUID().toString(),
         user = user,
         hospital = hospital,
         reservationDate = reservationDate,
+        totalFee = totalFee,
     )
 }
