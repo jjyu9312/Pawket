@@ -8,11 +8,11 @@ class TestController {
 
     @GetMapping("/test")
     fun test() {
-        println("Test")
+        println("Test!!!!!!!")
     }
 
     @GetMapping("/health")
     fun health() {
-        println("Health")
+        println("Health Check OK!!!!!!!")
     }
 }
