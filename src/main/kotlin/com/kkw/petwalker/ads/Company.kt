@@ -13,11 +13,32 @@ data class Company(
     @Column(nullable = false)
     val name: String,
 
+    @Column(nullable = false)
+    val addressBasic: String,
+
+    @Column(nullable = false)
+    val addressLat: Float,
+
+    @Column(nullable = false)
+    val addressLng: Float,
+
+    @Column(nullable = false)
+    val addressDetail: String,
+
     ) : BaseEntity() {
     constructor(
         name: String,
+        addressBasic: String,
+        addressLat: Float,
+        addressLng: Float,
+        addressDetail: String,
+
     ) : this(
         id = UUID.randomUUID().toString(),
         name = name,
+        addressBasic = addressBasic,
+        addressLat = addressLat,
+        addressLng = addressLng,
+        addressDetail = addressDetail,
     )
 }
