@@ -17,10 +17,10 @@ data class Company(
     val addressBasic: String,
 
     @Column(nullable = false)
-    val addressLat: Float,
+    val addressLat: Double,
 
     @Column(nullable = false)
-    val addressLng: Float,
+    val addressLng: Double,
 
     @Column(nullable = false)
     val addressDetail: String,
@@ -29,8 +29,8 @@ data class Company(
     constructor(
         name: String,
         addressBasic: String,
-        addressLat: Float,
-        addressLng: Float,
+        addressLat: Double,
+        addressLng: Double,
         addressDetail: String,
 
     ) : this(
