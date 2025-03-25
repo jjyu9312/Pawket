@@ -1,14 +1,14 @@
-package com.kkw.petwalker.user.service
+package com.kkw.pawket.user.service
 
-import com.kkw.petwalker.common.response.ResponseCode
-import com.kkw.petwalker.common.service.JwtTokenProvider
-import com.kkw.petwalker.common.service.OAuthProviderEndpoints
-import com.kkw.petwalker.common.service.OAuthProviderProperties
-import com.kkw.petwalker.common.service.S3Service
-import com.kkw.petwalker.pet.domain.Pet
-import com.kkw.petwalker.pet.domain.DogType
-import com.kkw.petwalker.pet.domain.PetType
-import com.kkw.petwalker.pet.domain.Sex
+import com.kkw.pawket.common.response.ResponseCode
+import com.kkw.pawket.common.service.JwtTokenProvider
+import com.kkw.pawket.common.service.OAuthProviderEndpoints
+import com.kkw.pawket.common.service.OAuthProviderProperties
+import com.kkw.pawket.common.service.S3Service
+import com.kkw.pawket.pet.domain.Pet
+import com.kkw.pawket.pet.domain.DogType
+import com.kkw.pawket.pet.domain.PetType
+import com.kkw.pawket.pet.domain.Sex
 import com.kkw.petwalker.pet.domain.repository.PetRepository
 import com.kkw.petwalker.user.domain.Gender
 import com.kkw.petwalker.user.domain.User

@@ -1,4 +1,4 @@
-package com.kkw.petwalker.terms.model.res
+package com.kkw.pawket.terms.model.res
 
 data class TermsListRes(
     val id: String,

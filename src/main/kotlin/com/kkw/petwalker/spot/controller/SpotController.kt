@@ -1,10 +1,10 @@
-package com.kkw.petwalker.spot.controller
+package com.kkw.pawket.spot.controller
 
-import com.kkw.petwalker.common.response.ApiResponse
-import com.kkw.petwalker.common.response.ApiResponseFactory
-import com.kkw.petwalker.common.response.ResponseCode
-import com.kkw.petwalker.spot.model.req.CreateSpotReq
-import com.kkw.petwalker.spot.service.SpotService
+import com.kkw.pawket.common.response.ApiResponse
+import com.kkw.pawket.common.response.ApiResponseFactory
+import com.kkw.pawket.common.response.ResponseCode
+import com.kkw.pawket.spot.model.req.CreateSpotReq
+import com.kkw.pawket.spot.service.SpotService
 import org.apache.coyote.BadRequestException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

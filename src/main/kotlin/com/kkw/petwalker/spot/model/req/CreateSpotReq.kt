@@ -1,4 +1,4 @@
-package com.kkw.petwalker.spot.model.req
+package com.kkw.pawket.spot.model.req
 
 data class CreateSpotReq(
     val name: String,

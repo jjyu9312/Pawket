@@ -1,4 +1,4 @@
-package com.kkw.petwalker.common.test
+package com.kkw.pawket.common.test
 
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController

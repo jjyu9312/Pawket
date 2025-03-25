@@ -1,7 +1,7 @@
-package com.kkw.petwalker.terms.controller
+package com.kkw.pawket.terms.controller
 
-import com.kkw.petwalker.common.response.ApiResponse
-import com.kkw.petwalker.common.response.ApiResponseFactory
+import com.kkw.pawket.common.response.ApiResponse
+import com.kkw.pawket.common.response.ApiResponseFactory
 import com.kkw.petwalker.common.response.ResponseCode
 import com.kkw.petwalker.terms.model.req.TermsCreateReq
 import com.kkw.petwalker.terms.model.res.RequiredTermsAgreeCheckRes

@@ -1,7 +1,7 @@
-package com.kkw.petwalker.terms.domain.repository
+package com.kkw.pawket.terms.domain.repository
 
-import com.kkw.petwalker.terms.domain.QTerms.terms
-import com.kkw.petwalker.terms.domain.QUserTermsMapping.userTermsMapping
+import com.kkw.pawket.terms.domain.QTerms.terms
+import com.kkw.pawket.terms.domain.QUserTermsMapping.userTermsMapping
 import com.kkw.petwalker.terms.domain.Terms
 import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.stereotype.Repository

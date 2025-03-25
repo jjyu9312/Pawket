@@ -1,9 +1,9 @@
-package com.kkw.petwalker.user.controller
+package com.kkw.pawket.user.controller
 
-import com.kkw.petwalker.common.response.ApiResponse
-import com.kkw.petwalker.common.response.ApiResponseFactory
-import com.kkw.petwalker.common.response.ResponseCode
-import com.kkw.petwalker.user.model.req.CreateUserReq
+import com.kkw.pawket.common.response.ApiResponse
+import com.kkw.pawket.common.response.ApiResponseFactory
+import com.kkw.pawket.common.response.ResponseCode
+import com.kkw.pawket.user.model.req.CreateUserReq
 import com.kkw.petwalker.user.model.res.CreateUserRes
 import com.kkw.petwalker.user.model.res.LoginUserRes
 import com.kkw.petwalker.user.service.UserService

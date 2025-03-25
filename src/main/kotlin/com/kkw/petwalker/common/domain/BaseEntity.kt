@@ -1,4 +1,4 @@
-package com.kkw.petwalker.common.domain
+package com.kkw.pawket.common.domain
 
 import jakarta.persistence.Column
 import jakarta.persistence.EntityListeners

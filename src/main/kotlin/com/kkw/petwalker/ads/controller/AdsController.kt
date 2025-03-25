@@ -1,4 +1,4 @@
-package com.kkw.petwalker.ads.controller
+package com.kkw.pawket.ads.controller
 
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController

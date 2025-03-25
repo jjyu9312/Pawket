@@ -1,4 +1,4 @@
-package com.kkw.petwalker.pet.domain
+package com.kkw.pawket.pet.domain
 
 enum class Sex(val stringValue: String) {
     MALE("male"),

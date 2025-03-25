@@ -1,7 +1,7 @@
-package com.kkw.petwalker.feed
+package com.kkw.pawket.feed
 
-import com.kkw.petwalker.common.domain.BaseEntity
-import com.kkw.petwalker.user.domain.User
+import com.kkw.pawket.common.domain.BaseEntity
+import com.kkw.pawket.user.domain.User
 import jakarta.persistence.*
 import java.util.*
 

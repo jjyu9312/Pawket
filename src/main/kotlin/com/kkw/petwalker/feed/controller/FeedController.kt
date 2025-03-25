@@ -1,4 +1,4 @@
-package com.kkw.petwalker.feed.controller
+package com.kkw.pawket.feed.controller
 
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController

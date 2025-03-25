@@ -1,4 +1,4 @@
-package com.kkw.petwalker.feed.service
+package com.kkw.pawket.feed.service
 
 import org.springframework.stereotype.Service
 

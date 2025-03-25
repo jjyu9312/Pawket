@@ -1,6 +1,6 @@
-package com.kkw.petwalker.spot.domain.repository
+package com.kkw.pawket.spot.domain.repository
 
-import com.kkw.petwalker.spot.domain.Spot
+import com.kkw.pawket.spot.domain.Spot
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 

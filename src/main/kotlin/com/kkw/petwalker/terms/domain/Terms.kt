@@ -1,4 +1,4 @@
-package com.kkw.petwalker.terms.domain
+package com.kkw.pawket.terms.domain
 
 import com.kkw.petwalker.common.domain.BaseEntity
 import jakarta.persistence.*

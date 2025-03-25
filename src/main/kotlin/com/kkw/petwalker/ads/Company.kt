@@ -1,6 +1,6 @@
-package com.kkw.petwalker.ads
+package com.kkw.pawket.ads
 
-import com.kkw.petwalker.common.domain.BaseEntity
+import com.kkw.pawket.common.domain.BaseEntity
 import jakarta.persistence.*
 import java.util.*
 

@@ -1,6 +1,6 @@
-package com.kkw.petwalker.terms.service
+package com.kkw.pawket.terms.service
 
-import com.kkw.petwalker.terms.domain.Terms
+import com.kkw.pawket.terms.domain.Terms
 import com.kkw.petwalker.terms.domain.UserTermsMapping
 import com.kkw.petwalker.terms.domain.repository.TermsRepository
 import com.kkw.petwalker.terms.domain.repository.UserTermsMappingRepository

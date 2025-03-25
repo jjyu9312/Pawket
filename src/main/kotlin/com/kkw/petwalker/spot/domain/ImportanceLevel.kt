@@ -1,4 +1,4 @@
-package com.kkw.petwalker.spot.domain
+package com.kkw.pawket.spot.domain
 
 enum class ImportanceLevel(val stringValue: String) {
     HIGH("high"),

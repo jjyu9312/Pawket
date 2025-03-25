@@ -1,6 +1,6 @@
-package com.kkw.petwalker.ads.repository
+package com.kkw.pawket.ads.repository
 
-import com.kkw.petwalker.ads.Company
+import com.kkw.pawket.ads.Company
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 

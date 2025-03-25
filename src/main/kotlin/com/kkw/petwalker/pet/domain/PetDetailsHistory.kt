@@ -1,6 +1,6 @@
-package com.kkw.petwalker.pet.domain
+package com.kkw.pawket.pet.domain
 
-import com.kkw.petwalker.common.domain.BaseDateTimeEntity
+import com.kkw.pawket.common.domain.BaseDateTimeEntity
 import jakarta.persistence.*
 import java.util.*
 

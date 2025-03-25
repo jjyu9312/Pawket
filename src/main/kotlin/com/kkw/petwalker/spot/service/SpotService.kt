@@ -1,10 +1,10 @@
-package com.kkw.petwalker.spot.service
+package com.kkw.pawket.spot.service
 
-import com.kkw.petwalker.ads.repository.CompanyRepository
-import com.kkw.petwalker.spot.domain.ImportanceLevel
-import com.kkw.petwalker.spot.domain.Spot
-import com.kkw.petwalker.spot.domain.repository.SpotRepository
-import com.kkw.petwalker.spot.model.req.CreateSpotReq
+import com.kkw.pawket.ads.repository.CompanyRepository
+import com.kkw.pawket.spot.domain.ImportanceLevel
+import com.kkw.pawket.spot.domain.Spot
+import com.kkw.pawket.spot.domain.repository.SpotRepository
+import com.kkw.pawket.spot.model.req.CreateSpotReq
 import org.apache.coyote.BadRequestException
 import org.springframework.stereotype.Service
 

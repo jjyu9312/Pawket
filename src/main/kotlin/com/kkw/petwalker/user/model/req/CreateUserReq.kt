@@ -1,4 +1,4 @@
-package com.kkw.petwalker.user.model.req
+package com.kkw.pawket.user.model.req
 
 import org.springframework.web.multipart.MultipartFile
 import java.time.LocalDate
