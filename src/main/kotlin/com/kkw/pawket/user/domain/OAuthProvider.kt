@@ -1,4 +1,4 @@
-package com.kkw.pawket.walkRecord.domain
+package com.kkw.pawket.user.domain
 
 enum class OAuthProvider(val stringValue: String) {
     GOOGLE("google"),
