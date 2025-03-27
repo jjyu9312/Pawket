@@ -13,7 +13,7 @@ data class Notice(
     @Column(nullable = false)
     val title: String,
 
-    @Column(nullable = false, columnDefinition = "MEDIUMTEXT")
+    @Column(nullable = false, columnDefinition = "TEXT")
     val content: String,
 
     @Column(nullable = false)
@@ -24,7 +24,7 @@ data class Notice(
     val isRequired: Boolean = false,
 
     @Column(nullable = false)
-    val priority: Int,
+    val priority: Int = 0,
 
     ) : BaseEntity() {
 
