@@ -1,7 +1,6 @@
-package com.kkw.pawket.walkRecord.domain
+package com.kkw.pawket.user.domain
 
 import com.kkw.pawket.common.domain.BaseEntity
-import com.kkw.pawket.user.domain.User
 import jakarta.persistence.*
 import java.util.*
 
@@ -19,6 +18,9 @@ class UserOAuth(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     val user: User,
+
+    @Column(nullable = false, unique = true)
+    val email: String,
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
