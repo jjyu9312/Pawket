@@ -23,28 +23,28 @@ data class WalkRecord(
     @Column(nullable = false)
     val startDateTime: LocalDateTime,
 
-    @Column(nullable = false)
-    val endDateTime: LocalDateTime,
+    @Column(nullable = true)
+    val endDateTime: LocalDateTime? = null,
 
-    @Column(nullable = false, columnDefinition = "TEXT") // JSON 데이터 저장
-    val walkDetail: String,
+    @Column(nullable = false, columnDefinition = "TEXT")
+    val walkLocation: String? = null,
 
 ): BaseEntity() {
     companion object {
         private val objectMapper = jacksonObjectMapper()
 
         // walk record 상세 정보를 JSON으로 변환
-        fun createWalkDetailJson(
+        fun createWalkLocationJson(
             distance: String,
             coordinateLat: String,
             coordinateLng: String,
         ): String {
-            val detailMap = mapOf(
+            val locationMap = mapOf(
                 "distance" to distance,
                 "coordinateLat" to coordinateLat,
                 "coordinateLng" to coordinateLng,
             )
-            return objectMapper.writeValueAsString(detailMap)
+            return objectMapper.writeValueAsString(locationMap)
         }
     }
 
@@ -62,6 +62,6 @@ data class WalkRecord(
         petId = petId,
         startDateTime = startDateTime,
         endDateTime = endDateTime,
-        walkDetail = createWalkDetailJson(distance, coordinateLat, coordinateLng),
+        walkLocation = createWalkLocationJson(distance, coordinateLat, coordinateLng),
     )
 }
