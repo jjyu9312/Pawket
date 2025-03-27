@@ -1,11 +1,11 @@
-package com.kkw.pawket.hospital.domain
+package com.kkw.pawket.partner.domain
 
 import com.kkw.pawket.common.domain.BaseEntity
 import jakarta.persistence.*
 import java.util.*
 
 @Entity(name = "animal_hospital")
-data class Hospital(
+data class Partner(
     @Id
     @Column(nullable = false, columnDefinition = "CHAR(36)")
     val id: String = UUID.randomUUID().toString(),
@@ -14,21 +14,26 @@ data class Hospital(
     val name: String,
 
     @Column(nullable = false, columnDefinition = "MEDIUMTEXT")
-    val directorName: String,
+    val ownerName: String,
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     val contactNumber: String,
+
+    @Column(nullable = true)
+    val link: String,
 
     ) : BaseEntity() {
 
     constructor(
         name: String,
-        directorName: String,
+        ownerName: String,
         contactNumber: String,
+        link: String,
     ) : this(
         id = UUID.randomUUID().toString(),
         name = name,
-        directorName = directorName,
+        ownerName = ownerName,
         contactNumber = contactNumber,
+        link = link,
     )
 }
