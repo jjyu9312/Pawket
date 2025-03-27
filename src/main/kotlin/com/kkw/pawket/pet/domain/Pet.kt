@@ -26,7 +26,7 @@ data class Pet(
     @Enumerated(value = EnumType.STRING)
     val type: PetType,
 
-    @Column(nullable = true)
+    @Column(nullable = true, length = 50)
     @Enumerated(value = EnumType.STRING)
     val dogType: DogType? = null,
 
