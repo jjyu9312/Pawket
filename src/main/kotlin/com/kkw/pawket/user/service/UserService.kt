@@ -41,10 +41,10 @@ class UserService(
     private val petRepository: PetRepository,
     private val s3Service: S3Service,
 ) {
-    @Value("\${backend.url}")
+    @Value("\${app.backend-url}")
     private lateinit var backendUrl: String
 
-    @Value("\${aws.s3.bucket.name}")
+    @Value("\${cloud.aws.s3.bucket.name}")
     private lateinit var bucketName: String
 
     private val logger = LoggerFactory.getLogger(this::class.java)
