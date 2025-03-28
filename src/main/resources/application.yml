@@ -2,9 +2,9 @@ spring:
   jackson:
     time-zone: Asia/Seoul
   datasource:
-    url: jdbc:mysql://localhost:3306/wag
-    username: wag
-    password: wag
+    url: jdbc:mysql://127.0.0.1:3306/wag
+    username: myuser
+    password: mypassword
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
@@ -35,25 +35,29 @@ app:
     google:
       client-id: YOUR_GOOGLE_CLIENT_ID
       client-secret: YOUR_GOOGLE_CLIENT_SECRET
-      redirect-uri: "{baseUrl}/oauth2/callback/google"
+      redirect-uri: "{app.backend-url}/oauth2/callback/google"
       scope: profile, email
     kakao:
       client-id: YOUR_KAKAO_CLIENT_ID
       client-secret: YOUR_KAKAO_CLIENT_SECRET
-      redirect-uri: "{baseUrl}/oauth2/callback/kakao"
+      redirect-uri: "{app.backend-url}/oauth2/callback/kakao"
       scope: profile_nickname, profile_image, account_email
     apple:
       client-id: YOUR_APPLE_CLIENT_ID
       client-secret: YOUR_APPLE_CLIENT_SECRET
-      redirect-uri: "{baseUrl}/oauth2/callback/apple"
+      redirect-uri: "{app.backend-url}/oauth2/callback/apple"
+      scope: name, email
 
 jwt:
-  secret-key: your-jwt-secret
+  secret-key: v0V/lOYb8nyCfM298Cai1q/BLARsBg+hLFZld4yWbL3KmRQb7cNN7fsrnSwpeQ2PtyNm+GyCiq+jS0TdUTZQsQ==
   validity-in-milliseconds: 36000000
 
 cloud:
   aws:
       s3:
         credentials:
-          access-key: YOUR_AWS_ACCESS_KEY
-          secret-key: YOUR_AWS_SECRET_KEY
+          access-key: AKIA5CVT2MCEW3B6I4EJ
+          secret-key: lWrn+H5ob6tHGsMLKqFdOaPPijeknOcqsQWMna7h
+        bucket:
+          name: wag-s3
+          region: ap-northeast-2
