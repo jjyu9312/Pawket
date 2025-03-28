@@ -12,16 +12,21 @@ import com.kkw.pawket.pet.domain.Sex
 import com.kkw.pawket.pet.domain.repository.PetRepository
 import com.kkw.pawket.user.domain.Gender
 import com.kkw.pawket.user.domain.User
+import com.kkw.pawket.user.domain.repository.UserOAuthRepository
 import com.kkw.pawket.user.domain.repository.UserRepository
 import com.kkw.pawket.user.model.req.CreateUserReq
 import com.kkw.pawket.user.model.res.CreateUserRes
 import com.kkw.pawket.user.model.res.LoginUserRes
+import com.kkw.pawket.user.domain.OAuthProvider
+import com.kkw.pawket.user.domain.UserOAuth
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.servlet.http.Cookie
+import jakarta.transaction.Transactional
 import org.apache.coyote.BadRequestException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
@@ -38,6 +43,7 @@ class UserService(
     private val request: HttpServletRequest,
     private val response: HttpServletResponse,
     private val userRepository: UserRepository,
+    private val userOAuthRepository: UserOAuthRepository,
     private val petRepository: PetRepository,
     private val s3Service: S3Service,
 ) {
@@ -60,14 +66,43 @@ class UserService(
                 "&redirect_uri = ${backendUrl}/oauth2/callback/$provider"
     }
 
+    @Transactional(rollbackOn = [Exception::class])
     fun handleOAuthCallback(provider: String, code: String): LoginUserRes {
         val tokenResponse = getAccessToken(provider, code)
         val userInfo = getUserInfo(provider, tokenResponse.accessToken)
+
+        // 1. 기존 OAuth 정보 확인
+        val oauthProvider = OAuthProvider.valueOf(provider.uppercase())
+        val existingOAuth = userOAuthRepository.findByProviderAndProviderUserId(
+            oauthProvider,
+            userInfo.providerUserId
+        )
+
+        val user = if (existingOAuth != null) {
+            existingOAuth.user
+        } else {
+            // 1. 유저 생성 (소셜 로그인만으로 기본 생성)
+            val newUser = User.createWithEmailOnly(userInfo.email)
+            userRepository.save(newUser)
+
+            // 2. OAuth 연동 저장
+            val newOAuth = UserOAuth(
+                user = newUser,
+                provider = OAuthProvider.valueOf(provider.uppercase()),
+                providerUserId = userInfo.providerUserId,
+                email = userInfo.email
+            )
+            userOAuthRepository.save(newOAuth)
+
+            newUser
+        }
+
+
         val jwtToken = jwtTokenProvider.createToken(userInfo.email)
         logger.info("User info: $userInfo, JWT token: $jwtToken")
 
         return LoginUserRes(
-            email = userInfo.email,
+            id = user.id,
             provider = provider,
             token = jwtToken
         )
@@ -114,9 +149,14 @@ class UserService(
             ResponseCode.OAUTH_USERINFO_INVALID.defaultMessage
         )
 
+        val email = body["email"] as? String ?: "unknown@${provider}.com"
+        val providerUserId = (body["sub"] ?: body["id"])?.toString()
+            ?: throw RuntimeException("OAuth 유저 식별자가 없습니다")
+
         return OAuthUser(
-            email = body["email"] as? String ?: "unknown@${provider}.com",
-            provider = provider
+            email = email,
+            provider = provider,
+            providerUserId = providerUserId,
         )
     }
 
@@ -138,7 +178,8 @@ class UserService(
         return "로그아웃 성공"
     }
 
-    fun createUser(req: CreateUserReq): CreateUserRes {
+    @Transactional(rollbackOn = [Exception::class])
+    fun createUser(userId: String, req: CreateUserReq): CreateUserRes {
         logger.info("Creating user with name: ${req.name}, email: ${req.email}")
 
         val gender = Gender.fromString(req.gender)
@@ -146,10 +187,14 @@ class UserService(
                 ResponseCode.INVALID_GENDER_TYPE.withCustomMessage("- ${req.gender}")
             )
 
-        val user = User(
+        val user = userRepository.findByIdOrNull(userId)
+            ?: throw BadRequestException(
+                ResponseCode.USER_NOT_FOUND.withCustomMessage("- $userId")
+            )
+
+        user.update(
             name = req.name,
             birth = req.birth,
-            email = req.email,
             gender = gender,
             addressBasic = req.addressInfo.basic,
             addressLat = req.addressInfo.lat,
@@ -251,4 +296,8 @@ class UserService(
 }
 
 data class OAuthTokenResponse(val accessToken: String)
-data class OAuthUser(val email: String, val provider: String)
+data class OAuthUser(
+    val email: String,
+    val provider: String,
+    val providerUserId: String
+)
