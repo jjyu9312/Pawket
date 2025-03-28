@@ -1,1 +1,1 @@
-rootProject.name = "Pawket"
+rootProject.name = "pawket"
