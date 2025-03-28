@@ -1,7 +1,7 @@
 package com.kkw.pawket.user.model.res
 
 data class LoginUserRes(
-    val email: String,
+    val id: String,
     val provider: String,
     val token: String
 )

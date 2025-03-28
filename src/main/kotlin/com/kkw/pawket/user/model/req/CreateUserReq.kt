@@ -4,9 +4,9 @@ import org.springframework.web.multipart.MultipartFile
 import java.time.LocalDate
 
 data class CreateUserReq (
+    val email: String,
     val name: String,
     val birth: LocalDate,
-    val email: String,
     val gender: String,
     val imageUrl: MultipartFile,
     val addressInfo: AddressInfo,
