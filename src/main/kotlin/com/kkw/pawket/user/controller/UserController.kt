@@ -63,11 +63,12 @@ class UserController (
         }
     }
 
-    @PostMapping("")
-    fun createUser(req: CreateUserReq): ResponseEntity<ApiResponse<CreateUserRes>> {
+    @PostMapping("/{userId}")
+    fun createUser(
+        @PathVariable userId: String, req: CreateUserReq): ResponseEntity<ApiResponse<CreateUserRes>> {
         return try {
-            val userId = userService.createUser(req)
-            ApiResponseFactory.success(userId)
+            val user = userService.createUser(userId, req)
+            ApiResponseFactory.success(user)
         } catch (e: BadRequestException) {
             ApiResponseFactory.error(
                 responseCode = ResponseCode.BAD_REQUEST,
