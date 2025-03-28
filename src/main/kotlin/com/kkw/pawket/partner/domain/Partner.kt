@@ -4,7 +4,7 @@ import com.kkw.pawket.common.domain.BaseEntity
 import jakarta.persistence.*
 import java.util.*
 
-@Entity(name = "animal_hospital")
+@Entity
 data class Partner(
     @Id
     @Column(nullable = false, columnDefinition = "CHAR(36)")
