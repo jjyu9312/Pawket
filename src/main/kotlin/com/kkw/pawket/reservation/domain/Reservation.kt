@@ -6,7 +6,7 @@ import com.kkw.pawket.user.domain.User
 import jakarta.persistence.*
 import java.util.*
 
-@Entity(name = "reservation")
+@Entity
 data class Reservation(
     @Id
     @Column(nullable = false, columnDefinition = "CHAR(36)")

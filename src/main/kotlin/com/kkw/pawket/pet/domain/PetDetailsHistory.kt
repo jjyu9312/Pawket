@@ -5,7 +5,7 @@ import jakarta.persistence.*
 import java.util.*
 
 @Entity
-@Table(name = "dog_details_history")
+@Table(name = "pet_details_history")
 data class PetDetailsHistory (
     @Id
     @Column(nullable = false, columnDefinition = "CHAR(36)")
