@@ -11,11 +11,13 @@ data class RewardHistory(
     @Column(nullable = false, columnDefinition = "CHAR(36)")
     val id: String = UUID.randomUUID().toString(),
 
-    @JoinColumn(name = "user_id")
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", columnDefinition = "CHAR(36)")
     val user: User,
 
-    // TODO : RewardHistory에 사용한 항목 필드 추가
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reward_id", columnDefinition = "CHAR(36)")
+    val reward: Reward,
 
     @Column(nullable = false)
     val beforeCoin: Int,
