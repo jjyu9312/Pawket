@@ -11,8 +11,8 @@ data class Spot(
     @Column(nullable = false, columnDefinition = "CHAR(36)")
     val id: String = UUID.randomUUID().toString(),
 
-    @JoinColumn(name = "company_id")
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id", columnDefinition = "CHAR(36)")
     val company: Company,
 
     @Column(nullable = false)
