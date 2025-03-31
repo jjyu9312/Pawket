@@ -6,7 +6,7 @@ import jakarta.persistence.Entity
 import jakarta.persistence.PrimaryKeyJoinColumn
 
 @Entity
-@DiscriminatorValue("RANK")
+@DiscriminatorValue("AD")
 @PrimaryKeyJoinColumn(name = "reward_id")
 class AdsReward(
     @Column(nullable = false)
