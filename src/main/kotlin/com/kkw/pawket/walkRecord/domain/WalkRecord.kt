@@ -21,10 +21,10 @@ data class WalkRecord(
     val petId: String,
 
     @Column(nullable = false)
-    val startDateTime: LocalDateTime,
+    val startedAt: LocalDateTime,
 
     @Column(nullable = true)
-    val endDateTime: LocalDateTime? = null,
+    val finishedAt: LocalDateTime? = null,
 
     @Column(nullable = false, columnDefinition = "TEXT")
     val walkLocation: String? = null,
@@ -51,8 +51,8 @@ data class WalkRecord(
     constructor(
         user: User,
         petId: String,
-        startDateTime: LocalDateTime,
-        endDateTime: LocalDateTime,
+        startedAt: LocalDateTime,
+        finishedAt: LocalDateTime,
         distance: String,
         coordinateLat: String,
         coordinateLng: String,
@@ -60,8 +60,8 @@ data class WalkRecord(
         id = UUID.randomUUID().toString(),
         user = user,
         petId = petId,
-        startDateTime = startDateTime,
-        endDateTime = endDateTime,
+        startedAt = startedAt,
+        finishedAt = finishedAt,
         walkLocation = createWalkLocationJson(distance, coordinateLat, coordinateLng),
     )
 }
