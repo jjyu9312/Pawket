@@ -14,7 +14,7 @@ class SpotService
     private val spotRepository: SpotRepository,
     private val companyRepository: CompanyRepository,
 ) {
-    fun createSpot(companyId: String, req: CreateSpotReq): String? {
+    fun createSpot(companyId: String, req: CreateSpotReq): String {
         val company = companyRepository.findById(companyId)
             .orElseThrow { BadRequestException("Company not found") }
 
