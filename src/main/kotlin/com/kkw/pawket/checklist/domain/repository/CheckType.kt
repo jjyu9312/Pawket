@@ -1,0 +1,39 @@
+package com.kkw.pawket.checklist.domain.repository
+
+import com.kkw.pawket.common.domain.BaseEntity
+import com.kkw.pawket.pet.domain.Pet
+import com.kkw.pawket.user.domain.User
+import jakarta.persistence.*
+import java.util.*
+
+@Entity(name = "check_type")
+data class CheckType(
+    @Id
+    @Column(nullable = false, columnDefinition = "CHAR(36)")
+    val id: String = UUID.randomUUID().toString(),
+
+    @Column(nullable = false, unique = true)
+    val name: String,
+
+    @Column(nullable = true)
+    val description: String? = null
+
+    ) : BaseEntity() {
+    constructor(
+        name: String,
+        description: String? = null,
+    ) : this(
+        id = UUID.randomUUID().toString(),
+        name = name,
+        description = description,
+    )
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+        other as CheckType
+        return id == other.id
+    }
+
+    override fun hashCode(): Int = id.hashCode()
+}
