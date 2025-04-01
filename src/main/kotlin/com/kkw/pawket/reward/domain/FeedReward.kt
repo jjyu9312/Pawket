@@ -7,7 +7,7 @@ import jakarta.persistence.PrimaryKeyJoinColumn
 
 @Entity
 @DiscriminatorValue("FEED")
-@PrimaryKeyJoinColumn(name = "reward_id")  // 부모 테이블과 PK를 공유
+@PrimaryKeyJoinColumn(name = "reward_id")
 class FeedReward(
     @Column(nullable = false)
     val postCnt: Int
