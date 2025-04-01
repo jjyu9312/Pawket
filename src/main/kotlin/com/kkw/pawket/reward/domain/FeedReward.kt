@@ -10,8 +10,9 @@ import jakarta.persistence.PrimaryKeyJoinColumn
 @PrimaryKeyJoinColumn(name = "reward_id")
 class FeedReward(
     @Column(nullable = false)
-    val postCnt: Int
+    val postCnt: Int = 0
 ) : Reward(
     coin = postCnt * 10
-)
+) {
+}
 
