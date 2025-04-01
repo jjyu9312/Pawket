@@ -19,7 +19,7 @@ class WalkRecordService (
     fun createWalkRecord(userId: String, req: CreateWalkRecordReq): String {
         val user = userRepository.findByIdAndIsDeletedFalse(userId)
             ?: throw BadRequestException(
-                ResponseCode.USER_NOT_FOUND.withCustomMessage("userId: $userId")
+                ResponseCode.USER_NOT_FOUND.defaultMessage
             )
 
         val walkRecord = WalkRecord.createWalkRecord(
