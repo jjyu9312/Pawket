@@ -24,6 +24,7 @@ data class Ads(
     val coin: Int = 0,
 
     ) : BaseEntity() {
+
     constructor(
         company: Company,
         title: String,
@@ -36,4 +37,13 @@ data class Ads(
         content = content,
         coin = coin,
     )
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+        other as Ads
+        return id == other.id
+    }
+
+    override fun hashCode(): Int = id.hashCode()
 }

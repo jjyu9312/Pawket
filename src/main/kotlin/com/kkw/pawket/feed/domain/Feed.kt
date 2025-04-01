@@ -1,4 +1,4 @@
-package com.kkw.pawket.feed
+package com.kkw.pawket.feed.domain
 
 import com.kkw.pawket.common.domain.BaseEntity
 import com.kkw.pawket.user.domain.User
@@ -40,6 +40,15 @@ data class Feed(
         title = title,
         content = content,
     )
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+        other as Feed
+        return id == other.id
+    }
+
+    override fun hashCode(): Int = id.hashCode()
 
     fun updateLikeCnt(type: String) {
         if (type == "like")

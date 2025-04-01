@@ -53,25 +53,6 @@ data class Pet(
     var dogDetail: String,
 
     ) : BaseEntity() {
-    companion object {
-        private val objectMapper = jacksonObjectMapper()
-
-        // Dog 상세 정보를 JSON으로 변환
-        fun createDogDetailJson(
-            dogDescription: String,
-            foodBrand: String, // ,로 연결
-            foodName: String, // ,로 연결
-            foodType: String // ,로 연결
-        ): String {
-            val detailMap = mapOf(
-                "dogDescription" to dogDescription,
-                "foodBrand" to foodBrand,
-                "foodName" to foodName,
-                "foodType" to foodType
-            )
-            return objectMapper.writeValueAsString(detailMap)
-        }
-    }
 
     constructor(
         user: User,
@@ -109,4 +90,33 @@ data class Pet(
             foodType
         ) // JSON 변환 후 저장
     )
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+        other as Pet
+        return id == other.id
+    }
+
+    override fun hashCode(): Int = id.hashCode()
+
+    companion object {
+        private val objectMapper = jacksonObjectMapper()
+
+        // Dog 상세 정보를 JSON으로 변환
+        fun createDogDetailJson(
+            dogDescription: String,
+            foodBrand: String, // ,로 연결
+            foodName: String, // ,로 연결
+            foodType: String // ,로 연결
+        ): String {
+            val detailMap = mapOf(
+                "dogDescription" to dogDescription,
+                "foodBrand" to foodBrand,
+                "foodName" to foodName,
+                "foodType" to foodType
+            )
+            return objectMapper.writeValueAsString(detailMap)
+        }
+    }
 }

@@ -10,7 +10,8 @@ import jakarta.persistence.PrimaryKeyJoinColumn
 @PrimaryKeyJoinColumn(name = "reward_id") // 부모 테이블과 PK를 공유
 class AdsReward(
     @Column(nullable = false)
-    val adsPrice: Int
+    val adsPrice: Int = 0
 ) : Reward(
     coin = adsPrice
-)
+) {
+}

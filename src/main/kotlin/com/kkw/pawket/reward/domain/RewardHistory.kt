@@ -25,4 +25,13 @@ data class RewardHistory(
     @Column(nullable = false)
     val afterCoin: Int,
 
-    ) : BaseEntity()
+    ) : BaseEntity() {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+        other as RewardHistory
+        return id == other.id
+    }
+
+    override fun hashCode(): Int = id.hashCode()
+    }
