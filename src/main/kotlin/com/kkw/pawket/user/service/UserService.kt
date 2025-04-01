@@ -90,7 +90,6 @@ class UserService(
                 user = newUser,
                 provider = OAuthProvider.valueOf(provider.uppercase()),
                 providerUserId = userInfo.providerUserId,
-                email = userInfo.email
             )
             userOAuthRepository.save(newOAuth)
 

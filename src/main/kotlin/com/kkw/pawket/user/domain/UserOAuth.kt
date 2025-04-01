@@ -29,4 +29,26 @@ class UserOAuth(
     @Column(nullable = false)
     val providerUserId: String,  // 구글: sub / 카카오: id / 애플: sub
 
-) : BaseEntity()
+) : BaseEntity() {
+
+    constructor(
+        user: User,
+        provider: OAuthProvider,
+        providerUserId: String,
+    ) : this(
+        id = UUID.randomUUID().toString(),
+        user = user,
+        email = user.email,
+        provider = provider,
+        providerUserId = providerUserId,
+    )
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+        other as UserOAuth
+        return id == other.id
+    }
+
+    override fun hashCode(): Int = id.hashCode()
+}
