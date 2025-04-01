@@ -19,14 +19,18 @@ class UserController (
     private val userService: UserService,
 ) {
 
-    // 로그인 요청을 처리하는 API
+    /*
+    TODO 로그인 API
+     */
     @GetMapping("/login")
     fun login(@RequestParam provider: String, response: HttpServletResponse) {
         val redirectUrl = userService.getOAuthRedirectUrl(provider)
         response.sendRedirect(redirectUrl)
     }
 
-    // OAuth 콜백 요청을 처리하는 API
+    /*
+    TODO OAuth 콜백 처리 API
+     */
     @GetMapping("/oauth/callback/{provider}")
     fun oauthCallback(
         @PathVariable provider: String,
@@ -43,6 +47,9 @@ class UserController (
         }
     }
 
+    /*
+    TODO 로그아웃 API
+     */
     @PostMapping("/logout")
     fun logout(): ResponseEntity<ApiResponse<String>> {
         return try {
@@ -63,6 +70,9 @@ class UserController (
         }
     }
 
+    /*
+    TODO 앱 내 추가 회원가입 API
+     */
     @PostMapping("/{userId}")
     fun createUser(
         @PathVariable userId: String, req: CreateUserReq): ResponseEntity<ApiResponse<CreateUserRes>> {
