@@ -16,7 +16,7 @@ data class CheckType(
     @Column(nullable = true)
     val description: String? = null
 
-    ) : BaseEntity() {
+) : BaseEntity() {
     constructor(
         name: String,
         description: String? = null,
@@ -34,4 +34,21 @@ data class CheckType(
     }
 
     override fun hashCode(): Int = id.hashCode()
+
+    companion object {
+        private val regex = Regex("^[A-Za-z]+$")
+
+        fun create(name: String, description: String? = null): CheckType {
+            require(regex.matches(name)) {
+                "CheckType name must contain only English letters (A-Z, a-z)."
+            }
+
+            val formattedName = name.lowercase().replaceFirstChar { it.uppercaseChar() }
+
+            return CheckType(
+                name = formattedName,
+                description = description
+            )
+        }
+    }
 }
