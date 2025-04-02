@@ -1,8 +1,6 @@
-package com.kkw.pawket.checklist.domain.repository
+package com.kkw.pawket.checklist.domain
 
 import com.kkw.pawket.common.domain.BaseEntity
-import com.kkw.pawket.pet.domain.Pet
-import com.kkw.pawket.user.domain.User
 import jakarta.persistence.*
 import java.util.*
 
