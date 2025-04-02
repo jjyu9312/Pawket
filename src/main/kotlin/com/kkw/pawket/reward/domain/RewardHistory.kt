@@ -7,14 +7,15 @@ import java.util.*
 
 @Entity
 data class RewardHistory(
-    @Id
-    @Column(nullable = false, columnDefinition = "CHAR(36)")
-    val id: String = UUID.randomUUID().toString(),
+    @EmbeddedId
+    val id: RewardHistoryId,
 
+    @MapsId("userId")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", columnDefinition = "CHAR(36)")
     val user: User,
 
+    @MapsId("rewardId")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reward_id", columnDefinition = "CHAR(36)")
     val reward: Reward,
@@ -25,13 +26,4 @@ data class RewardHistory(
     @Column(nullable = false)
     val afterCoin: Int,
 
-    ) : BaseEntity() {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-        other as RewardHistory
-        return id == other.id
-    }
-
-    override fun hashCode(): Int = id.hashCode()
-    }
+    ) : BaseEntity()

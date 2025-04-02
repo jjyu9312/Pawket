@@ -3,6 +3,7 @@ package com.kkw.pawket.terms.service
 import com.kkw.pawket.common.response.ResponseCode
 import com.kkw.pawket.terms.domain.Terms
 import com.kkw.pawket.terms.domain.UserTermsMapping
+import com.kkw.pawket.terms.domain.UserTermsMappingId
 import com.kkw.pawket.terms.domain.repository.TermsRepository
 import com.kkw.pawket.terms.domain.repository.UserTermsMappingRepository
 import com.kkw.pawket.terms.model.req.TermsCreateReq
@@ -64,6 +65,10 @@ class TermsService(
 
         val newAgreeUserTermsMappingList = termsList.map { term ->
             UserTermsMapping(
+                id = UserTermsMappingId(
+                    userId = user.id,
+                    termsId = term.id,
+                ),
                 user = user,
                 terms = term,
                 isAgreed = true,

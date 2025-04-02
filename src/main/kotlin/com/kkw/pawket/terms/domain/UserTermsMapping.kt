@@ -7,26 +7,21 @@ import java.util.*
 
 @Entity
 data class UserTermsMapping(
-    @Id
-    @Column(nullable = false, columnDefinition = "CHAR(36)")
-    val id: String = UUID.randomUUID().toString(),
 
+    @EmbeddedId
+    val id: UserTermsMappingId,
+
+    @MapsId("userId")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", columnDefinition = "CHAR(36)")
     val user: User,
 
+    @MapsId("termsId")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "terms_id", columnDefinition = "CHAR(36)")
     val terms: Terms,
 
     @Column(nullable = false)
-    val isAgreed: Boolean = false,
+    val isAgreed: Boolean = false
 
-    ) : BaseEntity() {
-    constructor(user: User, terms: Terms, isAgreed: Boolean) : this(
-        id = UUID.randomUUID().toString(),
-        user = user,
-        terms = terms,
-        isAgreed = isAgreed,
-    )
-}
+) : BaseEntity()
