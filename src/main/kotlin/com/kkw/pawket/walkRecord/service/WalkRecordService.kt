@@ -27,7 +27,7 @@ class WalkRecordService (
                 ResponseCode.USER_NOT_FOUND.defaultMessage
             )
 
-        val walkRecord = WalkRecord.createWalkRecord(
+        val walkRecord = WalkRecord.create(
             user = user,
             petId = req.petId,
             startedAt = req.startedAt,

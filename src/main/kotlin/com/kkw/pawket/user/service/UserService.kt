@@ -82,7 +82,7 @@ class UserService(
             existingOAuth.user
         } else {
             // 1. 유저 생성 (소셜 로그인만으로 기본 생성)
-            val newUser = User.createWithEmailOnly(userInfo.email)
+            val newUser = User.create(userInfo.email)
             userRepository.save(newUser)
 
             // 2. OAuth 연동 저장

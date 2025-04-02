@@ -51,7 +51,7 @@ data class User(
     override fun hashCode(): Int = id.hashCode()
 
     companion object {
-        fun createWithEmailOnly(email: String): User = User(
+        fun create(email: String): User = User(
             id = UUID.randomUUID().toString(),
             name = email,
             birth = LocalDate.now(),

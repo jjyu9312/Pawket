@@ -41,7 +41,7 @@ class WalkRecord(
     override fun hashCode(): Int = id.hashCode()
 
     companion object {
-        fun createWalkRecord(
+        fun create(
             user: User,
             petId: String,
             startedAt: LocalDateTime,
