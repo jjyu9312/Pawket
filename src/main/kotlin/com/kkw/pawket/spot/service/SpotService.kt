@@ -23,7 +23,7 @@ class SpotService
 
         val company = companyRepository.findByIdAndIsDeletedFalse(companyId)
             ?: throw BadRequestException(
-                ResponseCode.COMPANY_NOT_FOUND.defaultMessage
+                ResponseCode.INVALID_TARGET_GROUP.defaultMessage
             )
 
 
