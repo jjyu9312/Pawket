@@ -3,8 +3,8 @@ package com.kkw.pawket.notice.domain
 enum class TargetGroup(val stringValue: String) {
     ALL("all"),
     USER("user"),
-    COMPANY("company"),
-    HOSPITAL("hospital"),
+    PARTNER("partner"),
+    ADS_COMPANY("ads_company"),
     ;
 
     companion object {
