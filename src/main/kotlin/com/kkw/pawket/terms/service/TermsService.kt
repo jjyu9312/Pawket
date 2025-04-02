@@ -1,5 +1,6 @@
 package com.kkw.pawket.terms.service
 
+import com.kkw.pawket.common.response.ResponseCode
 import com.kkw.pawket.terms.domain.Terms
 import com.kkw.pawket.terms.domain.UserTermsMapping
 import com.kkw.pawket.terms.domain.repository.TermsRepository
@@ -44,7 +45,9 @@ class TermsService(
 
     fun agreeToTerms(userId: String, agreeTermsList: List<String>) {
         val user = userRepository.findById(userId).orElseThrow {
-            throw BadRequestException("사용자가 존재하지 않습니다.")
+            throw BadRequestException(
+                ResponseCode.USER_NOT_FOUND.defaultMessage
+            )
         }
 
         val termsList = termsRepository.findAllById(agreeTermsList)
@@ -54,7 +57,9 @@ class TermsService(
 
         val duplicatedTerms = termsList.filter { alreadyAgreedTermsIdList.contains(it.id) }
         if (duplicatedTerms.isNotEmpty()) {
-            throw BadRequestException("이미 동의한 약관은 다시 동의할 수 없습니다: $duplicatedTerms")
+            throw BadRequestException(
+                ResponseCode.ALREADY_AGREED_TERMS.defaultMessage
+            )
         }
 
         val newAgreeUserTermsMappingList = termsList.map { term ->
@@ -70,7 +75,9 @@ class TermsService(
 
     fun checkAgreedTerms(userId: String): RequiredTermsAgreeCheckRes? {
         userRepository.findById(userId).orElseThrow {
-            throw BadRequestException("사용자가 존재하지 않습니다.")
+            throw BadRequestException(
+                ResponseCode.USER_NOT_FOUND.defaultMessage
+            )
         }
 
         val notAgreedTermsList = termsRepository.findRequiredTermsNotAgreedByUser(userId)
