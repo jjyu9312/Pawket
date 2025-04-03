@@ -1,5 +1,6 @@
 package com.kkw.pawket.user.domain
 
+import com.kkw.pawket.common.domain.BaseDateTimeEntity
 import com.kkw.pawket.common.domain.BaseEntity
 import jakarta.persistence.*
 import java.util.*
@@ -29,7 +30,7 @@ class UserOAuth(
     @Column(nullable = false)
     val providerUserId: String,  // 구글: sub / 카카오: id / 애플: sub
 
-) : BaseEntity() {
+) : BaseDateTimeEntity() {
 
     constructor(
         user: User,
