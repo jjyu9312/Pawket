@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface FeedRepository : JpaRepository<Feed, String> {
+    fun findAllByUserId(userId: String): List<Feed>
 }

@@ -5,5 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface HospitalRepository: JpaRepository<Partner, String> {
+interface PartnerRepository: JpaRepository<Partner, String> {
+    fun findByIdAndIsDeletedTrue(id: String): Partner?
+    fun findAllByUserId(userId: String): List<Partner>
+
 }
