@@ -22,5 +22,5 @@ abstract class BaseEntity {
         protected set
 
     @Column(nullable = false)
-    val isDeleted: Boolean = false
+    var isDeleted: Boolean = false
 }
