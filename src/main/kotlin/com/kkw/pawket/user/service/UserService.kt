@@ -1,15 +1,23 @@
 package com.kkw.pawket.user.service
 
+import com.kkw.pawket.ads.domain.repository.AdsRepository
+import com.kkw.pawket.ads.domain.repository.CompanyRepository
 import com.kkw.pawket.common.response.ResponseCode
 import com.kkw.pawket.common.service.JwtTokenProvider
 import com.kkw.pawket.common.service.OAuthProviderEndpoints
 import com.kkw.pawket.common.service.OAuthProviderProperties
 import com.kkw.pawket.common.service.S3Service
+import com.kkw.pawket.feed.repository.FeedRepository
+import com.kkw.pawket.partner.domain.repository.PartnerRepository
+import com.kkw.pawket.partner.domain.repository.PartnerVisitHistoryRepository
 import com.kkw.pawket.pet.domain.Pet
 import com.kkw.pawket.pet.domain.DogType
 import com.kkw.pawket.pet.domain.PetType
 import com.kkw.pawket.pet.domain.Sex
 import com.kkw.pawket.pet.domain.repository.PetRepository
+import com.kkw.pawket.reservation.domain.repository.ReservationRepository
+import com.kkw.pawket.terms.domain.UserTermsMapping
+import com.kkw.pawket.terms.domain.repository.UserTermsMappingRepository
 import com.kkw.pawket.user.domain.Gender
 import com.kkw.pawket.user.domain.User
 import com.kkw.pawket.user.domain.repository.UserOAuthRepository
@@ -19,6 +27,7 @@ import com.kkw.pawket.user.model.res.CreateUserRes
 import com.kkw.pawket.user.model.res.LoginUserRes
 import com.kkw.pawket.user.domain.OAuthProvider
 import com.kkw.pawket.user.domain.UserOAuth
+import com.kkw.pawket.walkRecord.domain.repository.WalkRecordRepository
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.servlet.http.Cookie
@@ -45,6 +54,14 @@ class UserService(
     private val userRepository: UserRepository,
     private val userOAuthRepository: UserOAuthRepository,
     private val petRepository: PetRepository,
+    private val partnerRepository: PartnerRepository,
+    private val companyRepository: CompanyRepository,
+    private val adsRepository: AdsRepository,
+    private val reservationRepository: ReservationRepository,
+    private val walkRecordRepository: WalkRecordRepository,
+    private val feedRepository: FeedRepository,
+    private val userTermsMappingRepository: UserTermsMappingRepository,
+    private val partnerVisitHistoryRepository: PartnerVisitHistoryRepository,
     private val s3Service: S3Service,
 ) {
     @Value("\${app.backend-url}")
@@ -291,6 +308,61 @@ class UserService(
         }
         logger.info("Provider endpoints: $providerEndpoint")
         return providerEndpoint
+    }
+
+    @Transactional(rollbackOn = [Exception::class])
+    fun deleteUser(userId: String): Boolean {
+        val user = userRepository.findByIdAndIsDeletedFalse(userId)
+            ?: throw BadRequestException(
+                ResponseCode.USER_NOT_FOUND.defaultMessage
+            )
+
+        user.isDeleted = true
+
+        // userOAuth 완전 삭제
+        val userOAuth = userOAuthRepository.findAllByUserId(userId)
+        userOAuthRepository.deleteAll(userOAuth)
+
+        // 연관된 엔티티들도 모두 isDeleted true
+        // pet, partner, ad, company, walkRecord, reservation, feed, ...
+        val pets = petRepository.findAllByUserId(userId)
+        pets.forEach { it.isDeleted = true }
+        userRepository.delete(user)
+
+        val partners = partnerRepository.findAllByUserId(userId)
+        partners.forEach { it.isDeleted = true }
+        partnerRepository.saveAll(partners)
+
+        val ads = adsRepository.findAllByUserId(userId)
+        ads.forEach { it.isDeleted = true }
+        adsRepository.saveAll(ads)
+
+        val companies = companyRepository.findAllByUserId(userId)
+        companies.forEach { it.isDeleted = true }
+        companyRepository.saveAll(companies)
+
+        val walkRecords = walkRecordRepository.findAllByUserId(userId)
+        walkRecords.forEach { it.isDeleted = true }
+        walkRecordRepository.saveAll(walkRecords)
+
+        val reservations = reservationRepository.findAllByUserId(userId)
+        reservations.forEach { it.isDeleted = true }
+        reservationRepository.saveAll(reservations)
+
+        val feeds = feedRepository.findAllByUserId(userId)
+        feeds.forEach { it.isDeleted = true }
+        feedRepository.saveAll(feeds)
+
+        val userTermsMappings = userTermsMappingRepository.findAllByUserId(userId)
+        userTermsMappingRepository.deleteAll(userTermsMappings)
+
+        val partnerVisitHistories = partnerVisitHistoryRepository.findAllByUserId(userId)
+        partnerVisitHistories.forEach { it.isDeleted = true }
+        partnerVisitHistoryRepository.saveAll(partnerVisitHistories)
+
+        userRepository.save(user)
+
+        return true
     }
 }
 
