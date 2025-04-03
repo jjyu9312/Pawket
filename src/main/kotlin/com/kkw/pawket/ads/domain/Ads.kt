@@ -1,4 +1,4 @@
-package com.kkw.pawket.ads
+package com.kkw.pawket.ads.domain
 
 import com.kkw.pawket.common.domain.BaseEntity
 import jakarta.persistence.*
