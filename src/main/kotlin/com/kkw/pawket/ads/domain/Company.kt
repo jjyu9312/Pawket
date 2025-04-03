@@ -1,4 +1,4 @@
-package com.kkw.pawket.ads
+package com.kkw.pawket.ads.domain
 
 import com.kkw.pawket.common.domain.BaseEntity
 import com.kkw.pawket.user.domain.User
@@ -19,16 +19,16 @@ data class Company(
     val name: String,
 
     @Column(nullable = false)
-    val addressBasic: String,
+    var addressBasic: String,
 
     @Column(nullable = false)
-    val addressLat: Double,
+    var addressLat: Double,
 
     @Column(nullable = false)
-    val addressLng: Double,
+    var addressLng: Double,
 
     @Column(nullable = false)
-    val addressDetail: String,
+    var addressDetail: String? = null,
 
     ) : BaseEntity() {
 
@@ -38,7 +38,7 @@ data class Company(
         addressBasic: String,
         addressLat: Double,
         addressLng: Double,
-        addressDetail: String,
+        addressDetail: String?,
 
     ) : this(
         id = UUID.randomUUID().toString(),
