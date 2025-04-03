@@ -1,6 +1,7 @@
 package com.kkw.pawket.ads
 
 import com.kkw.pawket.common.domain.BaseEntity
+import com.kkw.pawket.user.domain.User
 import jakarta.persistence.*
 import java.util.*
 
@@ -9,6 +10,10 @@ data class Company(
     @Id
     @Column(nullable = false, columnDefinition = "CHAR(36)")
     val id: String = UUID.randomUUID().toString(),
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", columnDefinition = "CHAR(36)")
+    val user: User,
 
     @Column(nullable = false)
     val name: String,
@@ -28,6 +33,7 @@ data class Company(
     ) : BaseEntity() {
 
     constructor(
+        user: User,
         name: String,
         addressBasic: String,
         addressLat: Double,
@@ -36,6 +42,7 @@ data class Company(
 
     ) : this(
         id = UUID.randomUUID().toString(),
+        user = user,
         name = name,
         addressBasic = addressBasic,
         addressLat = addressLat,
