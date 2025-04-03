@@ -16,6 +16,7 @@ import com.kkw.pawket.pet.domain.PetType
 import com.kkw.pawket.pet.domain.Sex
 import com.kkw.pawket.pet.domain.repository.PetRepository
 import com.kkw.pawket.reservation.domain.repository.ReservationRepository
+import com.kkw.pawket.reward.domain.repository.RewardHistoryRepository
 import com.kkw.pawket.terms.domain.UserTermsMapping
 import com.kkw.pawket.terms.domain.repository.UserTermsMappingRepository
 import com.kkw.pawket.user.domain.Gender
@@ -62,6 +63,7 @@ class UserService(
     private val feedRepository: FeedRepository,
     private val userTermsMappingRepository: UserTermsMappingRepository,
     private val partnerVisitHistoryRepository: PartnerVisitHistoryRepository,
+    private val rewardHistoryRepository: RewardHistoryRepository,
     private val s3Service: S3Service,
 ) {
     @Value("\${app.backend-url}")
@@ -324,7 +326,7 @@ class UserService(
         userOAuthRepository.deleteAll(userOAuth)
 
         // 연관된 엔티티들도 모두 isDeleted true
-        // pet, partner, ad, company, walkRecord, reservation, feed, ...
+        // pet, partner, ad, company, walkRecord, reservation, feed, userTermsMapping, partnerVisitHistory, rewardHistory, ...
         val pets = petRepository.findAllByUserId(userId)
         pets.forEach { it.isDeleted = true }
         userRepository.delete(user)
@@ -359,6 +361,10 @@ class UserService(
         val partnerVisitHistories = partnerVisitHistoryRepository.findAllByUserId(userId)
         partnerVisitHistories.forEach { it.isDeleted = true }
         partnerVisitHistoryRepository.saveAll(partnerVisitHistories)
+
+        val rewardHistories = rewardHistoryRepository.findAllByUserId(userId)
+        rewardHistories.forEach { it.isDeleted = true }
+        rewardHistoryRepository.saveAll(rewardHistories)
 
         userRepository.save(user)
 
