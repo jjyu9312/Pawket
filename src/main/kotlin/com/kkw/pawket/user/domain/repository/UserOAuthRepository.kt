@@ -11,4 +11,6 @@ interface UserOAuthRepository : JpaRepository<UserOAuth, String> {
         provider: OAuthProvider,
         providerUserId: String
     ): UserOAuth?
+
+    fun findAllByUserId(userId: String): List<UserOAuth>
 }
