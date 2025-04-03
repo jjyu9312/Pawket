@@ -1,6 +1,6 @@
 package com.kkw.pawket.spot.domain
 
-import com.kkw.pawket.ads.Company
+import com.kkw.pawket.ads.domain.Company
 import com.kkw.pawket.common.domain.BaseEntity
 import jakarta.persistence.*
 import java.util.*

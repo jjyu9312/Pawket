@@ -1,6 +1,6 @@
 package com.kkw.pawket.spot.service
 
-import com.kkw.pawket.ads.repository.CompanyRepository
+import com.kkw.pawket.ads.domain.repository.CompanyRepository
 import com.kkw.pawket.common.response.ApiResponseFactory
 import com.kkw.pawket.common.response.ResponseCode
 import com.kkw.pawket.spot.domain.ImportanceLevel
