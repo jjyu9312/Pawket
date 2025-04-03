@@ -7,7 +7,7 @@ import java.time.LocalDateTime
 import java.util.*
 
 @Entity
-data class PartnerVistHistory(
+data class PartnerVisitHistory(
     @EmbeddedId
     val id: UserPartnerVisitId,
 
