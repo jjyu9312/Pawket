@@ -29,21 +29,6 @@ data class Partner(
 
     ) : BaseEntity() {
 
-    constructor(
-        user: User,
-        name: String,
-        ownerName: String,
-        contactNumber: String,
-        link: String,
-    ) : this(
-        id = UUID.randomUUID().toString(),
-        user = user,
-        name = name,
-        ownerName = ownerName,
-        contactNumber = contactNumber,
-        link = link,
-    )
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -52,4 +37,22 @@ data class Partner(
     }
 
     override fun hashCode(): Int = id.hashCode()
+
+    companion object {
+        fun create(
+            user: User,
+            name: String,
+            ownerName: String,
+            contactNumber: String,
+            link: String,
+        ): Partner {
+            return Partner(
+                user = user,
+                name = name,
+                ownerName = ownerName,
+                contactNumber = contactNumber,
+                link = link
+            )
+        }
+    }
 }

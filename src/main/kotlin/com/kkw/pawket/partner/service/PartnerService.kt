@@ -22,7 +22,7 @@ class PartnerService(
                 ResponseCode.USER_NOT_FOUND.defaultMessage
             )
 
-        val partner = Partner(
+        val partner = Partner.create(
             user = user,
             name = req.name,
             ownerName = req.ownerName,
