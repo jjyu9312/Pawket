@@ -28,21 +28,6 @@ data class Notice(
 
     ) : BaseEntity() {
 
-    constructor(
-        title: String,
-        content: String,
-        targetGroup: TargetGroup,
-        isRequired: Boolean,
-        priority: Int
-    ) : this(
-        id = UUID.randomUUID().toString(),
-        title = title,
-        content = content,
-        targetGroup = targetGroup,
-        isRequired = isRequired,
-        priority = priority
-    )
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -51,4 +36,21 @@ data class Notice(
     }
 
     override fun hashCode(): Int = id.hashCode()
+
+    companion object {
+        fun create(
+            title: String,
+            content: String,
+            targetGroup: TargetGroup,
+            isRequired: Boolean,
+            priority: Int
+        ): Notice = Notice(
+            id = UUID.randomUUID().toString(),
+            title = title,
+            content = content,
+            targetGroup = targetGroup,
+            isRequired = isRequired,
+            priority = priority
+        )
+    }
 }
