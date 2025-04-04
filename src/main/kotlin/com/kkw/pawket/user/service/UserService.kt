@@ -17,7 +17,6 @@ import com.kkw.pawket.pet.domain.Sex
 import com.kkw.pawket.pet.domain.repository.PetRepository
 import com.kkw.pawket.reservation.domain.repository.ReservationRepository
 import com.kkw.pawket.reward.domain.repository.RewardHistoryRepository
-import com.kkw.pawket.terms.domain.UserTermsMapping
 import com.kkw.pawket.terms.domain.repository.UserTermsMappingRepository
 import com.kkw.pawket.user.domain.Gender
 import com.kkw.pawket.user.domain.User
@@ -335,13 +334,14 @@ class UserService(
         partners.forEach { it.isDeleted = true }
         partnerRepository.saveAll(partners)
 
-        val ads = adsRepository.findAllByUserId(userId)
-        ads.forEach { it.isDeleted = true }
-        adsRepository.saveAll(ads)
-
         val companies = companyRepository.findAllByUserId(userId)
         companies.forEach { it.isDeleted = true }
         companyRepository.saveAll(companies)
+
+        val ads = adsRepository.findAllByCompanyIn(companies)
+        ads.forEach { it.isDeleted = true }
+        adsRepository.saveAll(ads)
+
 
         val walkRecords = walkRecordRepository.findAllByUserId(userId)
         walkRecords.forEach { it.isDeleted = true }
