@@ -71,4 +71,3 @@ data class Spot(
         )
     }
 }
-}
