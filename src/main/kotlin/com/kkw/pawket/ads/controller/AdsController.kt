@@ -42,14 +42,14 @@ class AdsController(
     }
 
     /*
-    TODO Ads 조회
+    TODO Ads Company 조회
      */
 
     /*
-    TODO Ads 수정
+    TODO Ads Company 수정
      */
 
     /*
-    TODO Ads 삭제
+    TODO Ads Company 삭제
      */
 }
