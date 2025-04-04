@@ -39,27 +39,6 @@ data class Spot(
 
     ) : BaseEntity() {
 
-    constructor(
-        company: Company,
-        name: String,
-        detail: String,
-        importanceLevel: ImportanceLevel,
-        addressBasic: String,
-        addressLat: Double,
-        addressLng: Double,
-        addressDetail: String? = null,
-    ) : this(
-        id = UUID.randomUUID().toString(),
-        company = company,
-        name = name,
-        detail = detail,
-        importanceLevel = importanceLevel,
-        addressBasic = addressBasic,
-        addressLat = addressLat,
-        addressLng = addressLng,
-        addressDetail = addressDetail,
-    )
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -68,4 +47,28 @@ data class Spot(
     }
 
     override fun hashCode(): Int = id.hashCode()
+
+    companion object {
+        fun create(
+            company: Company,
+            name: String,
+            detail: String,
+            importanceLevel: ImportanceLevel,
+            addressBasic: String,
+            addressLat: Double,
+            addressLng: Double,
+            addressDetail: String? = null,
+        ): Spot = Spot(
+            id = UUID.randomUUID().toString(),
+            company = company,
+            name = name,
+            detail = detail,
+            importanceLevel = importanceLevel,
+            addressBasic = addressBasic,
+            addressLat = addressLat,
+            addressLng = addressLng,
+            addressDetail = addressDetail,
+        )
+    }
+}
 }

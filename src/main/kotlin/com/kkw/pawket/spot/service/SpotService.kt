@@ -1,7 +1,6 @@
 package com.kkw.pawket.spot.service
 
 import com.kkw.pawket.ads.domain.repository.CompanyRepository
-import com.kkw.pawket.common.response.ApiResponseFactory
 import com.kkw.pawket.common.response.ResponseCode
 import com.kkw.pawket.spot.domain.ImportanceLevel
 import com.kkw.pawket.spot.domain.Spot
@@ -26,9 +25,7 @@ class SpotService
                 ResponseCode.COMPANY_NOT_FOUND.defaultMessage
             )
 
-
-
-        val spot = Spot(
+        val spot = Spot.create(
             company = company,
             name = req.name,
             detail = req.detail,
