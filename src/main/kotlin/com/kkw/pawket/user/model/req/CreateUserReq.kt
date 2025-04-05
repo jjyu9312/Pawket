@@ -30,7 +30,7 @@ data class CreateUserReq (
         val sex: String,
         val weight: Int,
         val isNeutered: Boolean,
-        val dogDescription: String,
+        val petDescription: String,
         val foodBrand: String,
         val foodName: String,
         val foodType: String,
