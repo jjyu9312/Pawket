@@ -1,11 +1,10 @@
 package com.kkw.pawket.walkRecord.model.req
 
 import com.fasterxml.jackson.annotation.JsonFormat
+import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDateTime
 
 data class CreateWalkRecordReq(
+    @Schema(description = "펫 ID", example = "12kdjalkdjkasldjl123")
     val petId: String,
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    val startedAt: LocalDateTime,
 )
