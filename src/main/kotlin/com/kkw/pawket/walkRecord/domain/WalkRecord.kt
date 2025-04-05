@@ -21,7 +21,7 @@ class WalkRecord(
     val petId: String,
 
     @Column(nullable = false)
-    val startedAt: LocalDateTime,
+    val startedAt: LocalDateTime = LocalDateTime.now(),
 
     @Column(nullable = true)
     var finishedAt: LocalDateTime? = null,
@@ -44,12 +44,11 @@ class WalkRecord(
         fun create(
             user: User,
             petId: String,
-            startedAt: LocalDateTime,
         ): WalkRecord = WalkRecord(
             id = UUID.randomUUID().toString(),
             user = user,
             petId = petId,
-            startedAt = startedAt,
+            startedAt = LocalDateTime.now(),
         )
     }
 

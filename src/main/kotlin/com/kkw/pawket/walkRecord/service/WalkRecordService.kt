@@ -6,6 +6,7 @@ import com.kkw.pawket.common.response.ResponseCode
 import com.kkw.pawket.user.domain.repository.UserRepository
 import com.kkw.pawket.walkRecord.domain.WalkRecord
 import com.kkw.pawket.walkRecord.domain.repository.WalkRecordRepository
+import com.kkw.pawket.walkRecord.model.req.CompleteWalkReq
 import com.kkw.pawket.walkRecord.model.req.CreateWalkRecordReq
 import org.apache.coyote.BadRequestException
 import org.slf4j.LoggerFactory
@@ -20,7 +21,6 @@ class WalkRecordService (
     private val logger = LoggerFactory.getLogger(WalkRecordService::class.java)
     private val objectMapper = jacksonObjectMapper()
 
-
     fun createWalkRecord(userId: String, req: CreateWalkRecordReq): String {
         val user = userRepository.findByIdAndIsDeletedFalse(userId)
             ?: throw BadRequestException(
@@ -30,7 +30,6 @@ class WalkRecordService (
         val walkRecord = WalkRecord.create(
             user = user,
             petId = req.petId,
-            startedAt = req.startedAt,
         )
 
         walkRecordRepository.save(walkRecord)
@@ -38,11 +37,14 @@ class WalkRecordService (
         return walkRecord.id
     }
 
+
+
+
     // walk record 상세 정보를 JSON으로 변환
     fun createWalkLocationJson(
-        distance: String,
-        coordinateLat: String,
-        coordinateLng: String,
+        distance: Int, // m 기반
+        coordinateLat: Double,
+        coordinateLng: Double,
     ): String {
         val locationMap = mapOf(
             "distance" to distance,
@@ -50,5 +52,25 @@ class WalkRecordService (
             "coordinateLng" to coordinateLng,
         )
         return objectMapper.writeValueAsString(locationMap)
+    }
+
+    fun completeWalk(walkRecordId: String, req: CompleteWalkReq): String? {
+        val walkRecord = walkRecordRepository.findByIdAndIsDeletedFalse(walkRecordId)
+            ?: throw BadRequestException(
+                ResponseCode.WALK_RECORD_NOT_FOUND.defaultMessage
+            )
+
+        val distance = req.distance
+        val coordinateLat = req.coordinateLat
+        val coordinateLng = req.coordinateLng
+
+        val walkLocationJson = createWalkLocationJson(distance, coordinateLat, coordinateLng)
+
+        walkRecord.update(
+            finishedAt = req.finishedAt,
+            walkLocation = walkLocationJson,
+        )
+
+        return walkRecord.id
     }
 }
