@@ -11,6 +11,7 @@ enum class ResponseCode(val code: Int, val defaultMessage: String) {
     NOT_FOUND_IMAGE(40004, "이미지를 찾을 수 없습니다"),
     USER_NOT_FOUND(40010, "user가 존재하지 않습니다"),
     COMPANY_NOT_FOUND(40011, "company가 존재하지 않습니다"),
+    WALK_RECORD_NOT_FOUND(40012, "산책 기록이 존재하지 않습니다"),
     // NOTFOUND
 
 
