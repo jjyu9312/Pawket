@@ -41,8 +41,17 @@ data class User(
 
     ) : BaseEntity() {
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+        other as User
+        return id == other.id
+    }
+
+    override fun hashCode(): Int = id.hashCode()
+
     companion object {
-        fun createWithEmailOnly(email: String): User = User(
+        fun create(email: String): User = User(
             id = UUID.randomUUID().toString(),
             name = email,
             birth = LocalDate.now(),

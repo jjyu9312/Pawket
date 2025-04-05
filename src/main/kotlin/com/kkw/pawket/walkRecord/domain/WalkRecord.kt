@@ -8,7 +8,7 @@ import java.time.LocalDateTime
 import java.util.*
 
 @Entity
-data class WalkRecord(
+class WalkRecord(
     @Id
     @Column(nullable = false, columnDefinition = "CHAR(36)")
     val id: String = UUID.randomUUID().toString(),
@@ -21,47 +21,43 @@ data class WalkRecord(
     val petId: String,
 
     @Column(nullable = false)
-    val startDateTime: LocalDateTime,
+    val startedAt: LocalDateTime,
 
     @Column(nullable = true)
-    val endDateTime: LocalDateTime? = null,
+    var finishedAt: LocalDateTime? = null,
 
-    @Column(nullable = false, columnDefinition = "TEXT")
-    val walkLocation: String? = null,
+    @Column(nullable = true, columnDefinition = "TEXT")
+    var walkLocation: String? = null,
 
 ): BaseEntity() {
-    companion object {
-        private val objectMapper = jacksonObjectMapper()
 
-        // walk record 상세 정보를 JSON으로 변환
-        fun createWalkLocationJson(
-            distance: String,
-            coordinateLat: String,
-            coordinateLng: String,
-        ): String {
-            val locationMap = mapOf(
-                "distance" to distance,
-                "coordinateLat" to coordinateLat,
-                "coordinateLng" to coordinateLng,
-            )
-            return objectMapper.writeValueAsString(locationMap)
-        }
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+        other as WalkRecord
+        return id == other.id
     }
 
-    constructor(
-        user: User,
-        petId: String,
-        startDateTime: LocalDateTime,
-        endDateTime: LocalDateTime,
-        distance: String,
-        coordinateLat: String,
-        coordinateLng: String,
-    ) : this(
-        id = UUID.randomUUID().toString(),
-        user = user,
-        petId = petId,
-        startDateTime = startDateTime,
-        endDateTime = endDateTime,
-        walkLocation = createWalkLocationJson(distance, coordinateLat, coordinateLng),
-    )
+    override fun hashCode(): Int = id.hashCode()
+
+    companion object {
+        fun create(
+            user: User,
+            petId: String,
+            startedAt: LocalDateTime,
+        ): WalkRecord = WalkRecord(
+            id = UUID.randomUUID().toString(),
+            user = user,
+            petId = petId,
+            startedAt = startedAt,
+        )
+    }
+
+    fun update(
+        finishedAt: LocalDateTime,
+        walkLocation: String,
+    ) {
+        this.finishedAt = finishedAt
+        this.walkLocation = walkLocation
+    }
 }

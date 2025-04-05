@@ -7,15 +7,18 @@ import java.util.*
 
 @Entity
 data class RewardHistory(
-    @Id
-    @Column(nullable = false, columnDefinition = "CHAR(36)")
-    val id: String = UUID.randomUUID().toString(),
+    @EmbeddedId
+    val id: RewardHistoryId,
 
-    @JoinColumn(name = "user_id")
+    @MapsId("userId")
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", columnDefinition = "CHAR(36)")
     val user: User,
 
-    // TODO : RewardHistory에 사용한 항목 필드 추가
+    @MapsId("rewardId")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reward_id", columnDefinition = "CHAR(36)")
+    val reward: Reward,
 
     @Column(nullable = false)
     val beforeCoin: Int,

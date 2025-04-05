@@ -2,6 +2,7 @@ package com.kkw.pawket.pet.domain
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.kkw.pawket.common.domain.BaseEntity
+import com.kkw.pawket.pet.model.req.CreatePetReq
 import com.kkw.pawket.user.domain.User
 import jakarta.persistence.*
 import java.util.*
@@ -50,63 +51,47 @@ data class Pet(
     var isNeutered: Boolean = false,
 
     @Column(nullable = false, columnDefinition = "TEXT") // JSON 데이터 저장
-    var dogDetail: String,
+    var petDetail: String? = null,
 
     ) : BaseEntity() {
-    companion object {
-        private val objectMapper = jacksonObjectMapper()
 
-        // Dog 상세 정보를 JSON으로 변환
-        fun createDogDetailJson(
-            dogDescription: String,
-            foodBrand: String, // ,로 연결
-            foodName: String, // ,로 연결
-            foodType: String // ,로 연결
-        ): String {
-            val detailMap = mapOf(
-                "dogDescription" to dogDescription,
-                "foodBrand" to foodBrand,
-                "foodName" to foodName,
-                "foodType" to foodType
-            )
-            return objectMapper.writeValueAsString(detailMap)
-        }
+
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+        other as Pet
+        return id == other.id
     }
 
-    constructor(
-        user: User,
-        registrationNum: String? = null,
-        name: String,
-        type: PetType,
-        dogType: DogType? = null,
-        mainImageUrl: String? = null,
-        imageUrls: String? = null,
-        age: Int,
-        sex: Sex,
-        weight: Int,
-        isNeutered: Boolean,
-        dogDescription: String,
-        foodBrand: String,
-        foodName: String,
-        foodType: String,
-    ) : this(
-        id = UUID.randomUUID().toString(),
-        user = user,
-        registrationNum = registrationNum,
-        name = name,
-        type = type,
-        dogType = dogType,
-        mainImageUrl = mainImageUrl,
-        imageUrls = imageUrls,
-        age = age,
-        sex = sex,
-        weight = weight,
-        isNeutered = isNeutered,
-        dogDetail = createDogDetailJson(
-            dogDescription,
-            foodBrand,
-            foodName,
-            foodType
-        ) // JSON 변환 후 저장
-    )
+    override fun hashCode(): Int = id.hashCode()
+
+    companion object {
+        fun create(
+            user: User,
+            name: String,
+            type: PetType,
+            dogType: DogType? = null,
+            mainImageUrl: String? = null,
+            imageUrls: String? = null,
+            age: Int,
+            weight: Int,
+            sex: Sex,
+            isNeutered: Boolean = false,
+            registrationNum: String? = null
+        ): Pet = Pet(
+            id = UUID.randomUUID().toString(),
+            user = user,
+            name = name,
+            type = type,
+            dogType = dogType,
+            mainImageUrl = mainImageUrl,
+            imageUrls = imageUrls,
+            age = age,
+            weight = weight,
+            sex = sex,
+            isNeutered = isNeutered,
+            registrationNum = registrationNum,
+        )
+    }
 }

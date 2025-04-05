@@ -13,14 +13,14 @@ import java.time.LocalDateTime
 abstract class BaseEntity {
     @CreatedDate
     @Column(nullable = false, updatable = false)
-    var createdDateTime: LocalDateTime = LocalDateTime.now()
+    var createdAt: LocalDateTime = LocalDateTime.now()
         protected set
 
     @LastModifiedDate
     @Column(nullable = false)
-    var updatedDateTime: LocalDateTime = LocalDateTime.now()
+    var updatedAt: LocalDateTime = LocalDateTime.now()
         protected set
 
     @Column(nullable = false)
-    val isDeleted: Boolean = false
+    var isDeleted: Boolean = false
 }

@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface PetRepository : JpaRepository<Pet, String> {
+    fun findAllByUserId(userId: String): List<Pet>
 }

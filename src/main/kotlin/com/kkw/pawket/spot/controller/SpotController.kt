@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/v1/spot")
 class SpotController(private val spotService: SpotService) {
+    /*
+    TODO 스팟 생성
+     */
     @PostMapping
     fun createSpot(
         @RequestParam companyId: String,
