@@ -64,6 +64,7 @@ class UserService(
     private val partnerVisitHistoryRepository: PartnerVisitHistoryRepository,
     private val rewardHistoryRepository: RewardHistoryRepository,
     private val s3Service: S3Service,
+    private val petService: PetService,
 ) {
     @Value("\${app.backend-url}")
     private lateinit var backendUrl: String
@@ -86,41 +87,32 @@ class UserService(
 
     @Transactional(rollbackOn = [Exception::class])
     fun handleOAuthCallback(provider: String, code: String): LoginUserRes {
+        logger.warn("레거시 OAuth 콜백 방식 사용: Spring Security의 OAuth2 통합 사용을 권장합니다")
+
         val tokenResponse = getAccessToken(provider, code)
         val userInfo = getUserInfo(provider, tokenResponse.accessToken)
 
-        // 1. 기존 OAuth 정보 확인
-        val oauthProvider = OAuthProvider.valueOf(provider.uppercase())
-        val existingOAuth = userOAuthRepository.findByProviderAndProviderUserId(
-            oauthProvider,
-            userInfo.providerUserId
+        val oauthProvider = OAuthProvider.fromString(provider)!!
+
+        // 리팩토링된 메서드 활용
+        val user = findOrCreateOAuthUser(
+            email = userInfo.email,
+            provider = oauthProvider,
+            providerUserId = userInfo.providerUserId
         )
 
-        val user = if (existingOAuth != null) {
-            existingOAuth.user
-        } else {
-            // 1. 유저 생성 (소셜 로그인만으로 기본 생성)
-            val newUser = User.create(userInfo.email)
-            userRepository.save(newUser)
+        // 개선된 JWT 토큰 생성 메서드 활용
+        val jwtToken = jwtTokenProvider.createToken(
+            id = user.id,
+            email = user.email,
+            provider = oauthProvider.name
+        )
 
-            // 2. OAuth 연동 저장
-            val newOAuth = UserOAuth(
-                user = newUser,
-                provider = OAuthProvider.valueOf(provider.uppercase()),
-                providerUserId = userInfo.providerUserId,
-            )
-            userOAuthRepository.save(newOAuth)
-
-            newUser
-        }
-
-
-        val jwtToken = jwtTokenProvider.createToken(userInfo.email)
-        logger.info("User info: $userInfo, JWT token: $jwtToken")
+        logger.info("User info: email=${user.email}, id=${user.id}, JWT token created")
 
         return LoginUserRes(
             id = user.id,
-            provider = provider,
+            provider = provider.lowercase(),
             token = jwtToken
         )
     }
@@ -175,6 +167,32 @@ class UserService(
             provider = provider,
             providerUserId = providerUserId,
         )
+    }
+
+    // UserService에 새로운 메서드 추가
+    fun findOrCreateOAuthUser(email: String, provider: OAuthProvider, providerUserId: String): User {
+        // 1. 기존 OAuth 정보 확인
+        val existingOAuth = userOAuthRepository.findByProviderAndProviderUserId(
+            provider, providerUserId
+        )
+
+        return if (existingOAuth != null) {
+            existingOAuth.user
+        } else {
+            // 1. 유저 생성 (소셜 로그인만으로 기본 생성)
+            val newUser = User.create(email)
+            userRepository.save(newUser)
+
+            // 2. OAuth 연동 저장
+            val newOAuth = UserOAuth(
+                user = newUser,
+                provider = provider,
+                providerUserId = providerUserId,
+            )
+            userOAuthRepository.save(newOAuth)
+
+            newUser
+        }
     }
 
     fun logout(): String {
@@ -257,7 +275,7 @@ class UserService(
         if (req.petInfo != null) {
             val type = PetType.fromString(req.petInfo.type)!!
             val sex = Sex.fromString(req.petInfo.sex)!!
-            val pet = Pet(
+            val pet = Pet.create(
                 user = user,
                 registrationNum = req.petInfo.registrationNum,
                 name = req.petInfo.name,
@@ -269,18 +287,17 @@ class UserService(
                 sex = sex,
                 weight = req.petInfo.weight,
                 isNeutered = req.petInfo.isNeutered,
-                dogDescription = req.petInfo.dogDescription,
-                foodBrand = req.petInfo.foodBrand,
-                foodName = req.petInfo.foodName,
-                foodType = req.petInfo.foodType,
             )
 
-            if (petRepository.existsById(pet.id)) {
-                logger.error("ID already exists: ${pet.id}")
-                throw BadRequestException(
-                    ResponseCode.DOG_CREATION_FAILED.withCustomMessage("이미 존재하는 dog - ${pet.id}")
-                )
-            }
+            val petDetailJson = petService.createPetDetailJson(
+                petDescription = req.petInfo.petDescription,
+                foodBrand = req.petInfo.foodBrand,
+                foodName = req.petInfo.foodName,
+                foodType = req.petInfo.foodType
+            )
+
+            pet.petDetail = petDetailJson
+
             petRepository.save(pet)
         }
 

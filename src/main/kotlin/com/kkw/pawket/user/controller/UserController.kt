@@ -69,9 +69,7 @@ class UserController (
     )
     @GetMapping("/oauth/callback/{provider}")
     fun oauthCallback(
-        @Parameter(description = "OAuth 제공자 (예: google, kakao, naver)", required = true)
         @PathVariable provider: String,
-        @Parameter(description = "OAuth 인증 코드", required = true)
         @RequestParam code: String
     ): ResponseEntity<ApiResponse<LoginUserRes>> {
         return try {

@@ -1,14 +1,25 @@
 package com.kkw.pawket.common.service
 
+import com.kkw.pawket.user.domain.OAuthProvider
+import com.kkw.pawket.user.domain.User
+import com.kkw.pawket.user.domain.UserOAuth
+import com.kkw.pawket.user.domain.repository.UserOAuthRepository
+import com.kkw.pawket.user.domain.repository.UserRepository
+import com.kkw.pawket.user.service.UserService
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
+import org.slf4j.LoggerFactory
 import org.springframework.security.core.Authentication
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler
 
-
 class OAuth2SuccessHandler(
-    private val jwtTokenProvider: JwtTokenProvider
-) : AuthenticationSuccessHandler { // 역할: OAuth2 로그인 성공 시 JWT 토큰을 생성하여 클라이언트로 반환하는 역할
+    private val jwtTokenProvider: JwtTokenProvider,
+    private val userService: UserService,
+) : AuthenticationSuccessHandler {
+
+    private val logger = LoggerFactory.getLogger(this::class.java)
+
     override fun onAuthenticationSuccess(
         request: HttpServletRequest,
         response: HttpServletResponse,
@@ -16,13 +27,40 @@ class OAuth2SuccessHandler(
     ) {
         val principal = authentication.principal
                 as org.springframework.security.oauth2.core.user.DefaultOAuth2User
-        val email = principal.getAttribute<String>("email")
 
-        val token = jwtTokenProvider.createToken(email!!)
+        // 이메일 정보 추출
+        val email = principal.getAttribute<String>("email") ?: "unknown@user.com"
 
-        // JWT를 클라이언트로 반환 (예: JSON 응답)
+        // 제공자 정보 추출
+        val clientRegistration = (authentication.authorities.firstOrNull {
+            it is OAuth2AuthenticationToken
+        } as? OAuth2AuthenticationToken)?.authorizedClientRegistrationId
+
+        val provider = when(clientRegistration?.lowercase()) {
+            "google" -> OAuthProvider.GOOGLE
+            "kakao" -> OAuthProvider.KAKAO
+            "apple" -> OAuthProvider.APPLE
+            else -> throw IllegalArgumentException("지원하지 않는 OAuth 제공자입니다: $clientRegistration")
+        }
+
+        // 프로바이더의 사용자 ID 추출
+        val providerUserId = when(provider) {
+            OAuthProvider.GOOGLE -> principal.getAttribute<String>("sub")
+            OAuthProvider.KAKAO -> principal.getAttribute<String>("id")?.toString()
+            OAuthProvider.APPLE -> principal.getAttribute<String>("sub")
+        } ?: throw IllegalArgumentException("OAuth 제공자 ID를 찾을 수 없습니다")
+
+        // UserService의 메서드를 활용하여 사용자 찾기 또는 생성
+        val user = userService.findOrCreateOAuthUser(email, provider, providerUserId)
+
+        // 토큰 생성
+        val token = jwtTokenProvider.createToken(user.id, user.email, provider.name)
+
+        logger.info("사용자 로그인 성공: userId=${user.id}, email=${user.email}, provider=$provider")
+
+        // JWT를 클라이언트로 반환
         response.contentType = "application/json"
         response.characterEncoding = "UTF-8"
-        response.writer.write("""{"token": "$token"}""")
+        response.writer.write("""{"id": "${user.id}", "token": "$token", "provider": "${provider.name.lowercase()}"}""")
     }
 }

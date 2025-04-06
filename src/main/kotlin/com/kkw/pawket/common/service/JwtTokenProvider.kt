@@ -1,5 +1,7 @@
 package com.kkw.pawket.common.service
 
+import com.kkw.pawket.user.domain.OAuthProvider
+import com.kkw.pawket.user.domain.User
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import org.springframework.beans.factory.annotation.Value
@@ -26,8 +28,11 @@ class JwtTokenProvider {
     /**
      * JWT 토큰 생성
      */
-    fun createToken(email: String): String {
+    fun createToken(id: String, email: String, provider: String): String {
         val claims = Jwts.claims().setSubject(email)
+        claims["userId"] = id
+        claims["provider"] = provider
+
         val now = Date()
         val validity = Date(now.time + validityInMilliseconds)
 
@@ -35,7 +40,7 @@ class JwtTokenProvider {
             .setClaims(claims)
             .setIssuedAt(now)
             .setExpiration(validity)
-            .signWith(key)  // Key 객체를 사용
+            .signWith(key)
             .compact()
     }
 
@@ -56,14 +61,35 @@ class JwtTokenProvider {
     }
 
     /**
-     * JWT 토큰에서 이메일(사용자 정보) 추출
+     * JWT 토큰에서 사용자 ID 추출
      */
-    fun getEmailFromToken(token: String): String {
-        return Jwts.parserBuilder()
-            .setSigningKey(key) // Key 객체를 사용
-            .build()
-            .parseClaimsJws(token)
-            .body
-            .subject
+    fun getUserIdFromToken(token: String): String? {
+        return try {
+            Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .body
+                .get("userId", String::class.java)
+        } catch (e: Exception) {
+            null
+        }
     }
+
+    /**
+     * JWT 토큰에서 OAuth 제공자 추출
+     */
+    fun getProviderFromToken(token: String): OAuthProvider? {
+        return try {
+            val providerString = Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .body
+                .get("provider", String::class.java)
+
+            OAuthProvider.valueOf(providerString)
+        } catch (e: Exception) {
+            null
+        }
 }
