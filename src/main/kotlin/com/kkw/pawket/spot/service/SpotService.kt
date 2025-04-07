@@ -1,12 +1,12 @@
 package com.kkw.pawket.spot.service
 
 import com.kkw.pawket.ads.domain.repository.CompanyRepository
+import com.kkw.pawket.common.exception.BadRequestException
 import com.kkw.pawket.common.response.ResponseCode
 import com.kkw.pawket.spot.domain.ImportanceLevel
 import com.kkw.pawket.spot.domain.Spot
 import com.kkw.pawket.spot.domain.repository.SpotRepository
 import com.kkw.pawket.spot.model.req.CreateSpotReq
-import org.apache.coyote.BadRequestException
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
@@ -22,7 +22,7 @@ class SpotService
 
         val company = companyRepository.findByIdAndIsDeletedFalse(companyId)
             ?: throw BadRequestException(
-                ResponseCode.COMPANY_NOT_FOUND.defaultMessage
+                ResponseCode.COMPANY_NOT_FOUND
             )
 
         val spot = Spot.create(

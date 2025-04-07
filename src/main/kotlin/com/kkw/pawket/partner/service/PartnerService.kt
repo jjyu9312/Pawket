@@ -1,5 +1,6 @@
 package com.kkw.pawket.partner.service
 
+import com.kkw.pawket.common.exception.BadRequestException
 import com.kkw.pawket.common.response.ResponseCode
 import com.kkw.pawket.partner.domain.Partner
 import com.kkw.pawket.partner.domain.repository.PartnerRepository
@@ -7,7 +8,6 @@ import com.kkw.pawket.partner.model.req.CreatePartnerReq
 import com.kkw.pawket.partner.model.res.PartnerInfo
 import com.kkw.pawket.partner.model.res.PartnerRegistrationStatusRes
 import com.kkw.pawket.user.domain.repository.UserRepository
-import org.apache.coyote.BadRequestException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -18,9 +18,7 @@ class PartnerService(
 ) {
     fun createPartner(userId: String, req: CreatePartnerReq): String {
         val user = userRepository.findByIdAndIsDeletedFalse(userId)
-            ?: throw BadRequestException(
-                ResponseCode.USER_NOT_FOUND.defaultMessage
-            )
+            ?: throw BadRequestException(ResponseCode.USER_NOT_FOUND)
 
         val partner = Partner.create(
             user = user,
@@ -39,7 +37,7 @@ class PartnerService(
     fun checkPartnerRegistration(userId: String): PartnerRegistrationStatusRes {
         // 사용자 존재 여부 확인
         if (!userRepository.existsByIdAndIsDeletedFalse(userId)) {
-            throw BadRequestException("사용자 정보를 찾을 수 없습니다.")
+            throw BadRequestException(ResponseCode.USER_NOT_FOUND)
         }
 
         // 제휴업체 조회

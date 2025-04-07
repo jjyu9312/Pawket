@@ -1,5 +1,6 @@
 package com.kkw.pawket.terms.service
 
+import com.kkw.pawket.common.exception.BadRequestException
 import com.kkw.pawket.common.response.ResponseCode
 import com.kkw.pawket.terms.domain.Terms
 import com.kkw.pawket.terms.domain.UserTermsMapping
@@ -10,7 +11,6 @@ import com.kkw.pawket.terms.model.req.TermsCreateReq
 import com.kkw.pawket.terms.model.res.RequiredTermsAgreeCheckRes
 import com.kkw.pawket.terms.model.res.TermsListRes
 import com.kkw.pawket.user.domain.repository.UserRepository
-import org.apache.coyote.BadRequestException
 import org.springframework.stereotype.Service
 
 @Service
@@ -47,7 +47,7 @@ class TermsService(
     fun agreeToTerms(userId: String, agreeTermsList: List<String>) {
         val user = userRepository.findById(userId).orElseThrow {
             throw BadRequestException(
-                ResponseCode.USER_NOT_FOUND.defaultMessage
+                ResponseCode.USER_NOT_FOUND
             )
         }
 
@@ -59,7 +59,7 @@ class TermsService(
         val duplicatedTerms = termsList.filter { alreadyAgreedTermsIdList.contains(it.id) }
         if (duplicatedTerms.isNotEmpty()) {
             throw BadRequestException(
-                ResponseCode.ALREADY_AGREED_TERMS.defaultMessage
+                ResponseCode.ALREADY_AGREED_TERMS
             )
         }
 
@@ -81,7 +81,7 @@ class TermsService(
     fun checkAgreedTerms(userId: String): RequiredTermsAgreeCheckRes? {
         userRepository.findById(userId).orElseThrow {
             throw BadRequestException(
-                ResponseCode.USER_NOT_FOUND.defaultMessage
+                ResponseCode.USER_NOT_FOUND
             )
         }
 

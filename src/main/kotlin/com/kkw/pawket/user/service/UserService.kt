@@ -2,6 +2,9 @@ package com.kkw.pawket.user.service
 
 import com.kkw.pawket.ads.domain.repository.AdsRepository
 import com.kkw.pawket.ads.domain.repository.CompanyRepository
+import com.kkw.pawket.common.exception.BadRequestException
+import com.kkw.pawket.common.exception.ServerException
+import com.kkw.pawket.common.exception.UnAuthorizedException
 import com.kkw.pawket.common.response.ResponseCode
 import com.kkw.pawket.common.service.JwtTokenProvider
 import com.kkw.pawket.common.service.OAuthProviderEndpoints
@@ -33,7 +36,6 @@ import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.servlet.http.Cookie
 import jakarta.transaction.Transactional
-import org.apache.coyote.BadRequestException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.repository.findByIdOrNull
@@ -41,6 +43,7 @@ import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.stereotype.Service
+import org.springframework.web.client.HttpClientErrorException.Unauthorized
 import org.springframework.web.client.RestTemplate
 import java.time.LocalDateTime
 
@@ -136,9 +139,7 @@ class UserService(
             requestBody,
             OAuthTokenResponse::class.java
         )
-        return response.body ?: throw RuntimeException(
-            ResponseCode.OAUTH_TOKEN_INVALID.defaultMessage
-        )
+        return response.body ?: throw UnAuthorizedException(ResponseCode.INVALID_TOKEN)
     }
 
     private fun getUserInfo(provider: String, accessToken: String): OAuthUser {
@@ -155,9 +156,7 @@ class UserService(
             entity,
             Map::class.java
         )
-        val body = response.body ?: throw RuntimeException(
-            ResponseCode.OAUTH_USERINFO_INVALID.defaultMessage
-        )
+        val body = response.body ?: throw UnAuthorizedException(ResponseCode.OAUTH_USERINFO_INVALID)
 
         val email = body["email"] as? String ?: "unknown@${provider}.com"
         val providerUserId = (body["sub"] ?: body["id"])?.toString()
@@ -220,12 +219,14 @@ class UserService(
 
         val gender = Gender.fromString(req.gender)
             ?: throw BadRequestException(
-                ResponseCode.INVALID_GENDER_TYPE.withCustomMessage("- ${req.gender}")
+                ResponseCode.INVALID_GENDER_TYPE,
+                "- ${req.gender}"
             )
 
         val user = userRepository.findByIdOrNull(userId)
             ?: throw BadRequestException(
-                ResponseCode.USER_NOT_FOUND.withCustomMessage("- $userId")
+                ResponseCode.USER_NOT_FOUND,
+                "- $userId"
             )
 
         user.update(
@@ -241,14 +242,16 @@ class UserService(
         if (!user.isValidEmail()) {
             logger.error("Invalid email format: ${user.email}")
             throw BadRequestException(
-                ResponseCode.INVALID_EMAIL_FORMAT.withCustomMessage(" - ${user.email}")
+                ResponseCode.INVALID_EMAIL_FORMAT,
+                " - ${user.email}"
             )
         }
 
         if (userRepository.existsById(user.id)) {
             logger.error("User already exists: ${user.id}")
             throw BadRequestException(
-                ResponseCode.USER_CREATION_FAILED.withCustomMessage("이미 존재하는 user - ${user.id}")
+                ResponseCode.USER_CREATION_FAILED,
+                "이미 존재하는 user - ${user.id}"
             )
         }
 
@@ -257,7 +260,8 @@ class UserService(
         req.petInfo?.imageUrls?.forEach {
             val filePath = it.originalFilename
                 ?: throw BadRequestException(
-                    ResponseCode.NOT_FOUND_IMAGE.withCustomMessage("- ${it.originalFilename}")
+                    ResponseCode.NOT_FOUND_IMAGE,
+                    "- ${it.originalFilename}"
                 )
 
             try {
@@ -313,7 +317,7 @@ class UserService(
             "google" -> oauthProviderProperties.google
             "kakao" -> oauthProviderProperties.kakao
             "apple" -> oauthProviderProperties.apple
-            else -> throw IllegalArgumentException("OAuth2 Provider 정보를 찾을 수 없습니다: $provider")
+            else -> throw BadRequestException(ResponseCode.INVALID_OAUTH_PROVIDER)
         }
         logger.info("Provider info: $providerInfo")
         return providerInfo
@@ -324,7 +328,7 @@ class UserService(
             "google" -> oauthProviderEndpoints.google
             "kakao" -> oauthProviderEndpoints.kakao
             "apple" -> oauthProviderEndpoints.apple
-            else -> throw IllegalArgumentException("OAuth2 Provider 설정을 찾을 수 없습니다: $provider")
+            else -> throw BadRequestException(ResponseCode.INVALID_OAUTH_PROVIDER_ENDPOINT)
         }
         logger.info("Provider endpoints: $providerEndpoint")
         return providerEndpoint
@@ -333,9 +337,7 @@ class UserService(
     @Transactional(rollbackOn = [Exception::class])
     fun deleteUser(userId: String): Boolean {
         val user = userRepository.findByIdAndIsDeletedFalse(userId)
-            ?: throw BadRequestException(
-                ResponseCode.USER_NOT_FOUND.defaultMessage
-            )
+            ?: throw BadRequestException(ResponseCode.USER_NOT_FOUND)
 
         user.isDeleted = true
 

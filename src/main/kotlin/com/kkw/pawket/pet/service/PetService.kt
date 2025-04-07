@@ -1,6 +1,7 @@
 package com.kkw.pawket.pet.service
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.kkw.pawket.common.exception.BadRequestException
 import com.kkw.pawket.common.response.ResponseCode
 import com.kkw.pawket.pet.domain.DogType
 import com.kkw.pawket.pet.domain.Pet
@@ -9,7 +10,6 @@ import com.kkw.pawket.pet.domain.Sex
 import com.kkw.pawket.pet.domain.repository.PetRepository
 import com.kkw.pawket.pet.model.req.CreatePetReq
 import com.kkw.pawket.user.domain.repository.UserRepository
-import org.apache.coyote.BadRequestException
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
@@ -23,9 +23,7 @@ class PetService(
 
     fun createPet(userId: String, req: CreatePetReq): String {
         val user = userRepository.findByIdAndIsDeletedFalse(userId)
-            ?: throw BadRequestException(
-                ResponseCode.USER_NOT_FOUND.defaultMessage
-            )
+            ?: throw BadRequestException(ResponseCode.USER_NOT_FOUND)
 
         val pet = Pet.create(
             user = user,

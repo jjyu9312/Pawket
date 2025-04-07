@@ -3,10 +3,10 @@ package com.kkw.pawket.ads.service
 import com.kkw.pawket.ads.domain.Company
 import com.kkw.pawket.ads.domain.repository.AdsRepository
 import com.kkw.pawket.ads.domain.repository.CompanyRepository
+import com.kkw.pawket.common.exception.BadRequestException
 import com.kkw.pawket.common.response.ResponseCode
 import com.kkw.pawket.partner.model.req.CreateCompanyReq
 import com.kkw.pawket.user.domain.repository.UserRepository
-import org.apache.coyote.BadRequestException
 import org.springframework.stereotype.Service
 
 @Service
@@ -18,7 +18,7 @@ class AdsService(
     fun createCompany(userId: String, req: CreateCompanyReq): String {
         val user = userRepository.findByIdAndIsDeletedFalse(userId)
             ?: throw BadRequestException(
-                ResponseCode.USER_NOT_FOUND.defaultMessage
+                ResponseCode.USER_NOT_FOUND
             )
 
         val company = Company(
