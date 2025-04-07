@@ -33,9 +33,6 @@ class WalkRecordService (
         return walkRecord.id
     }
 
-
-
-
     // walk record 상세 정보를 JSON으로 변환
     fun createWalkLocationJson(
         distance: Int, // m 기반
