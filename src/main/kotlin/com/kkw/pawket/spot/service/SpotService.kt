@@ -16,7 +16,7 @@ class SpotService
     private val spotRepository: SpotRepository,
     private val companyRepository: CompanyRepository,
 ) {
-    private val logger = LoggerFactory.getLogger(SpotService::class.java)
+    private val logger = LoggerFactory.getLogger(this::class.java)
 
     fun createSpot(companyId: String, req: CreateSpotReq): String {
 
@@ -35,6 +35,8 @@ class SpotService
             addressLng = req.addressLng,
             addressDetail = req.addressDetail,
         )
+
+        logger.info("Saving spot: $spot")
 
         spotRepository.save(spot)
 
