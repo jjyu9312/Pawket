@@ -8,6 +8,7 @@ import com.kkw.pawket.walkRecord.model.req.CreateWalkRecordReq
 import com.kkw.pawket.walkRecord.service.WalkRecordService
 import org.apache.coyote.BadRequestException
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -20,7 +21,7 @@ class WalkRecordController (
      */
     @PostMapping("/user/{userId}")
     fun createWalkRecord(
-        @PathVariable userId: String,
+        @AuthenticationPrincipal userId: String,
         @RequestBody req: CreateWalkRecordReq,
     ): ResponseEntity<ApiResponse<String>> {
         return try {

@@ -8,6 +8,7 @@ import com.kkw.pawket.pet.service.PetService
 import org.apache.coyote.BadRequestException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -22,7 +23,7 @@ class PetController(private val petService: PetService) {
      */
     @PostMapping("/user/{userId}")
     fun createPet(
-        @PathVariable userId: String,
+        @AuthenticationPrincipal userId: String,
         @RequestBody req: CreatePetReq,
     ): ResponseEntity<ApiResponse<String>> {
         return try {

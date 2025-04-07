@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.apache.coyote.BadRequestException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -48,7 +49,7 @@ class PartnerController(
     )
     @PostMapping("/user/{userId}")
     fun createPartner(
-        @PathVariable userId: String,
+        @AuthenticationPrincipal userId: String,
         @RequestBody req: CreatePartnerReq
     ): ResponseEntity<ApiResponse<String>> {
         return try {
@@ -74,7 +75,7 @@ class PartnerController(
      */
     @GetMapping("/registration/check/user/{userId}")
     fun checkPartnerRegistration(
-        @PathVariable userId: String,
+        @AuthenticationPrincipal userId: String,
     ): ResponseEntity<ApiResponse<PartnerRegistrationStatusRes>> {
         return try {
             val result = partnerService.checkPartnerRegistration(userId)

@@ -8,6 +8,7 @@ import com.kkw.pawket.partner.model.req.CreateCompanyReq
 import org.apache.coyote.BadRequestException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -20,7 +21,7 @@ class AdsController(
      */
     @PostMapping("/company/user/{userId}")
     fun createPartner(
-        @PathVariable userId: String,
+        @AuthenticationPrincipal userId: String,
         @RequestBody req: CreateCompanyReq
     ): ResponseEntity<ApiResponse<String>> {
         return try {

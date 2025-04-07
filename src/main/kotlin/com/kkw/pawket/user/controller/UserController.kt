@@ -18,6 +18,7 @@ import jakarta.servlet.http.HttpServletResponse
 import org.apache.coyote.BadRequestException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -152,7 +153,7 @@ class UserController (
     @PostMapping("/{userId}")
     fun createUser(
         @Parameter(description = "사용자 ID", required = true)
-        @PathVariable userId: String,
+        @AuthenticationPrincipal userId: String,
         @Parameter(description = "사용자 추가 정보", required = true)
         @RequestBody req: CreateUserReq
     ): ResponseEntity<ApiResponse<CreateUserRes>> {
