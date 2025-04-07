@@ -15,6 +15,7 @@ import com.kkw.pawket.pet.domain.DogType
 import com.kkw.pawket.pet.domain.PetType
 import com.kkw.pawket.pet.domain.Sex
 import com.kkw.pawket.pet.domain.repository.PetRepository
+import com.kkw.pawket.pet.service.PetService
 import com.kkw.pawket.reservation.domain.repository.ReservationRepository
 import com.kkw.pawket.reward.domain.repository.RewardHistoryRepository
 import com.kkw.pawket.terms.domain.repository.UserTermsMappingRepository
@@ -289,14 +290,15 @@ class UserService(
                 isNeutered = req.petInfo.isNeutered,
             )
 
-            val petDetailJson = petService.createPetDetailJson(
-                petDescription = req.petInfo.petDescription,
-                foodBrand = req.petInfo.foodBrand,
-                foodName = req.petInfo.foodName,
-                foodType = req.petInfo.foodType
-            )
-
-            pet.petDetail = petDetailJson
+            if (req.petInfo.petDetails != null) {
+                val petDetailJson = petService.createPetDetailJson(
+                    petDescription = req.petInfo.petDetails.petDescription,
+                    foodBrand = req.petInfo.petDetails.foodBrand,
+                    foodName = req.petInfo.petDetails.foodName,
+                    foodType = req.petInfo.petDetails.foodType
+                )
+                pet.petDetail = petDetailJson
+            }
 
             petRepository.save(pet)
         }

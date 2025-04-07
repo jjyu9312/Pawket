@@ -41,14 +41,15 @@ class PetService(
             registrationNum = req.registrationNum
         )
 
-        val petDetailJson = createPetDetailJson(
-            petDescription = req.petDescription,
-            foodBrand = req.foodBrand,
-            foodName = req.foodName,
-            foodType = req.foodType
-        )
-
-        pet.petDetail = petDetailJson
+        if (req.petDetails != null) {
+            val petDetailJson = createPetDetailJson(
+                petDescription = req.petDetails.petDescription,
+                foodBrand = req.petDetails.foodBrand,
+                foodName = req.petDetails.foodName,
+                foodType = req.petDetails.foodType
+            )
+            pet.petDetail = petDetailJson
+        }
 
         petRepository.save(pet)
 
