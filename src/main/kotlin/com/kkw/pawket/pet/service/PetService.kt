@@ -18,7 +18,7 @@ class PetService(
     private val petRepository: PetRepository,
     private val userRepository: UserRepository
 ) {
-    private val logger = LoggerFactory.getLogger(PetService::class.java)
+    private val logger = LoggerFactory.getLogger(this::class.java)
     private val objectMapper = jacksonObjectMapper()
 
     fun createPet(userId: String, req: CreatePetReq): String {
@@ -48,6 +48,8 @@ class PetService(
             )
             pet.petDetail = petDetailJson
         }
+
+        logger.info("Saving pet: $pet")
 
         petRepository.save(pet)
 
