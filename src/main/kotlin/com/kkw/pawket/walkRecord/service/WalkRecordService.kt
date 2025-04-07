@@ -16,7 +16,7 @@ class WalkRecordService (
     private val walkRecordRepository: WalkRecordRepository,
     private val userRepository: UserRepository,
 ) {
-    private val logger = LoggerFactory.getLogger(WalkRecordService::class.java)
+    private val logger = LoggerFactory.getLogger(this::class.java)
     private val objectMapper = jacksonObjectMapper()
 
     fun createWalkRecord(userId: String, req: CreateWalkRecordReq): String {
