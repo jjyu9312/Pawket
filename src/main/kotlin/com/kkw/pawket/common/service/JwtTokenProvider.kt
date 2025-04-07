@@ -77,6 +77,22 @@ class JwtTokenProvider {
     }
 
     /**
+     * JWT 토큰에서 사용자 email 추출
+     */
+    fun getUserEmailFromToken(token: String): String? {
+        return try {
+            Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .body
+                .get("email", String::class.java)
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    /**
      * JWT 토큰에서 OAuth 제공자 추출
      */
     fun getProviderFromToken(token: String): OAuthProvider? {
@@ -92,4 +108,5 @@ class JwtTokenProvider {
         } catch (e: Exception) {
             null
         }
+    }
 }

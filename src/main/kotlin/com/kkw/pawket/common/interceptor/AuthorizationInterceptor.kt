@@ -20,7 +20,7 @@ class AuthorizationInterceptor(
             if (jwtTokenProvider.validateToken(token)) {
                 // 토큰에서 사용자 ID 추출
                 val userId = jwtTokenProvider.getUserIdFromToken(token)
-                val email = jwtTokenProvider.getEmailFromToken(token)
+                val email = jwtTokenProvider.getUserEmailFromToken(token)
 
                 if (userId != null && email != null) {
                     // 요청 속성에 사용자 정보 저장
