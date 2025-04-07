@@ -1,43 +1,46 @@
 package com.kkw.pawket.common.filter
 
-import com.kkw.pawket.common.service.CustomAuthenticationToken
 import com.kkw.pawket.common.service.JwtTokenProvider
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 
 @Component
 class JwtAuthenticationFilter(
     private val jwtTokenProvider: JwtTokenProvider
-) : OncePerRequestFilter() { // 역할: 요청이 들어올 때마다 헤더에 포함된 JWT를 검증하고, 유효한 경우 Spring Security의 SecurityContext에 인증 정보를 설정하는 역할
+) : OncePerRequestFilter() {
 
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
-        filterChain: FilterChain,
+        filterChain: FilterChain
     ) {
-        // 모든 요청에 대해 한 번만 실행되는 필터
-        val token = resolveToken(request)
-        if (token != null && jwtTokenProvider.validateToken(token)) {
-            val email = jwtTokenProvider.getEmailFromToken(token)
+        val authHeader = request.getHeader("Authorization")
 
-            // SecurityContext에 사용자 정보 저장
-            val authentication = CustomAuthenticationToken(email)
-            authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
-            SecurityContextHolder.getContext().authentication = authentication
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            val token = authHeader.replace("Bearer ", "")
+
+            if (jwtTokenProvider.validateToken(token)) {
+                val userId = jwtTokenProvider.getUserIdFromToken(token)
+                val email = jwtTokenProvider.getUserEmailFromToken(token)
+
+                if (userId != null) {
+                    // 인증 정보 생성 및 SecurityContext에 설정
+                    // principal에 userId를 저장하여 @AuthenticationPrincipal로 접근 가능
+                    val authentication = UsernamePasswordAuthenticationToken(
+                        userId, null, listOf(SimpleGrantedAuthority("ROLE_USER"))
+                    )
+
+                    SecurityContextHolder.getContext().authentication = authentication
+                }
+            }
         }
 
         filterChain.doFilter(request, response)
-    }
-
-    private fun resolveToken(request: HttpServletRequest): String? {
-        val bearerToken = request.getHeader("Authorization")
-        return if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            bearerToken.substring(7)
-        } else null
     }
 }
