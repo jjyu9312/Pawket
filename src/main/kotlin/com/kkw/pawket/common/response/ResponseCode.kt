@@ -21,16 +21,21 @@ enum class ResponseCode(val code: Int, val defaultMessage: String) {
     INVALID_DOG_TYPE(40032, "강아지 종류가 맞지 않습니다"),
     INVALID_EMAIL_FORMAT(40033, "이메일 포맷이 맞지 않습니다"),
     INVALID_TARGET_GROUP(40034, "해당 타겟 그룹은 존재하지 않습니다"),
+    INVALID_OAUTH_PROVIDER(40035, "해당 Oauth 제공자는 존재하지 않습니다"),
+    INVALID_OAUTH_PROVIDER_ENDPOINT(40036, "해당 Oauth 제공자 엔드포인트는 존재하지 않습니다"),
     // INVALID
 
 
 
     ALREADY_AGREED_TERMS(40060, "이미 동의한 약관은 다시 동의할 수 없습니다"),
 
+    //401
+    UNAUTHORIZED(40100, "인증되지 않은 사용자입니다"),
+    INVALID_TOKEN(40101, "유효하지 않은 토큰입니다"),
+    OAUTH_USERINFO_INVALID(40103, "Oauth 유저 정보가 유효하지 않습니다"),
+
     // 500
     INTERNAL_SERVER_ERROR(50000, "서버 내부 오류가 발생했습니다"),
-    OAUTH_TOKEN_INVALID(50001, "Oauth 토큰이 유효하지 않습니다"),
-    OAUTH_USERINFO_INVALID(50002, "Oauth 유저 정보가 유효하지 않습니다"),
     ;
 
     fun withCustomMessage(customMessage: String?): String {
