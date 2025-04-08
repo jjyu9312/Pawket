@@ -54,10 +54,10 @@ jwt:
 
 cloud:
   aws:
+      credentials:
+        access-key: AKIA5CVT2MCEW3B6I4EJ
+        secret-key: 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
       s3:
-        credentials:
-          access-key: AKIA5CVT2MCEW3B6I4EJ
-          secret-key: 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
         bucket:
           name: wag-s3
           region: ap-northeast-2
