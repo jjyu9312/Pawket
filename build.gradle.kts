@@ -75,6 +75,15 @@ dependencies {
     testImplementation("org.springframework.security:spring-security-test")
     testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+    // ✅ Kotest 의존성 추가
+    testImplementation("io.kotest:kotest-runner-junit5:5.8.0")
+    testImplementation("io.kotest:kotest-assertions-core:5.8.0")
+    testImplementation("io.kotest:kotest-property:5.8.0")
+    testImplementation("io.kotest:kotest-extensions-spring:4.4.3")
+
+    // ✅ Mockk 의존성 추가 (Kotest와 함께 사용하기 좋은 Kotlin 모킹 라이브러리)
+    testImplementation("io.mockk:mockk:1.13.8")
 }
 
 kotlin {
