@@ -6,10 +6,7 @@ import com.kkw.pawket.common.exception.BadRequestException
 import com.kkw.pawket.common.exception.ServerException
 import com.kkw.pawket.common.exception.UnAuthorizedException
 import com.kkw.pawket.common.response.ResponseCode
-import com.kkw.pawket.common.service.JwtTokenProvider
-import com.kkw.pawket.common.service.OAuthProviderEndpoints
-import com.kkw.pawket.common.service.OAuthProviderProperties
-import com.kkw.pawket.common.service.S3Service
+import com.kkw.pawket.common.service.*
 import com.kkw.pawket.feed.repository.FeedRepository
 import com.kkw.pawket.partner.domain.repository.PartnerRepository
 import com.kkw.pawket.partner.domain.repository.PartnerVisitHistoryRepository
@@ -67,8 +64,8 @@ class UserService(
     private val userTermsMappingRepository: UserTermsMappingRepository,
     private val partnerVisitHistoryRepository: PartnerVisitHistoryRepository,
     private val rewardHistoryRepository: RewardHistoryRepository,
-    private val s3Service: S3Service,
     private val petService: PetService,
+    private val s3UploadService: S3UploadService,
 ) {
     @Value("\${app.backend-url}")
     private lateinit var backendUrl: String
@@ -200,12 +197,17 @@ class UserService(
         /*
         TODO S3 이미지 업로드
          */
-        val imageUrl = null
+        val userImageUrl = s3UploadService.uploadSingleFile(
+            req.imageUrl,
+            dirName = "${user.id}/profile"
+        )
+
 
         user.update(
             name = req.name,
             birth = req.birth,
             gender = gender,
+            imageUrl = userImageUrl,
             addressBasic = req.addressInfo.basic,
             addressLat = req.addressInfo.lat,
             addressLng = req.addressInfo.lng,
@@ -230,25 +232,13 @@ class UserService(
 
         var dogImage = ""
 
-        req.petInfo?.imageUrls?.forEach {
-            val filePath = it.originalFilename
-                ?: throw BadRequestException(
-                    ResponseCode.NOT_FOUND_IMAGE,
-                    "- ${it.originalFilename}"
-                )
-
-            try {
-                val imageUrl = s3Service.uploadFile(
-                    bucketName = bucketName,
-                    filePath = filePath,
-                    key = "${user.id}/${it.originalFilename}"
-                )
-
-                dogImage = if (dogImage.isEmpty()) imageUrl else "$dogImage,$imageUrl"
-            } catch (e: Exception) {
-                logger.error("Failed to upload image to S3: $e")
-            }
-        }
+        /*
+        TODO S3 이미지 업로드
+         */
+        val dogImageUrls = s3UploadService.uploadMultipleFiles(
+            req.petInfo?.imageUrls,  // 리스트를 직접 전달
+            dirName = "${user.id}/pet-images"  // 디렉토리 경로 지정
+        )
 
         if (req.petInfo != null) {
             val type = PetType.fromString(req.petInfo.type)!!
@@ -259,8 +249,8 @@ class UserService(
                 name = req.petInfo.name,
                 type = type,
                 dogType = req.petInfo.dogType?.let { DogType.fromString(it) },
-                mainImageUrl = if (dogImage == "") null else dogImage.split(",")[0],
-                imageUrls = if (dogImage == "") null else dogImage,
+                mainImageUrl = dogImageUrls.firstOrNull(), // 리스트가 비어있으면 null
+                imageUrls = dogImageUrls.joinToString(","), // 모든 이미지 URL을 쉼표로 구분
                 age = req.petInfo.age,
                 sex = sex,
                 weight = req.petInfo.weight,

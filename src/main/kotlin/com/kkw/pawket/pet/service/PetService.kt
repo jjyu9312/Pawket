@@ -11,13 +11,15 @@ import com.kkw.pawket.pet.domain.repository.PetRepository
 import com.kkw.pawket.pet.model.req.CreatePetReq
 import com.kkw.pawket.user.domain.repository.UserRepository
 import com.kkw.pawket.common.exception.IllegalArgumentException
+import com.kkw.pawket.common.service.S3UploadService
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 @Service
 class PetService(
     private val petRepository: PetRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val s3UploadService: S3UploadService,
 ) {
     private val logger = LoggerFactory.getLogger(this::class.java)
     private val objectMapper = jacksonObjectMapper()
@@ -26,13 +28,18 @@ class PetService(
         val user = userRepository.findByIdAndIsDeletedFalse(userId)
             ?: throw BadRequestException(ResponseCode.USER_NOT_FOUND)
 
+        val dogImageUrls = s3UploadService.uploadMultipleFiles(
+            req.imageUrls,  // 리스트를 직접 전달
+            dirName = "${user.id}/pet-images"  // 디렉토리 경로 지정
+        )
+
         val pet = Pet.create(
             user = user,
             name = req.name,
             type = PetType.fromString(req.type) ?: throw IllegalArgumentException(ResponseCode.INVALID_PET_TYPE),
             dogType = req.dogType?.let { DogType.valueOf(it) },
-            mainImageUrl = null,
-            imageUrls = null,
+            mainImageUrl = dogImageUrls.firstOrNull(), // 리스트가 비어있으면 null
+            imageUrls = dogImageUrls.joinToString(","), // 모든 이미지 URL을 쉼표로 구분
             age = req.age,
             weight = req.weight,
             sex = Sex.fromString(req.sex) ?: throw IllegalArgumentException(ResponseCode.INVALID_SEX_TYPE),
