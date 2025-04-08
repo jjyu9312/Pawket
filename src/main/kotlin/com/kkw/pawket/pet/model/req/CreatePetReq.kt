@@ -8,7 +8,6 @@ data class CreatePetReq(
     val name: String,
     val type: String,
     val dogType: String?,
-    val mainImageUrl: MultipartFile?,
     val imageUrls: List<MultipartFile>?,
     val age: Int,
     val weight: Int,
