@@ -59,7 +59,9 @@ dependencies {
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
 
     // ✅ AWS SDK for S3
-    implementation("software.amazon.awssdk:s3:2.20.74")
+    implementation("software.amazon.awssdk:s3:2.25.0")
+    implementation("software.amazon.awssdk:aws-core:2.25.0")
+    implementation("software.amazon.awssdk:auth:2.25.0")
 
     // ✅ Database Connector
     runtimeOnly("com.mysql:mysql-connector-j")
