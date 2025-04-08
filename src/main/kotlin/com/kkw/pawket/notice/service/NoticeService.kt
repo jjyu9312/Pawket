@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service
 class NoticeService(
     private val noticeRepository: NoticeRepository,
 ) {
-    fun createNotice(req: CreateNoticeReq): String? {
+    fun createNotice(req: CreateNoticeReq): String {
         val target = TargetGroup.fromString(req.target)
             ?: throw BadRequestException(ResponseCode.INVALID_TARGET_GROUP)
 
