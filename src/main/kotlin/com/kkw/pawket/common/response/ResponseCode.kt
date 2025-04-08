@@ -23,6 +23,7 @@ enum class ResponseCode(val code: Int, val defaultMessage: String) {
     INVALID_TARGET_GROUP(40034, "해당 타겟 그룹은 존재하지 않습니다"),
     INVALID_OAUTH_PROVIDER(40035, "해당 Oauth 제공자는 존재하지 않습니다"),
     INVALID_OAUTH_PROVIDER_ENDPOINT(40036, "해당 Oauth 제공자 엔드포인트는 존재하지 않습니다"),
+    INVALID_PET_TYPE(40037, "펫 종류가 맞지 않습니다"),
     // INVALID
 
 
