@@ -89,38 +89,6 @@ class UserService(
                 "&redirect_uri = ${backendUrl}/oauth2/callback/$provider"
     }
 
-    @Transactional(rollbackOn = [Exception::class])
-    fun handleOAuthCallback(provider: String, code: String): LoginUserRes {
-        logger.warn("레거시 OAuth 콜백 방식 사용: Spring Security의 OAuth2 통합 사용을 권장합니다")
-
-        val tokenResponse = getAccessToken(provider, code)
-        val userInfo = getUserInfo(provider, tokenResponse.accessToken)
-
-        val oauthProvider = OAuthProvider.fromString(provider)!!
-
-        // 리팩토링된 메서드 활용
-        val user = findOrCreateOAuthUser(
-            email = userInfo.email,
-            provider = oauthProvider,
-            providerUserId = userInfo.providerUserId
-        )
-
-        // 개선된 JWT 토큰 생성 메서드 활용
-        val jwtToken = jwtTokenProvider.createToken(
-            id = user.id,
-            email = user.email,
-            provider = oauthProvider.name
-        )
-
-        logger.info("User info: email=${user.email}, id=${user.id}, JWT token created")
-
-        return LoginUserRes(
-            id = user.id,
-            provider = provider.lowercase(),
-            token = jwtToken
-        )
-    }
-
     private fun getAccessToken(provider: String, code: String): OAuthTokenResponse {
         val providerInfo = providerInfo(provider)
 
@@ -228,6 +196,11 @@ class UserService(
                 ResponseCode.USER_NOT_FOUND,
                 "- $userId"
             )
+
+        /*
+        TODO S3 이미지 업로드
+         */
+        val imageUrl = null
 
         user.update(
             name = req.name,

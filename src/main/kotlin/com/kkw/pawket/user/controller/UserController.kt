@@ -51,40 +51,6 @@ class UserController (
     }
 
     @Operation(
-        summary = "OAuth 콜백 처리",
-        description = "OAuth 제공자로부터 리다이렉트된 요청을 처리하고 사용자 정보를 반환합니다."
-    )
-    @ApiResponses(
-        value = [
-            SwaggerApiResponse(
-                responseCode = "200",
-                description = "로그인 성공",
-                content = [Content(schema = Schema(implementation = LoginUserRes::class))]
-            ),
-            SwaggerApiResponse(
-                responseCode = "500",
-                description = "서버 오류",
-                content = [Content(schema = Schema(implementation = ApiResponse::class))]
-            )
-        ]
-    )
-    @GetMapping("/oauth/callback/{provider}")
-    fun oauthCallback(
-        @PathVariable provider: String,
-        @RequestParam code: String
-    ): ResponseEntity<ApiResponse<LoginUserRes>> {
-        return try {
-            val loginUser = userService.handleOAuthCallback(provider, code)
-            ApiResponseFactory.success(loginUser)
-        } catch (e: Exception) {
-            ApiResponseFactory.error(
-                responseCode = ResponseCode.INTERNAL_SERVER_ERROR,
-                customMessage = e.message
-            )
-        }
-    }
-
-    @Operation(
         summary = "로그아웃",
         description = "현재 로그인된 사용자를 로그아웃 처리합니다."
     )
