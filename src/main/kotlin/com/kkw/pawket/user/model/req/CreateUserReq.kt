@@ -8,7 +8,7 @@ data class CreateUserReq (
     val name: String,
     val birth: LocalDate,
     val gender: String,
-    val imageUrl: MultipartFile,
+    val imageUrl: MultipartFile? = null,
     val addressInfo: AddressInfo,
     val petInfo: PetInfo? = null,
 
@@ -30,13 +30,13 @@ data class CreateUserReq (
         val sex: String,
         val weight: Int,
         val isNeutered: Boolean,
-        val petDetails: petDetails? = null,
-    )
-
-    data class petDetails(
-        val petDescription: String,
-        val foodBrand: String,
-        val foodName: String,
-        val foodType: String,
-    )
+        val petDetails: PetDetails? = null,
+    ) {
+        data class PetDetails(
+            val petDescription: String,
+            val foodBrand: String,
+            val foodName: String,
+            val foodType: String,
+        )
+    }
 }
