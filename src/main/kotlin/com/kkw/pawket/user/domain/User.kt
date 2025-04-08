@@ -24,6 +24,9 @@ data class User(
     @Column(nullable = false, length = 50, unique = true)
     val email: String,
 
+    @Column(nullable = true)
+    var imageUrl: String? = null,
+
     @Column(nullable = false)
     var totalCoin: Int = 0,
 
@@ -67,6 +70,7 @@ data class User(
         name: String,
         birth: LocalDate,
         gender: Gender,
+        imageUrl: String? = null,
         addressBasic: String,
         addressLat: Double,
         addressLng: Double,
@@ -75,6 +79,7 @@ data class User(
         this.name = name
         this.birth = birth
         this.gender = gender
+        this.imageUrl = imageUrl
         this.addressBasic = addressBasic
         this.addressLat = addressLat
         this.addressLng = addressLng
