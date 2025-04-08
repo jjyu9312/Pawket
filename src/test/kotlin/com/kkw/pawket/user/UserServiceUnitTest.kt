@@ -9,7 +9,7 @@ import com.kkw.pawket.common.response.ResponseCode
 import com.kkw.pawket.common.service.JwtTokenProvider
 import com.kkw.pawket.common.service.OAuthProviderEndpoints
 import com.kkw.pawket.common.service.OAuthProviderProperties
-import com.kkw.pawket.common.service.S3Service
+import com.kkw.pawket.common.service.S3UploadService
 import com.kkw.pawket.feed.domain.Feed
 import com.kkw.pawket.feed.repository.FeedRepository
 import com.kkw.pawket.partner.domain.Partner
@@ -53,6 +53,7 @@ import org.springframework.http.HttpEntity
 import org.springframework.http.HttpMethod
 import org.springframework.http.ResponseEntity
 import org.springframework.web.client.RestTemplate
+import org.springframework.web.multipart.MultipartFile
 import java.time.LocalDate
 
 /**
@@ -82,10 +83,8 @@ class UserServiceUnitTest {
     private val feedRepository = mockk<FeedRepository>()
     private val adsRepository = mockk<AdsRepository>()
     private val companyRepository = mockk<CompanyRepository>()
-
-
     private val petService = mockk<PetService>()
-    private val s3Service = mockk<S3Service>()
+    private val s3UploadService = mockk<S3UploadService>()
 
     // 테스트할 서비스 생성
     private lateinit var userService: UserService
@@ -112,8 +111,8 @@ class UserServiceUnitTest {
             userTermsMappingRepository = mockk(relaxed = true),
             partnerVisitHistoryRepository = mockk(relaxed = true),
             rewardHistoryRepository = mockk(relaxed = true),
-            s3Service = s3Service,
-            petService = petService
+            petService = petService,
+            s3UploadService = s3UploadService,
         )
 
         // private 필드 설정
@@ -201,25 +200,28 @@ class UserServiceUnitTest {
         fun createUserWithBasicInfoTest() {
             // given
             val userId = "user-id"
-            val user = mockk<User>(relaxed = true) {  // relaxed = true 추가
-                every { id } returns userId
-                every { email } returns "test@example.com"
-                every { isValidEmail() } returns true  // 이 부분 추가
-                // update 메서드에 대한 동작 정의 추가
-                every {
-                    update(
-                        any(), // name
-                        any(), // birth
-                        any(), // gender
-                        any(), // imageUrl
-                        any(), // addressBasic
-                        any(), // addressLat
-                        any(), // addressLng
-                        any()  // addressDetail
-                    )
-                } just Runs
+            val user = User.create("test@example.com").apply {
+                val idField = User::class.java.getDeclaredField("id")
+                idField.isAccessible = true
+                idField.set(this, userId)
             }
 
+            // S3 업로드 모킹 (모든 메서드에 대해)
+            every {
+                s3UploadService.uploadSingleFile(
+                    null,
+                    "${user.id}/profile"
+                )
+            } returns null
+
+            every {
+                s3UploadService.uploadMultipleFiles(
+                    null,
+                    "${user.id}/pet-images"
+                )
+            } returns emptyList()
+
+            // 레포지토리 모킹
             every { userRepository.findByIdOrNull(userId) } returns user
             every { userRepository.existsById(userId) } returns false
             every { userRepository.save(any<User>()) } returns user
@@ -252,38 +254,36 @@ class UserServiceUnitTest {
         fun createUserWithPetInfoTest() {
             // given
             val userId = "user-id"
-            val user = mockk<User>(relaxed = true) {  // relaxed = true 추가
-                every { id } returns userId
-                every { email } returns "test@example.com"
-                every { isValidEmail() } returns true  // 이 부분 추가
-                // update 메서드에 대한 동작 정의 추가
-                every {
-                    update(
-                        any(), // name
-                        any(), // birth
-                        any(), // gender
-                        any(), // imageUrl
-                        any(), // addressBasic
-                        any(), // addressLat
-                        any(), // addressLng
-                        any()  // addressDetail
-                    )
-                } just Runs
+            val user = User.create("test@example.com").apply {
+                val idField = User::class.java.getDeclaredField("id")
+                idField.isAccessible = true
+                idField.set(this, userId)
             }
 
+            // 모든 S3 업로드 메서드에 대한 모킹
+            val mockMultipartFile = mockk<MultipartFile>() {
+                every { originalFilename } returns "test.jpg"
+            }
+
+            every {
+                s3UploadService.uploadSingleFile(
+                    mockMultipartFile,
+                    "${user.id}/profile"
+                )
+            } returns "https://example.com/profile.jpg"
+
+            every {
+                s3UploadService.uploadMultipleFiles(
+                    listOf(mockMultipartFile),
+                    "${user.id}/pet-images"
+                )
+            } returns listOf("https://example.com/dog1.jpg", "https://example.com/dog2.jpg")
+
+            // 레포지토리 모킹
             every { userRepository.findByIdOrNull(userId) } returns user
             every { userRepository.existsById(userId) } returns false
             every { userRepository.save(any<User>()) } returns user
             every { petRepository.save(any<Pet>()) } returns mockk()
-
-            // S3 이미지 업로드 목킹
-            every {
-                s3Service.uploadFile(
-                    bucketName = any(),
-                    filePath = any(),
-                    key = any()
-                )
-            } returns "https://example.com/image.jpg"
 
             // PetService 목킹
             every {
@@ -312,7 +312,7 @@ class UserServiceUnitTest {
                 weight = 5,
                 isNeutered = true,
                 petDetails = petDetailsReq,
-                imageUrls = emptyList() // Mock 이미지 파일은 복잡하므로 빈 리스트로 테스트
+                imageUrls = listOf(mockMultipartFile)
             )
 
             val createUserReq = CreateUserReq(
@@ -320,6 +320,7 @@ class UserServiceUnitTest {
                 email = "test@example.com",
                 birth = LocalDate.of(1990, 1, 1),
                 gender = "male",
+                imageUrl = mockMultipartFile,
                 addressInfo = CreateUserReq.AddressInfo(
                     basic = "서울특별시 강남구",
                     lat = 37.5,
