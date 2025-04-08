@@ -1,16 +1,15 @@
 package com.kkw.pawket.common.service
 
 import com.kkw.pawket.user.domain.OAuthProvider
-import com.kkw.pawket.user.domain.User
-import com.kkw.pawket.user.domain.UserOAuth
-import com.kkw.pawket.user.domain.repository.UserOAuthRepository
-import com.kkw.pawket.user.domain.repository.UserRepository
 import com.kkw.pawket.user.service.UserService
+import com.kkw.pawket.common.exception.IllegalArgumentException
+import com.kkw.pawket.common.response.ResponseCode
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.LoggerFactory
 import org.springframework.security.core.Authentication
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler
 
 class OAuth2SuccessHandler(
@@ -25,11 +24,11 @@ class OAuth2SuccessHandler(
         response: HttpServletResponse,
         authentication: Authentication,
     ) {
-        val principal = authentication.principal
-                as org.springframework.security.oauth2.core.user.DefaultOAuth2User
+        val principal = authentication.principal as DefaultOAuth2User
 
         // 이메일 정보 추출
-        val email = principal.getAttribute<String>("email") ?: "unknown@user.com"
+        val email = principal.getAttribute<String>("email")
+            ?: throw IllegalArgumentException(ResponseCode.EMAIL_NOT_FOUND)
 
         // 제공자 정보 추출
         val clientRegistration = (authentication.authorities.firstOrNull {
@@ -61,6 +60,13 @@ class OAuth2SuccessHandler(
         // JWT를 클라이언트로 반환
         response.contentType = "application/json"
         response.characterEncoding = "UTF-8"
-        response.writer.write("""{"id": "${user.id}", "token": "$token", "provider": "${provider.name.lowercase()}"}""")
+        response.writer.write("""
+            {
+                "accessToken": "$token",
+                "userId": "${user.id}",
+                "email": "${user.email}",
+                "provider": "${provider.name}"
+            }
+        """.trimIndent())
     }
 }
