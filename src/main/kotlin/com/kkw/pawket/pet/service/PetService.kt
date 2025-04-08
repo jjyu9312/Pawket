@@ -10,6 +10,7 @@ import com.kkw.pawket.pet.domain.Sex
 import com.kkw.pawket.pet.domain.repository.PetRepository
 import com.kkw.pawket.pet.model.req.CreatePetReq
 import com.kkw.pawket.user.domain.repository.UserRepository
+import com.kkw.pawket.common.exception.IllegalArgumentException
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
@@ -28,13 +29,13 @@ class PetService(
         val pet = Pet.create(
             user = user,
             name = req.name,
-            type = PetType.fromString(req.type) ?: throw IllegalArgumentException("Invalid pet type"),
+            type = PetType.fromString(req.type) ?: throw IllegalArgumentException(ResponseCode.INVALID_PET_TYPE),
             dogType = req.dogType?.let { DogType.valueOf(it) },
             mainImageUrl = req.mainImageUrl,
             imageUrls = req.imageUrls,
             age = req.age,
             weight = req.weight,
-            sex = Sex.fromString(req.sex) ?: throw IllegalArgumentException("Invalid sex"),
+            sex = Sex.fromString(req.sex) ?: throw IllegalArgumentException(ResponseCode.INVALID_SEX_TYPE),
             isNeutered = req.isNeutered,
             registrationNum = req.registrationNum
         )
@@ -60,8 +61,8 @@ class PetService(
     fun createPetDetailJson(
         petDescription: String,
         foodBrand: String, // ,로 연결
-        foodName: String, // ,로 연결
-        foodType: String // ,로 연결
+        foodName: String,  // ,로 연결
+        foodType: String   // ,로 연결
     ): String {
         val detailMap = mapOf(
             "petDescription" to petDescription,
