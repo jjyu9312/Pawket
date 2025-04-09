@@ -3,6 +3,7 @@ package com.kkw.pawket.config
 import com.kkw.pawket.common.filter.JwtAuthenticationFilter
 import com.kkw.pawket.common.service.JwtTokenProvider
 import com.kkw.pawket.common.service.OAuth2SuccessHandler
+import com.kkw.pawket.user.domain.UserRole
 import com.kkw.pawket.user.service.UserService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -37,6 +38,8 @@ class SecurityConfig(
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }  // JWT 사용을 위한 세션 비활성화
             .authorizeHttpRequests { auth ->
                 auth
+                    .requestMatchers("/admin/**").hasRole(UserRole.ADMIN.name)
+                    .requestMatchers("/user/**").hasRole(UserRole.USER.name)
                     .requestMatchers(
                         "/api/v1/user/login",
                         "/api/v1/login/*",
@@ -47,8 +50,7 @@ class SecurityConfig(
                         "/api/v1/v3/api-docs/",
                         "/test/*",
                         "/common/*",
-                    )
-                    .permitAll()  // 로그인 및 OAuth2 관련 경로 허용
+                    ).permitAll()  // 로그인 및 OAuth2 관련 경로 허용
                     .anyRequest().authenticated()  // 나머지 경로는 인증 필요
             }
             .logout {
