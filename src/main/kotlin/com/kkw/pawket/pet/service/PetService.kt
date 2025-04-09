@@ -64,6 +64,10 @@ class PetService(
         return pet.id
     }
 
+    /*
+    TODO update 시에 기존 이미지 그대로 올릴 경우 유지
+     */
+
     // Pet 상세 정보를 JSON으로 변환
     fun createPetDetailJson(
         petDescription: String,
