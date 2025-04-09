@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.web.cors.CorsConfiguration
 
 @Configuration
 @EnableWebSecurity
@@ -23,12 +24,21 @@ class SecurityConfig(
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         http
             .csrf { it.disable() }  // REST API이므로 CSRF 보호 비활성화
+            .cors { cors ->  // CORS 설정 추가
+                cors.configurationSource {
+                    val configuration = CorsConfiguration()
+                    configuration.allowedOrigins = listOf("https://frontend-domain.com")
+                    configuration.allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                    configuration.allowedHeaders = listOf("*")
+                    configuration.allowCredentials = true
+                    configuration
+                }
+            }
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }  // JWT 사용을 위한 세션 비활성화
             .authorizeHttpRequests { auth ->
                 auth
                     .requestMatchers(
-                        "/user/login",
-                        "/auth/**",
+                        "/api/v1/user/login",
                         "/test/*",
                         "/common/*",
                     )
@@ -36,7 +46,7 @@ class SecurityConfig(
                     .anyRequest().authenticated()  // 나머지 경로는 인증 필요
             }
             .logout {
-                it.logoutUrl("/logout")
+                it.logoutUrl("/api/v1/user/logout")
                     .logoutSuccessUrl("/")
                     .invalidateHttpSession(true)
                     .deleteCookies("JSESSIONID")
