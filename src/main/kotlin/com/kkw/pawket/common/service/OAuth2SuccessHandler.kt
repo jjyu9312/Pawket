@@ -53,7 +53,7 @@ class OAuth2SuccessHandler(
         val user = userService.findOrCreateOAuthUser(email, provider, providerUserId)
 
         // 토큰 생성
-        val token = jwtTokenProvider.createToken(user.id, user.email, provider.name)
+        val token = jwtTokenProvider.createToken(user.id, user.email, user.role.name, provider.name)
 
         logger.info("사용자 로그인 성공: userId=${user.id}, email=${user.email}, provider=$provider")
 
