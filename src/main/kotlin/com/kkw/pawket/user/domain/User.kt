@@ -24,6 +24,10 @@ data class User(
     @Column(nullable = false, length = 50, unique = true)
     val email: String,
 
+    @Column(nullable = false, length = 10)
+    @Enumerated(value = EnumType.STRING)
+    val role: UserRole = UserRole.USER,
+
     @Column(nullable = true)
     var imageUrl: String? = null,
 

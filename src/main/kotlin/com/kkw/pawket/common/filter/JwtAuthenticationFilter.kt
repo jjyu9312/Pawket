@@ -27,13 +27,13 @@ class JwtAuthenticationFilter(
 
             if (jwtTokenProvider.validateToken(token)) {
                 val userId = jwtTokenProvider.getUserIdFromToken(token)
-                val email = jwtTokenProvider.getUserEmailFromToken(token)
+                val role = jwtTokenProvider.getUserRoleFromToken(token)
 
                 if (userId != null) {
                     // 인증 정보 생성 및 SecurityContext에 설정
                     // principal에 userId를 저장하여 @AuthenticationPrincipal로 접근 가능
                     val authentication = UsernamePasswordAuthenticationToken(
-                        userId, null, listOf(SimpleGrantedAuthority("ROLE_USER"))
+                        userId, null, listOf(SimpleGrantedAuthority("ROLE_${role}"))
                     )
 
                     SecurityContextHolder.getContext().authentication = authentication
