@@ -19,6 +19,6 @@ class WebMvcConfig(
 
         registry.addInterceptor(authorizationInterceptor)
             .addPathPatterns("/**")  // 모든 경로에 적용
-            .excludePathPatterns("/public/**", "/auth/**")  // 인증이 필요 없는 경로 제외
+            .excludePathPatterns("/test/**", "/common/**", "/auth/**")  // 인증이 필요 없는 경로 제외
     }
 }
