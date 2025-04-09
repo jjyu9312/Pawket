@@ -28,9 +28,10 @@ class JwtTokenProvider {
     /**
      * JWT 토큰 생성
      */
-    fun createToken(id: String, email: String, provider: String): String {
+    fun createToken(id: String, email: String, role: String, provider: String): String {
         val claims = Jwts.claims().setSubject(email)
-        claims["userId"] = id
+        claims["id"] = id
+        claims["role"] = id
         claims["provider"] = provider
 
         val now = Date()
@@ -70,7 +71,23 @@ class JwtTokenProvider {
                 .build()
                 .parseClaimsJws(token)
                 .body
-                .get("userId", String::class.java)
+                .get("id", String::class.java)
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    /**
+     * JWT 토큰에서 사용자 ID 추출
+     */
+    fun getUserRoleFromToken(token: String): String? {
+        return try {
+            Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .body
+                .get("role", String::class.java)
         } catch (e: Exception) {
             null
         }
