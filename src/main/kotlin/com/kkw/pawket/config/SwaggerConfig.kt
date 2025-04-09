@@ -16,26 +16,33 @@ class OpenApiConfig {
         return OpenAPI()
             .info(
                 Info()
-                .title("Pawket API")
-                .version("1.0")
-                .description("Pawket 애플리케이션 API 문서"))
+                    .title("pawket API")
+                    .version("1.0")
+                    .description("pawket 애플리케이션 API 문서"))
             .components(
                 Components()
-                .addSecuritySchemes("bearer-jwt",
-                    SecurityScheme()
-                        .type(SecurityScheme.Type.HTTP)
-                        .scheme("bearer")
-                        .bearerFormat("JWT")
-                        .`in`(SecurityScheme.In.HEADER)
-                        .name("Authorization")))
+                    .addSecuritySchemes("bearer-jwt",
+                        SecurityScheme()
+                            .type(SecurityScheme.Type.HTTP)
+                            .scheme("bearer")
+                            .bearerFormat("JWT")
+                            .`in`(SecurityScheme.In.HEADER)
+                            .name("Authorization")))
             .addSecurityItem(SecurityRequirement().addList("bearer-jwt"))
     }
 
-    // 경로 설정
     @Bean
-    fun openApiCustomizer(): GroupedOpenApi {
+    fun adminOpenApiCustomizer(): GroupedOpenApi {
         return GroupedOpenApi.builder()
-            .group("api")
+            .group("admin")
+            .pathsToMatch("/private/v1/**")
+            .build()
+    }
+
+    @Bean
+    fun userOpenApiCustomizer(): GroupedOpenApi {
+        return GroupedOpenApi.builder()
+            .group("user")
             .pathsToMatch("/api/v1/**")
             .build()
     }
