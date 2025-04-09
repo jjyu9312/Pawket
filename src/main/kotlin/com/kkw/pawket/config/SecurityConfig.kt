@@ -38,8 +38,8 @@ class SecurityConfig(
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }  // JWT 사용을 위한 세션 비활성화
             .authorizeHttpRequests { auth ->
                 auth
-                    .requestMatchers("/admin/**").hasRole(UserRole.ADMIN.name)
-                    .requestMatchers("/user/**").hasRole(UserRole.USER.name)
+                    .requestMatchers("/private/v1/**").hasRole(UserRole.ADMIN.name)
+                    .requestMatchers("/api/v1/**").hasRole(UserRole.USER.name)
                     .requestMatchers(
                         "/api/v1/user/login",
                         "/api/v1/login/*",
