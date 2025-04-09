@@ -116,7 +116,7 @@ class UserController (
             )
         ]
     )
-    @PostMapping("/{userId}")
+    @PostMapping("/register")
     fun createUser(
         @Parameter(description = "사용자 ID", required = true)
         @AuthenticationPrincipal userId: String,

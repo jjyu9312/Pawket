@@ -21,7 +21,7 @@ class PetController(private val petService: PetService) {
     /*
     TODO Pet 생성
      */
-    @PostMapping("/user/{userId}")
+    @PostMapping()
     fun createPet(
         @AuthenticationPrincipal userId: String,
         @RequestBody req: CreatePetReq,

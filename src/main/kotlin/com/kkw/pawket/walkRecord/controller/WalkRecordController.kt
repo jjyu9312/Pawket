@@ -19,7 +19,7 @@ class WalkRecordController (
     /*
     TODO 산책 기록 등록
      */
-    @PostMapping("/user/{userId}")
+    @PostMapping()
     fun createWalkRecord(
         @AuthenticationPrincipal userId: String,
         @RequestBody req: CreateWalkRecordReq,

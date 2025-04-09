@@ -19,7 +19,7 @@ class AdsController(
     /*
     TODO Ads Company 생성
      */
-    @PostMapping("/company/user/{userId}")
+    @PostMapping("/company")
     fun createPartner(
         @AuthenticationPrincipal userId: String,
         @RequestBody req: CreateCompanyReq

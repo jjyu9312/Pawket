@@ -47,7 +47,7 @@ class PartnerController(
             )
         ]
     )
-    @PostMapping("/user/{userId}")
+    @PostMapping()
     fun createPartner(
         @AuthenticationPrincipal userId: String,
         @RequestBody req: CreatePartnerReq
@@ -73,7 +73,7 @@ class PartnerController(
     /*
     TODO 제휴업체로 가입되어 있는지 아닌지 조회 후 가입되지 않으면 false return 하고 가입되어 있으면 가입된 정보 return
      */
-    @GetMapping("/registration/check/user/{userId}")
+    @GetMapping("/registration/check")
     fun checkPartnerRegistration(
         @AuthenticationPrincipal userId: String,
     ): ResponseEntity<ApiResponse<PartnerRegistrationStatusRes>> {
