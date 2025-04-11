@@ -24,6 +24,8 @@ class NoticeService(
             // 제휴업체에게 Firebase로 공지사항을 발송 알림
         } else if (target == TargetGroup.ADS_COMPANY) {
             // 광고업체에게 Firebase로 공지사항을 발송 알림
+        } else {
+            throw BadRequestException(ResponseCode.INVALID_TARGET_GROUP)
         }
 
         val notice = Notice.create(
