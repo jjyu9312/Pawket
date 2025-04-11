@@ -28,18 +28,6 @@ data class Feed(
     var likeCount: Int = 0,
 
     ) : BaseEntity() {
-    constructor(
-        user: User,
-        petId: String,
-        title: String,
-        content: String,
-    ) : this(
-        id = UUID.randomUUID().toString(),
-        user = user,
-        petId = petId,
-        title = title,
-        content = content,
-    )
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -55,5 +43,19 @@ data class Feed(
             this.likeCount += 1
         else if (type == "dislike")
             this.likeCount -= 1
+    }
+
+    companion object {
+        fun create(
+            user: User,
+            petId: String,
+            title: String,
+            content: String,
+        ): Feed = Feed(
+            user = user,
+            petId = petId,
+            title = title,
+            content = content,
+        )
     }
 }
