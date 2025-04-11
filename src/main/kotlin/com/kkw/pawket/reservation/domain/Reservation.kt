@@ -33,22 +33,6 @@ data class Reservation(
     @Column(nullable = false)
     val discountFee: Int = 0,
 ) : BaseEntity() {
-    constructor(
-        user: User,
-        partner: Partner,
-        reservationDate: Date,
-        reservationStatus: ReservationStatus,
-        totalFee: Int,
-        discountFee: Int,
-    ) : this(
-        id = UUID.randomUUID().toString(),
-        user = user,
-        partner = partner,
-        reservationDate = reservationDate,
-        status = reservationStatus,
-        totalFee = totalFee,
-        discountFee = discountFee,
-    )
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -58,4 +42,22 @@ data class Reservation(
     }
 
     override fun hashCode(): Int = id.hashCode()
+
+    companion object {
+        fun create(
+            user: User,
+            partner: Partner,
+            reservationDate: Date,
+            status: ReservationStatus,
+            totalFee: Int,
+            discountFee: Int,
+        ): Reservation = Reservation(
+            user = user,
+            partner = partner,
+            reservationDate = reservationDate,
+            status = status,
+            totalFee = totalFee,
+            discountFee = discountFee
+        )
+    }
 }
