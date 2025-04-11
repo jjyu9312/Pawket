@@ -32,18 +32,6 @@ class UserOAuth(
 
 ) : BaseDateTimeEntity() {
 
-    constructor(
-        user: User,
-        provider: OAuthProvider,
-        providerUserId: String,
-    ) : this(
-        id = UUID.randomUUID().toString(),
-        user = user,
-        email = user.email,
-        provider = provider,
-        providerUserId = providerUserId,
-    )
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -52,4 +40,18 @@ class UserOAuth(
     }
 
     override fun hashCode(): Int = id.hashCode()
+
+    companion object {
+        fun create(
+            user: User,
+            email: String,
+            provider: OAuthProvider,
+            providerUserId: String,
+        ): UserOAuth = UserOAuth(
+            user = user,
+            email = email,
+            provider = provider,
+            providerUserId = providerUserId,
+        )
+    }
 }
