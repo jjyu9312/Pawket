@@ -25,19 +25,6 @@ data class Ads(
 
     ) : BaseEntity() {
 
-    constructor(
-        company: Company,
-        title: String,
-        content: String?,
-        coin: Int,
-    ) : this(
-        id = UUID.randomUUID().toString(),
-        company = company,
-        title = title,
-        content = content,
-        coin = coin,
-    )
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -46,4 +33,18 @@ data class Ads(
     }
 
     override fun hashCode(): Int = id.hashCode()
+
+    companion object {
+        fun create(
+            company: Company,
+            title: String,
+            content: String?,
+            coin: Int,
+        ): Ads = Ads(
+            company = company,
+            title = title,
+            content = content,
+            coin = coin,
+        )
+    }
 }
