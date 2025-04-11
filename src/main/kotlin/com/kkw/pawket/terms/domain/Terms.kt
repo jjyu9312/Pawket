@@ -1,6 +1,7 @@
 package com.kkw.pawket.terms.domain
 
 import com.kkw.pawket.common.domain.BaseEntity
+import com.kkw.pawket.reservation.domain.Reservation
 import jakarta.persistence.*
 import java.util.*
 
@@ -21,10 +22,24 @@ data class Terms(
 
     ) : BaseEntity() {
 
-    constructor(title: String, content: String, isRequired: Boolean) : this(
-        id = UUID.randomUUID().toString(),
-        title = title,
-        content = content,
-        isRequired = isRequired
-    )
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+        other as Reservation
+        return id == other.id
+    }
+
+    override fun hashCode(): Int = id.hashCode()
+
+    companion object {
+        fun create(
+            title: String,
+            content: String,
+            isRequired: Boolean,
+        ): Terms = Terms(
+            title = title,
+            content = content,
+            isRequired = isRequired,
+        )
+    }
 }
