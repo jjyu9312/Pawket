@@ -17,14 +17,6 @@ data class CheckType(
     val description: String? = null
 
 ) : BaseEntity() {
-    constructor(
-        name: String,
-        description: String? = null,
-    ) : this(
-        id = UUID.randomUUID().toString(),
-        name = name,
-        description = description,
-    )
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
