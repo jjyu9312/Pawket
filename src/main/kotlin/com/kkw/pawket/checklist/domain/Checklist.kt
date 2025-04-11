@@ -27,16 +27,6 @@ data class Checklist(
     var isChecked: Boolean = false,
 
     ) : BaseEntity() {
-    constructor(
-        pet: Pet,
-        checkType: CheckType,
-        isChecked: Boolean,
-    ) : this(
-        id = UUID.randomUUID().toString(),
-        pet = pet,
-        checkType = checkType,
-        isChecked = isChecked,
-    )
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -46,4 +36,16 @@ data class Checklist(
     }
 
     override fun hashCode(): Int = id.hashCode()
+
+    companion object {
+        fun create(
+            pet: Pet,
+            checkType: CheckType,
+            isChecked: Boolean = false,
+        ): Checklist = Checklist(
+            pet = pet,
+            checkType = checkType,
+            isChecked = isChecked,
+        )
+    }
 }
