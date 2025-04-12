@@ -149,8 +149,9 @@ class UserService(
             userRepository.save(newUser)
 
             // 2. OAuth 연동 저장
-            val newOAuth = UserOAuth(
+            val newOAuth = UserOAuth.create(
                 user = newUser,
+                email = email,
                 provider = provider,
                 providerUserId = providerUserId,
             )
