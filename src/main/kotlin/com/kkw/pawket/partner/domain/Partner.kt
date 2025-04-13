@@ -51,7 +51,7 @@ data class Partner(
                 name = name,
                 ownerName = ownerName,
                 contactNumber = contactNumber,
-                link = link
+                link = link,
             )
         }
     }
