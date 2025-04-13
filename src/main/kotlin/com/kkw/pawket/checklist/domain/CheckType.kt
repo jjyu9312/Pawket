@@ -39,7 +39,7 @@ data class CheckType(
 
             return CheckType(
                 name = formattedName,
-                description = description
+                description = description,
             )
         }
     }
