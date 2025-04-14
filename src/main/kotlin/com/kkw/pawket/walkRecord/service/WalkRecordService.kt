@@ -28,6 +28,8 @@ class WalkRecordService (
             petId = req.petId,
         )
 
+        logger.info("WalkRecord created: $walkRecord")
+
         walkRecordRepository.save(walkRecord)
 
         return walkRecord.id
@@ -56,6 +58,8 @@ class WalkRecordService (
         val coordinateLng = req.coordinateLng
 
         val walkLocationJson = createWalkLocationJson(distance, coordinateLat, coordinateLng)
+
+        logger.info("WalkRecord completed: $walkRecord, WalkLocation: $walkLocationJson")
 
         walkRecord.update(
             finishedAt = req.finishedAt,
