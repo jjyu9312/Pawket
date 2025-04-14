@@ -38,13 +38,13 @@ class WalkRecordService (
     // walk record 상세 정보를 JSON으로 변환
     fun createWalkLocationJson(
         distance: Int, // m 기반
-        coordinateLat: Double,
-        coordinateLng: Double,
+        lat: Double,
+        lng: Double,
     ): String {
         val locationMap = mapOf(
             "distance" to distance,
-            "coordinateLat" to coordinateLat,
-            "coordinateLng" to coordinateLng,
+            "lat" to lat,
+            "lng" to lng,
         )
         return objectMapper.writeValueAsString(locationMap)
     }
