@@ -54,10 +54,10 @@ class WalkRecordService (
             ?: throw BadRequestException(ResponseCode.WALK_RECORD_NOT_FOUND)
 
         val distance = req.distance
-        val coordinateLat = req.coordinateLat
-        val coordinateLng = req.coordinateLng
+        val lat = req.lat
+        val lng = req.lng
 
-        val walkLocationJson = createWalkLocationJson(distance, coordinateLat, coordinateLng)
+        val walkLocationJson = createWalkLocationJson(distance, lat, lng)
 
         logger.info("WalkRecord completed: $walkRecord, WalkLocation: $walkLocationJson")
 
