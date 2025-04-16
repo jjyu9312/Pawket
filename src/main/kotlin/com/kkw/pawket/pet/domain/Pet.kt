@@ -32,10 +32,10 @@ data class Pet(
     val dogType: DogType? = null,
 
     @Column(nullable = true, unique = true)
-    var mainImageUrl: String? = null,
+    var mainImagePath: String? = null,
 
     @Column(nullable = true, unique = true) // ,로 연결
-    var imageUrls: String? = null,
+    var imagePaths: String? = null,
 
     @Column(nullable = false)
     val age: Int,
@@ -72,8 +72,8 @@ data class Pet(
             name: String,
             type: PetType,
             dogType: DogType? = null,
-            mainImageUrl: String? = null,
-            imageUrls: String? = null,
+            mainImagePath: String? = null,
+            imagePaths: String? = null,
             age: Int,
             weight: Int,
             sex: Sex,
@@ -85,8 +85,8 @@ data class Pet(
             name = name,
             type = type,
             dogType = dogType,
-            mainImageUrl = mainImageUrl,
-            imageUrls = imageUrls,
+            mainImagePath = mainImagePath,
+            imagePaths = imagePaths,
             age = age,
             weight = weight,
             sex = sex,
