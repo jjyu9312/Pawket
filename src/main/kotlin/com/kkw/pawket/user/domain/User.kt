@@ -29,7 +29,7 @@ data class User(
     val role: UserRole = UserRole.USER,
 
     @Column(nullable = true)
-    var imageUrl: String? = null,
+    var imagePath: String? = null,
 
     @Column(nullable = false)
     var totalCoin: Int = 0,
