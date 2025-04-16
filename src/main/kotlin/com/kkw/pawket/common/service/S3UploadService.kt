@@ -16,6 +16,12 @@ class S3UploadService(
     @Value("\${cloud.aws.s3.bucket.name}")
     private lateinit var bucketName: String
 
+    @Value("\${cloud.aws.s3.url-prefix.image}")
+    private lateinit var imagePrefix: String
+
+    @Value("\${cloud.aws.s3.url-prefix.petz}")
+    private lateinit var petzPrefix: String
+
     /**
      * 단일 파일 업로드
      * @param file 업로드할 MultipartFile
@@ -39,7 +45,7 @@ class S3UploadService(
                     RequestBody.fromInputStream(it.inputStream, it.size)
                 )
 
-                generateS3Url(fileName)
+                "$imagePrefix${fileName.removePrefix("upload/image/")}"
             } catch (e: Exception) {
                 null
             }
@@ -59,18 +65,38 @@ class S3UploadService(
     }
 
     /**
+     * Petz 영상 업로드
+     */
+    fun uploadPetzVideoFile(file: MultipartFile?, dirName: String = "upload/petz"): String? {
+        return file?.let {
+            try {
+                val originalFilename = it.originalFilename ?: return null
+                val fileName = generateFileName(dirName, originalFilename)
+
+                val putObjectRequest = PutObjectRequest.builder()
+                    .bucket(bucketName)
+                    .key(fileName)
+                    .contentType(it.contentType)
+                    .build()
+
+                s3Client.putObject(
+                    putObjectRequest,
+                    RequestBody.fromInputStream(it.inputStream, it.size)
+                )
+
+                "$petzPrefix${fileName.removePrefix("upload/petz/")}"
+            } catch (e: Exception) {
+                null
+            }
+        }
+    }
+
+    /**
      * 파일명 생성 (중복 방지)
      */
     private fun generateFileName(dirName: String, originalFilename: String): String {
         val uuid = UUID.randomUUID().toString()
         return "$dirName/$uuid-$originalFilename"
-    }
-
-    /**
-     * S3 URL 생성
-     */
-    private fun generateS3Url(fileName: String): String {
-        return "https://$bucketName.s3.amazonaws.com/$fileName"
     }
 
     /**
