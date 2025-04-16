@@ -208,7 +208,7 @@ class UserService(
             name = req.name,
             birth = req.birth,
             gender = gender,
-            imageUrl = userImageUrl,
+            imagePath = userImageUrl,
             addressBasic = req.addressInfo.basic,
             addressLat = req.addressInfo.lat,
             addressLng = req.addressInfo.lng,
@@ -250,8 +250,8 @@ class UserService(
                 name = req.petInfo.name,
                 type = type,
                 dogType = req.petInfo.dogType?.let { DogType.fromString(it) },
-                mainImageUrl = dogImageUrls.firstOrNull(), // 리스트가 비어있으면 null
-                imageUrls = dogImageUrls.joinToString(","), // 모든 이미지 URL을 쉼표로 구분
+                mainImagePath = dogImageUrls.firstOrNull(), // 리스트가 비어있으면 null
+                imagePaths = dogImageUrls.joinToString(","), // 모든 이미지 URL을 쉼표로 구분
                 age = req.petInfo.age,
                 sex = sex,
                 weight = req.petInfo.weight,
