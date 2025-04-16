@@ -38,8 +38,8 @@ class PetService(
             name = req.name,
             type = PetType.fromString(req.type) ?: throw IllegalArgumentException(ResponseCode.INVALID_PET_TYPE),
             dogType = req.dogType?.let { DogType.valueOf(it) },
-            mainImageUrl = dogImageUrls.firstOrNull(), // 리스트가 비어있으면 null
-            imageUrls = dogImageUrls.joinToString(","), // 모든 이미지 URL을 쉼표로 구분
+            mainImagePath = dogImageUrls.firstOrNull(), // 리스트가 비어있으면 null
+            imagePaths = dogImageUrls.joinToString(","), // 모든 이미지 URL을 쉼표로 구분
             age = req.age,
             weight = req.weight,
             sex = Sex.fromString(req.sex) ?: throw IllegalArgumentException(ResponseCode.INVALID_SEX_TYPE),
