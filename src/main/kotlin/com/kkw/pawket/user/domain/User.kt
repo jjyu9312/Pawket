@@ -74,7 +74,7 @@ data class User(
         name: String,
         birth: LocalDate,
         gender: Gender,
-        imageUrl: String? = null,
+        imagePath: String? = null,
         addressBasic: String,
         addressLat: Double,
         addressLng: Double,
@@ -83,7 +83,7 @@ data class User(
         this.name = name
         this.birth = birth
         this.gender = gender
-        this.imageUrl = imageUrl
+        this.imagePath = imagePath
         this.addressBasic = addressBasic
         this.addressLat = addressLat
         this.addressLng = addressLng
