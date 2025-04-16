@@ -61,3 +61,6 @@ cloud:
         bucket:
           name: wag-s3
           region: ap-northeast-2
+        url-prefix:
+          image: https://s3.ap-northeast-2.amazonaws.com/wag/upload/image/
+          petz: https://s3.ap-northeast-2.amazonaws.com/wag/upload/petz/
