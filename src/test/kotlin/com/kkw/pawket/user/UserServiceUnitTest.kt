@@ -30,8 +30,6 @@ import com.kkw.pawket.user.domain.UserOAuth
 import com.kkw.pawket.user.domain.repository.UserOAuthRepository
 import com.kkw.pawket.user.domain.repository.UserRepository
 import com.kkw.pawket.user.model.req.CreateUserReq
-import com.kkw.pawket.user.service.OAuthTokenResponse
-import com.kkw.pawket.user.service.OAuthUser
 import com.kkw.pawket.user.service.UserService
 import com.kkw.pawket.walkRecord.domain.WalkRecord
 import com.kkw.pawket.walkRecord.domain.repository.WalkRecordRepository
@@ -470,10 +468,11 @@ class UserServiceUnitTest {
                 idField.set(this, userId)
             }
 
-            val userOAuth = UserOAuth(
+            val userOAuth = UserOAuth.create(
                 user = user,
+                email = email,
                 provider = provider,
-                providerUserId = providerUserId
+                providerUserId = providerUserId,
             )
 
             every {
@@ -525,6 +524,7 @@ class UserServiceUnitTest {
 
             every { userOAuthRepository.save(any<UserOAuth>()) } returns UserOAuth(
                 user = user,
+                email = email,
                 provider = provider,
                 providerUserId = providerUserId
             )
