@@ -195,9 +195,6 @@ class UserService(
                 "- $userId"
             )
 
-        /*
-        TODO S3 이미지 업로드
-         */
         val userImageUrl = s3UploadService.uploadSingleFile(
             req.imageUrl,
             dirName = "${user.id}/profile"
@@ -230,9 +227,6 @@ class UserService(
             )
         }
 
-        /*
-        TODO S3 이미지 업로드
-         */
         val dogImageUrls = s3UploadService.uploadMultipleFiles(
             req.petInfo?.imageUrls,  // 리스트를 직접 전달
             dirName = "${user.id}/pet-images"  // 디렉토리 경로 지정
