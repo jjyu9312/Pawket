@@ -203,7 +203,6 @@ class UserService(
             dirName = "${user.id}/profile"
         )
 
-
         user.update(
             name = req.name,
             birth = req.birth,
@@ -230,8 +229,6 @@ class UserService(
                 "이미 존재하는 user - ${user.id}"
             )
         }
-
-        var dogImage = ""
 
         /*
         TODO S3 이미지 업로드
