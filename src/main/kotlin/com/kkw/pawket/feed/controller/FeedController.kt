@@ -33,4 +33,8 @@ class FeedController {
     /*
     TODO 피드 좋아요 취소
      */
+
+    /*
+    TODO 펫즈 생성
+     */
 }
