@@ -1,4 +1,4 @@
-package com.kkw.pawket.ads.domain.repository
+package com.kkw.pawket.shop.domain.repository
 
 import com.kkw.pawket.shop.domain.Shop
 import org.springframework.data.jpa.repository.JpaRepository
