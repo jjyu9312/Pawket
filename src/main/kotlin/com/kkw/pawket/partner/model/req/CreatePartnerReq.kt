@@ -13,5 +13,5 @@ data class CreatePartnerReq(
     val contactNumber: String,
 
     @Schema(description = "제휴업체 관련 사이트", example = "www.google.com")
-    val link: String,
+    val link: String? = null,
 )
