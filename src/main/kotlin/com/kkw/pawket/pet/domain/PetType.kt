@@ -10,6 +10,7 @@ enum class PetType(val stringValue: String) {
     MEERKAT("meerkat"),
     RACC00N("raccoon"),
     HEDGEHOG("hedghog"),
+
     ETC("etc"),
     ;
 
