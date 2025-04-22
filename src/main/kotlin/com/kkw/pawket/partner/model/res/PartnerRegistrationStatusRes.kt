@@ -10,5 +10,5 @@ data class PartnerInfo(
     val name: String,
     val ownerName: String,
     val contactNumber: String,
-    val link: String
+    val link: String? = null,
 )
