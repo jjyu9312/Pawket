@@ -15,17 +15,17 @@ data class Partner(
     @JoinColumn(name = "user_id", columnDefinition = "CHAR(36)")
     val user: User,
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     val name: String,
 
-    @Column(nullable = false, columnDefinition = "MEDIUMTEXT")
+    @Column(nullable = false, length = 50)
     val ownerName: String,
 
     @Column(nullable = false, length = 50)
     val contactNumber: String,
 
     @Column(nullable = true)
-    val link: String,
+    val link: String? = null,
 
     ) : BaseEntity() {
 
@@ -44,7 +44,7 @@ data class Partner(
             name: String,
             ownerName: String,
             contactNumber: String,
-            link: String,
+            link: String? = null,
         ): Partner {
             return Partner(
                 user = user,
