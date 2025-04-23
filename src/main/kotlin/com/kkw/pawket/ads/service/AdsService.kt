@@ -1,7 +1,6 @@
 package com.kkw.pawket.ads.service
 
 import com.kkw.pawket.ads.domain.Company
-import com.kkw.pawket.ads.domain.repository.AdsRepository
 import com.kkw.pawket.ads.domain.repository.CompanyRepository
 import com.kkw.pawket.common.exception.BadRequestException
 import com.kkw.pawket.common.response.ResponseCode
