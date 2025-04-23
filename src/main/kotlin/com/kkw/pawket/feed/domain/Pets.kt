@@ -6,7 +6,7 @@ import jakarta.persistence.*
 import java.util.*
 
 @Entity
-data class petz(
+data class Pets(
     @Id
     @Column(nullable = false, columnDefinition = "CHAR(36)")
     val id: String = UUID.randomUUID().toString(),
@@ -35,7 +35,7 @@ data class petz(
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
-        other as petz
+        other as Pets
         return id == other.id
     }
 
@@ -55,7 +55,7 @@ data class petz(
             title: String,
             content: String,
             videoPath: String,
-        ): petz = petz(
+        ): Pets = Pets(
             user = user,
             petId = petId,
             title = title,
