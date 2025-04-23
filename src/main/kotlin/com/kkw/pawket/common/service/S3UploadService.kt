@@ -19,8 +19,8 @@ class S3UploadService(
     @Value("\${cloud.aws.s3.url-prefix.image}")
     private lateinit var imagePrefix: String
 
-    @Value("\${cloud.aws.s3.url-prefix.petz}")
-    private lateinit var petzPrefix: String
+    @Value("\${cloud.aws.s3.url-prefix.pets}")
+    private lateinit var petsPrefix: String
 
     /**
      * 단일 파일 업로드
@@ -65,9 +65,9 @@ class S3UploadService(
     }
 
     /**
-     * Petz 영상 업로드
+     * Pets 영상 업로드
      */
-    fun uploadPetzVideoFile(file: MultipartFile?, dirName: String = "upload/petz"): String? {
+    fun uploadPetsVideoFile(file: MultipartFile?, dirName: String = "upload/pets"): String? {
         return file?.let {
             try {
                 val originalFilename = it.originalFilename ?: return null
@@ -84,7 +84,7 @@ class S3UploadService(
                     RequestBody.fromInputStream(it.inputStream, it.size)
                 )
 
-                "$petzPrefix${fileName.removePrefix("upload/petz/")}"
+                "$petsPrefix${fileName.removePrefix("upload/pets/")}"
             } catch (e: Exception) {
                 null
             }
