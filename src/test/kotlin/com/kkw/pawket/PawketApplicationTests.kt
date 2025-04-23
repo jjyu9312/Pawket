@@ -6,7 +6,7 @@ import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository
 
 @SpringBootTest
-class pawketApplicationTests {
+class PawketApplicationTests {
 
     @MockBean
     lateinit var clientRegistrationRepository: ClientRegistrationRepository

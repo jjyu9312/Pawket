@@ -8,8 +8,8 @@ import org.springframework.boot.runApplication
 
 @SpringBootApplication
 @EnableConfigurationProperties(OAuthProviderProperties::class, OAuthProviderEndpoints::class)
-class pawketApplication
+class PawketApplication
 
 fun main(args: Array<String>) {
-    runApplication<pawketApplication>(*args)
+    runApplication<PawketApplication>(*args)
 }
