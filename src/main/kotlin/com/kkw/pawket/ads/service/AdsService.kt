@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service
 
 @Service
 class AdsService(
-    private val adsRepository: AdsRepository,
     private val companyRepository: CompanyRepository,
     private val userRepository: UserRepository,
 ) {
