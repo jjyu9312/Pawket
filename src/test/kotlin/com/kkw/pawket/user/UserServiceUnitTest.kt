@@ -406,7 +406,7 @@ class UserServiceUnitTest {
             every { walkRecordRepository.findAllByUserId(userId) } returns emptyList()
             every { walkRecordRepository.saveAll(any<List<WalkRecord>>()) } returns emptyList()
 
-            every { reservationRepository.findAllByUserId(userId) } returns emptyList()
+            every { reservationRepository.findAllByUserIdAndIsDeletedFalse(userId) } returns emptyList()
             every { reservationRepository.saveAll(any<List<Reservation>>()) } returns emptyList()
 
             every { feedRepository.findAllByUserIdAndIsDeletedFalse(userId) } returns emptyList()
