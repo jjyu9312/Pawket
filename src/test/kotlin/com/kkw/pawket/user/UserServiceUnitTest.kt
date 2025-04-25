@@ -409,7 +409,7 @@ class UserServiceUnitTest {
             every { reservationRepository.findAllByUserId(userId) } returns emptyList()
             every { reservationRepository.saveAll(any<List<Reservation>>()) } returns emptyList()
 
-            every { feedRepository.findAllByUserId(userId) } returns emptyList()
+            every { feedRepository.findAllByUserIdAndIsDeletedFalse(userId) } returns emptyList()
             every { feedRepository.saveAll(any<List<Feed>>()) } returns emptyList()
 
             every { userTermsMappingRepository.findAllByUserId(userId) } returns emptyList()

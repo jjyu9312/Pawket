@@ -327,7 +327,7 @@ class UserService(
         reservations.forEach { it.isDeleted = true }
         reservationRepository.saveAll(reservations)
 
-        val feeds = feedRepository.findAllByUserId(userId)
+        val feeds = feedRepository.findAllByUserIdAndIsDeletedFalse(userId)
         feeds.forEach { it.isDeleted = true }
         feedRepository.saveAll(feeds)
 
