@@ -1,11 +1,11 @@
-package com.kkw.pawket.feed.controller
+package com.kkw.pawket.post.controller
 
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/v1/feed")
-class FeedController {
+@RequestMapping("/api/v1/post")
+class PostController {
     /*
     TODO 피드 등록
      */
