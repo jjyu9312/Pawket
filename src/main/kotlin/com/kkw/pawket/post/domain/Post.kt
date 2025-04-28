@@ -1,4 +1,4 @@
-package com.kkw.pawket.feed.domain
+package com.kkw.pawket.post.domain
 
 import com.kkw.pawket.common.domain.BaseEntity
 import com.kkw.pawket.user.domain.User
@@ -6,7 +6,7 @@ import jakarta.persistence.*
 import java.util.*
 
 @Entity
-data class Feed(
+data class Post(
     @Id
     @Column(nullable = false, columnDefinition = "CHAR(36)")
     val id: String = UUID.randomUUID().toString(),
@@ -32,7 +32,7 @@ data class Feed(
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
-        other as Feed
+        other as Post
         return id == other.id
     }
 
@@ -51,7 +51,7 @@ data class Feed(
             petId: String,
             title: String,
             content: String,
-        ): Feed = Feed(
+        ): Post = Post(
             user = user,
             petId = petId,
             title = title,
