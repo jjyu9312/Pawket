@@ -2,6 +2,7 @@ package com.kkw.pawket.partner.domain
 
 import jakarta.persistence.Column
 import jakarta.persistence.Embeddable
+import java.io.Serializable
 
 @Embeddable
 data class UserPartnerVisitId(
@@ -10,4 +11,4 @@ data class UserPartnerVisitId(
 
     @Column(name = "partner_id", columnDefinition = "CHAR(36)")
     val partnerId: String
-) : java.io.Serializable
+) : Serializable
