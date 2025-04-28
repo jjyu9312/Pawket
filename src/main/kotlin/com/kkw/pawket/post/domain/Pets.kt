@@ -1,4 +1,4 @@
-package com.kkw.pawket.feed.domain
+package com.kkw.pawket.post.domain
 
 import com.kkw.pawket.common.domain.BaseEntity
 import com.kkw.pawket.user.domain.User
