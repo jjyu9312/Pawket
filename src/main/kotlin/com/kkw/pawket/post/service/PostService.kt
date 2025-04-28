@@ -1,7 +1,7 @@
-package com.kkw.pawket.feed.service
+package com.kkw.pawket.post.service
 
 import org.springframework.stereotype.Service
 
 @Service
-class FeedService {
+class PostService {
 }
