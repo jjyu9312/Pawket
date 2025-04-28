@@ -10,8 +10,8 @@ import com.kkw.pawket.common.service.JwtTokenProvider
 import com.kkw.pawket.common.service.OAuthProviderEndpoints
 import com.kkw.pawket.common.service.OAuthProviderProperties
 import com.kkw.pawket.common.service.S3UploadService
-import com.kkw.pawket.feed.domain.Feed
-import com.kkw.pawket.feed.repository.FeedRepository
+import com.kkw.pawket.post.domain.Post
+import com.kkw.pawket.post.repository.PostRepository
 import com.kkw.pawket.partner.domain.Partner
 import com.kkw.pawket.partner.domain.PartnerVisitHistory
 import com.kkw.pawket.partner.domain.repository.PartnerRepository
@@ -47,9 +47,6 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.springframework.data.repository.findByIdOrNull
-import org.springframework.http.HttpEntity
-import org.springframework.http.HttpMethod
-import org.springframework.http.ResponseEntity
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.multipart.MultipartFile
 import java.time.LocalDate
@@ -78,7 +75,7 @@ class UserServiceUnitTest {
     private val rewardHistoryRepository = mockk<RewardHistoryRepository>()
     private val walkRecordRepository = mockk<WalkRecordRepository>()
     private val reservationRepository = mockk<ReservationRepository>()
-    private val feedRepository = mockk<FeedRepository>()
+    private val postRepository = mockk<PostRepository>()
     private val adsRepository = mockk<AdsRepository>()
     private val companyRepository = mockk<CompanyRepository>()
     private val petService = mockk<PetService>()
@@ -105,7 +102,7 @@ class UserServiceUnitTest {
             adsRepository = mockk(relaxed = true),
             reservationRepository = mockk(relaxed = true),
             walkRecordRepository = mockk(relaxed = true),
-            feedRepository = mockk(relaxed = true),
+            postRepository = mockk(relaxed = true),
             userTermsMappingRepository = mockk(relaxed = true),
             partnerVisitHistoryRepository = mockk(relaxed = true),
             rewardHistoryRepository = mockk(relaxed = true),
@@ -409,8 +406,8 @@ class UserServiceUnitTest {
             every { reservationRepository.findAllByUserIdAndIsDeletedFalse(userId) } returns emptyList()
             every { reservationRepository.saveAll(any<List<Reservation>>()) } returns emptyList()
 
-            every { feedRepository.findAllByUserIdAndIsDeletedFalse(userId) } returns emptyList()
-            every { feedRepository.saveAll(any<List<Feed>>()) } returns emptyList()
+            every { postRepository.findAllByUserIdAndIsDeletedFalse(userId) } returns emptyList()
+            every { postRepository.saveAll(any<List<Post>>()) } returns emptyList()
 
             every { userTermsMappingRepository.findAllByUserId(userId) } returns emptyList()
             every { userTermsMappingRepository.deleteAll(any()) } just runs
