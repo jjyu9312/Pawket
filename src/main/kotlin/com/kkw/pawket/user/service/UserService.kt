@@ -3,11 +3,10 @@ package com.kkw.pawket.user.service
 import com.kkw.pawket.ads.domain.repository.AdsRepository
 import com.kkw.pawket.ads.domain.repository.CompanyRepository
 import com.kkw.pawket.common.exception.BadRequestException
-import com.kkw.pawket.common.exception.ServerException
 import com.kkw.pawket.common.exception.UnAuthorizedException
 import com.kkw.pawket.common.response.ResponseCode
 import com.kkw.pawket.common.service.*
-import com.kkw.pawket.feed.repository.FeedRepository
+import com.kkw.pawket.post.repository.PostRepository
 import com.kkw.pawket.partner.domain.repository.PartnerRepository
 import com.kkw.pawket.partner.domain.repository.PartnerVisitHistoryRepository
 import com.kkw.pawket.pet.domain.Pet
@@ -25,7 +24,6 @@ import com.kkw.pawket.user.domain.repository.UserOAuthRepository
 import com.kkw.pawket.user.domain.repository.UserRepository
 import com.kkw.pawket.user.model.req.CreateUserReq
 import com.kkw.pawket.user.model.res.CreateUserRes
-import com.kkw.pawket.user.model.res.LoginUserRes
 import com.kkw.pawket.user.domain.OAuthProvider
 import com.kkw.pawket.user.domain.UserOAuth
 import com.kkw.pawket.walkRecord.domain.repository.WalkRecordRepository
@@ -40,7 +38,6 @@ import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.stereotype.Service
-import org.springframework.web.client.HttpClientErrorException.Unauthorized
 import org.springframework.web.client.RestTemplate
 import java.time.LocalDateTime
 
@@ -60,7 +57,7 @@ class UserService(
     private val adsRepository: AdsRepository,
     private val reservationRepository: ReservationRepository,
     private val walkRecordRepository: WalkRecordRepository,
-    private val feedRepository: FeedRepository,
+    private val postRepository: PostRepository,
     private val userTermsMappingRepository: UserTermsMappingRepository,
     private val partnerVisitHistoryRepository: PartnerVisitHistoryRepository,
     private val rewardHistoryRepository: RewardHistoryRepository,
@@ -318,7 +315,6 @@ class UserService(
         ads.forEach { it.isDeleted = true }
         adsRepository.saveAll(ads)
 
-
         val walkRecords = walkRecordRepository.findAllByUserId(userId)
         walkRecords.forEach { it.isDeleted = true }
         walkRecordRepository.saveAll(walkRecords)
@@ -327,9 +323,9 @@ class UserService(
         reservations.forEach { it.isDeleted = true }
         reservationRepository.saveAll(reservations)
 
-        val feeds = feedRepository.findAllByUserId(userId)
+        val feeds = postRepository.findAllByUserId(userId)
         feeds.forEach { it.isDeleted = true }
-        feedRepository.saveAll(feeds)
+        postRepository.saveAll(feeds)
 
         val userTermsMappings = userTermsMappingRepository.findAllByUserId(userId)
         userTermsMappingRepository.deleteAll(userTermsMappings)
