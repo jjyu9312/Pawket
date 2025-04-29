@@ -91,7 +91,6 @@ class UserServiceUnitTest {
             oauthProviderProperties = oAuthProviderProperties,
             oauthProviderEndpoints = oAuthProviderEndpoints,
             restTemplate = restTemplate,
-            jwtTokenProvider = jwtTokenProvider,
             request = request,
             response = response,
             userRepository = userRepository,
@@ -403,10 +402,10 @@ class UserServiceUnitTest {
             every { walkRecordRepository.findAllByUserId(userId) } returns emptyList()
             every { walkRecordRepository.saveAll(any<List<WalkRecord>>()) } returns emptyList()
 
-            every { reservationRepository.findAllByUserIdAndIsDeletedFalse(userId) } returns emptyList()
+            every { reservationRepository.findAllByUserId(userId) } returns emptyList()
             every { reservationRepository.saveAll(any<List<Reservation>>()) } returns emptyList()
 
-            every { postRepository.findAllByUserIdAndIsDeletedFalse(userId) } returns emptyList()
+            every { postRepository.findAllByUserId(userId) } returns emptyList()
             every { postRepository.saveAll(any<List<Post>>()) } returns emptyList()
 
             every { userTermsMappingRepository.findAllByUserId(userId) } returns emptyList()
