@@ -46,7 +46,6 @@ class UserService(
     private val oauthProviderProperties: OAuthProviderProperties,
     private val oauthProviderEndpoints: OAuthProviderEndpoints,
     private val restTemplate: RestTemplate,
-    private val jwtTokenProvider: JwtTokenProvider,
     private val request: HttpServletRequest,
     private val response: HttpServletResponse,
     private val userRepository: UserRepository,
