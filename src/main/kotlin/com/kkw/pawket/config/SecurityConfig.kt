@@ -46,12 +46,12 @@ class SecurityConfig(
                         "/api/v1/oauth2/authorization/*",  // OAuth 인증 시작 경로
                         "/api/v1/login/oauth2/code/*",  // OAuth 인증 완료 경로
                         "/api/v1/user/logout",  // 로그아웃 경로
-                        "/api/v1/swagger-ui/",         // Swagger UI (있는 경우)
+                        "/api/v1/swagger-ui/", // Swagger UI (있는 경우)
                         "/api/v1/v3/api-docs/",
                         "/test/*",
                         "/common/*",
-                    ).permitAll()  // 로그인 및 OAuth2 관련 경로 허용
-                    .anyRequest().authenticated()  // 나머지 경로는 인증 필요
+                    ).permitAll() // 로그인 및 OAuth2 관련 경로 허용
+                    .anyRequest().authenticated() // 나머지 경로는 인증 필요
             }
             .logout {
                 it.logoutUrl("/api/v1/user/logout")
