@@ -1,5 +1,6 @@
 package com.kkw.pawket.terms.domain
 
+import com.kkw.pawket.common.domain.BaseDateTimeEntity
 import com.kkw.pawket.common.domain.BaseEntity
 import com.kkw.pawket.user.domain.User
 import jakarta.persistence.*
@@ -24,4 +25,4 @@ data class UserTermsMapping(
     @Column(nullable = false)
     val isAgreed: Boolean = false
 
-) : BaseEntity()
+) : BaseDateTimeEntity()
