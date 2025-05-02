@@ -16,7 +16,7 @@ data class Reservation(
     @ManyToOne(fetch = FetchType.LAZY)
     val user: User,
 
-    @JoinColumn(name = "hospital_id")
+    @JoinColumn(name = "partner_id")
     @ManyToOne(fetch = FetchType.LAZY)
     val partner: Partner,
 
