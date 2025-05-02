@@ -3,18 +3,18 @@ package com.kkw.pawket.notice.model.req
 import io.swagger.v3.oas.annotations.media.Schema
 
 data class CreateNoticeReq(
-    @Schema(description = "공지사항 제목", example = "긴급 공지!!")
+    @Schema(description = "Title of the notice", example = "Urgent Notice!!")
     val title: String,
 
-    @Schema(description = "공지사항 내용", example = "공지사항 내용입니다.")
+    @Schema(description = "Content of the notice", example = "This is the content of the notice.")
     val content: String,
 
-    @Schema(description = "공지사항 발송 대상", example = "all")
+    @Schema(description = "Target audience for the notice", example = "all")
     val target: String,
 
-    @Schema(description ="공지사항 필수 확인 여부", example = "true")
+    @Schema(description = "Whether the notice requires mandatory confirmation", example = "true")
     val isRequired: Boolean,
 
-    @Schema(description = "우선순위", example = "1")
+    @Schema(description = "Priority of the notice", example = "1")
     val priority: Int,
 )
