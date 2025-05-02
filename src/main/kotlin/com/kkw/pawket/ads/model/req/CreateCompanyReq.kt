@@ -3,18 +3,18 @@ package com.kkw.pawket.partner.model.req
 import io.swagger.v3.oas.annotations.media.Schema
 
 data class CreateCompanyReq(
-    @Schema(description = "제휴업체 이름", example = "은하수 동물병원")
+    @Schema(description = "Name of the partner company", example = "Milky Way Animal Hospital")
     val name: String,
 
-    @Schema(description = "주소 기본 정보", example = "서울특별시 강남구 영동대로 513")
+    @Schema(description = "Basic address", example = "513, Yeongdong-daero, Gangnam-gu, Seoul")
     val addressBasic: String,
 
-    @Schema(description = "주소 위도", example = "37.50915")
+    @Schema(description = "Latitude of the address", example = "37.50915")
     val addressLat: Double,
 
-    @Schema(description = "주소 경도", example = "127.06194")
+    @Schema(description = "Longitude of the address", example = "127.06194")
     val addressLng: Double,
 
-    @Schema(description = "주소 상세 정보", example = "코엑스 D홀")
+    @Schema(description = "Detailed address information", example = "COEX Hall D")
     val addressDetail: String? = null,
 )
