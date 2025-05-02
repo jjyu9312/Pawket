@@ -3,15 +3,15 @@ package com.kkw.pawket.partner.model.req
 import io.swagger.v3.oas.annotations.media.Schema
 
 data class CreatePartnerReq(
-    @Schema(description = "제휴업체 이름", example = "은하수 동물병원")
+    @Schema(description = "Name of the partner company", example = "Milky Way Animal Hospital")
     val name: String,
 
-    @Schema(description = "제휴업체 대표 이름", example = "김경욱")
+    @Schema(description = "Name of the representative", example = "Kyungwook Kim")
     val ownerName: String,
 
-    @Schema(description = "제휴업체 대표 번호", example = "010-0000-0000")
+    @Schema(description = "Contact number of the representative", example = "010-0000-0000")
     val contactNumber: String,
 
-    @Schema(description = "제휴업체 관련 사이트", example = "www.google.com")
+    @Schema(description = "Website or related link of the partner company", example = "www.google.com")
     val link: String? = null,
 )
