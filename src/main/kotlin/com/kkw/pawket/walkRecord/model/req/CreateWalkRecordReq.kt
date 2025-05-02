@@ -5,6 +5,6 @@ import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDateTime
 
 data class CreateWalkRecordReq(
-    @Schema(description = "펫 ID", example = "12kdjalkdjkasldjl123")
+    @Schema(description = "Database id of the pet", example = "petId")
     val petId: String,
 )
