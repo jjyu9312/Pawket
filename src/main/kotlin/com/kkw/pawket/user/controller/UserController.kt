@@ -15,11 +15,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.responses.ApiResponse as SwaggerApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.servlet.http.HttpServletResponse
+import jakarta.validation.Valid
 import org.apache.coyote.BadRequestException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -118,21 +120,20 @@ class UserController (
     )
     @PostMapping("/register")
     fun createUser(
-        @Parameter(description = "사용자 ID", required = true)
         @AuthenticationPrincipal userId: String,
-        @Parameter(description = "사용자 추가 정보", required = true)
-        @RequestBody req: CreateUserReq
+        @Valid @RequestPart("userData") req: CreateUserReq,
+        @RequestPart("profileImage", required = false) profileImage: MultipartFile?,
+        @RequestPart("petImages", required = false) petImages: List<MultipartFile>?
     ): ResponseEntity<ApiResponse<CreateUserRes>> {
         return try {
-            val user = userService.createUser(userId, req)
+            val user = userService.createUser(userId, req, profileImage, petImages)
             ApiResponseFactory.success(user)
         } catch (e: BadRequestException) {
             ApiResponseFactory.error(
                 responseCode = ResponseCode.BAD_REQUEST,
                 customMessage = e.message
             )
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             ApiResponseFactory.error(
                 responseCode = ResponseCode.INTERNAL_SERVER_ERROR,
                 customMessage = e.message
