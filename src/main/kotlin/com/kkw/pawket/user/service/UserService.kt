@@ -290,8 +290,6 @@ class UserService(
         val user = userRepository.findByIdAndIsDeletedFalse(userId)
             ?: throw BadRequestException(ResponseCode.USER_NOT_FOUND)
 
-        user.isDeleted = true
-
         // userOAuth 완전 삭제
         val userOAuth = userOAuthRepository.findAllByUserId(userId)
         userOAuthRepository.deleteAll(userOAuth)
@@ -300,7 +298,6 @@ class UserService(
         // pet, partner, ad, company, walkRecord, reservation, feed, userTermsMapping, partnerVisitHistory, rewardHistory, ...
         val pets = petRepository.findAllByUserId(userId)
         pets.forEach { it.isDeleted = true }
-        userRepository.delete(user)
 
         val partners = partnerRepository.findAllByUserId(userId)
         partners.forEach { it.isDeleted = true }
@@ -337,6 +334,7 @@ class UserService(
         rewardHistories.forEach { it.isDeleted = true }
         rewardHistoryRepository.saveAll(rewardHistories)
 
+        user.isDeleted = true
         userRepository.save(user)
 
         return true
