@@ -39,6 +39,7 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
+import org.springframework.web.multipart.MultipartFile
 import java.time.LocalDateTime
 
 @Service
@@ -176,7 +177,7 @@ class UserService(
     }
 
     @Transactional(rollbackOn = [Exception::class])
-    fun createUser(userId: String, req: CreateUserReq): CreateUserRes {
+    fun createUser(userId: String, req: CreateUserReq, profileImage: MultipartFile?, petImages: List<MultipartFile>?): CreateUserRes {
         logger.info("Creating user with name: ${req.name}, email: ${req.email}")
 
         val gender = Gender.fromString(req.gender)
@@ -191,10 +192,12 @@ class UserService(
                 "- $userId"
             )
 
-        val userImageUrl = s3UploadService.uploadSingleFile(
-            req.imageUrl,
-            dirName = "${user.id}/profile"
-        )
+        val userImageUrl = profileImage?.let {
+            s3UploadService.uploadSingleFile(
+                it,
+                dirName = "${user.id}/profile"
+            )
+        }
 
         user.update(
             name = req.name,
@@ -223,10 +226,12 @@ class UserService(
             )
         }
 
-        val dogImageUrls = s3UploadService.uploadMultipleFiles(
-            req.petInfo?.imageUrls,  // 리스트를 직접 전달
-            dirName = "${user.id}/pet-images"  // 디렉토리 경로 지정
-        )
+        val dogImageUrls = petImages?.let {
+            s3UploadService.uploadMultipleFiles(
+                it,
+                dirName = "${user.id}/pet-images"
+            )
+        } ?: emptyList()
 
         if (req.petInfo != null) {
             val type = PetType.fromString(req.petInfo.type)!!
