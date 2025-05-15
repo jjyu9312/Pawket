@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.Operation
 import org.apache.coyote.BadRequestException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -109,4 +110,52 @@ class TermsController (
         }
     }
 
+    @Operation(summary = "약관 수정", description = "약관을 수정합니다.")
+    @PutMapping("/{termsId}")
+    fun updateTerms(
+        @AuthenticationPrincipal userId: String,
+        @PathVariable termsId: String,
+        @RequestBody req: TermsCreateReq
+    ): ResponseEntity<ApiResponse<String>> {
+        return try {
+            val updatedTermsId = termsService.updateTerms(userId, termsId, req)
+            ApiResponseFactory.success(updatedTermsId)
+        } catch (e: BadRequestException) {
+            ApiResponseFactory.error(
+                responseCode = ResponseCode.BAD_REQUEST,  // 400 응답 코드
+                httpStatus = HttpStatus.BAD_REQUEST,
+                customMessage = e.message
+            )
+        } catch (e: Exception) {
+            ApiResponseFactory.error(
+                responseCode = ResponseCode.INTERNAL_SERVER_ERROR,  // 500 응답 코드
+                httpStatus = HttpStatus.INTERNAL_SERVER_ERROR,
+                customMessage = e.message
+            )
+        }
+    }
+
+    @Operation(summary = "약관 삭제", description = "약관을 삭제합니다.")
+    @DeleteMapping("/{termsId}")
+    fun deleteTerms(
+        @AuthenticationPrincipal userId: String,
+        @PathVariable termsId: String
+    ): ResponseEntity<ApiResponse<String>> {
+        return try {
+            termsService.deleteTerms(userId, termsId)
+            ApiResponseFactory.success("약관 삭제가 완료되었습니다.")
+        } catch (e: BadRequestException) {
+            ApiResponseFactory.error(
+                responseCode = ResponseCode.BAD_REQUEST,  // 400 응답 코드
+                httpStatus = HttpStatus.BAD_REQUEST,
+                customMessage = e.message
+            )
+        } catch (e: Exception) {
+            ApiResponseFactory.error(
+                responseCode = ResponseCode.INTERNAL_SERVER_ERROR,  // 500 응답 코드
+                httpStatus = HttpStatus.INTERNAL_SERVER_ERROR,
+                customMessage = e.message
+            )
+        }
+    }
 }
