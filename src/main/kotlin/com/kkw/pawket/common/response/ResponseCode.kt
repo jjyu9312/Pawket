@@ -13,6 +13,7 @@ enum class ResponseCode(val code: Int, val defaultMessage: String) {
     COMPANY_NOT_FOUND(40011, "company가 존재하지 않습니다"),
     WALK_RECORD_NOT_FOUND(40012, "산책 기록이 존재하지 않습니다"),
     EMAIL_NOT_FOUND(40013, "이메일을 찾을 수 없습니다"),
+    TERMS_NOT_FOUND(40014, "약관을 찾을 수 없습니다"),
     // NOTFOUND
 
 
