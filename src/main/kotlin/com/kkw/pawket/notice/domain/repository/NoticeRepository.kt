@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface NoticeRepository: JpaRepository<Notice, String> {
+    fun findByIdAndIsDeletedFalse(id: String): Notice?
 }
