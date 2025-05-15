@@ -11,20 +11,20 @@ data class Notice(
     val id: String = UUID.randomUUID().toString(),
 
     @Column(nullable = false)
-    val title: String,
+    var title: String,
 
     @Column(nullable = false, columnDefinition = "TEXT")
-    val content: String,
+    var content: String,
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     val targetGroup: TargetGroup = TargetGroup.ALL,
 
     @Column(nullable = false)
-    val isRequired: Boolean = false,
+    var isRequired: Boolean = false,
 
     @Column(nullable = false)
-    val priority: Int = 0,
+    var priority: Int = 0,
 
     ) : BaseEntity() {
 
@@ -49,6 +49,19 @@ data class Notice(
             title = title,
             content = content,
             targetGroup = targetGroup,
+            isRequired = isRequired,
+            priority = priority
+        )
+
+        fun update(
+            notice: Notice,
+            title: String,
+            content: String,
+            isRequired: Boolean,
+            priority: Int
+        ): Notice = notice.copy(
+            title = title,
+            content = content,
             isRequired = isRequired,
             priority = priority
         )
