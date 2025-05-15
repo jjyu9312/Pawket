@@ -40,5 +40,16 @@ data class Terms(
             content = content,
             isRequired = isRequired,
         )
+
+        fun update(
+            terms: Terms,
+            title: String,
+            content: String,
+            isRequired: Boolean,
+        ): Terms = terms.copy(
+            title = title,
+            content = content,
+            isRequired = isRequired,
+        )
     }
 }
