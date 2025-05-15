@@ -98,4 +98,43 @@ class TermsService(
             RequiredTermsAgreeCheckRes(isAgreed = true, null)
         }
     }
+
+    fun updateTerms(userId: String, termsId: String, req: TermsCreateReq): String {
+        userRepository.findByIdAndIsDeletedFalse(userId)
+            ?: throw BadRequestException(
+                ResponseCode.USER_NOT_FOUND
+            )
+
+        val terms = termsRepository.findByIdAndIsDeletedFalse(termsId)
+            ?: throw BadRequestException(
+                ResponseCode.TERMS_NOT_FOUND
+            )
+
+
+        val updatedTerms = Terms.update(
+            terms = terms,
+            title = req.title,
+            content = req.content,
+            isRequired = req.isRequired,
+        )
+
+        termsRepository.save(updatedTerms)
+
+        return updatedTerms.id
+    }
+
+    fun deleteTerms(userId: String, termsId: String) {
+        userRepository.findByIdAndIsDeletedFalse(userId)
+            ?: throw BadRequestException(
+                ResponseCode.USER_NOT_FOUND
+            )
+
+        val terms = termsRepository.findByIdAndIsDeletedFalse(termsId)
+            ?: throw BadRequestException(
+                ResponseCode.TERMS_NOT_FOUND
+            )
+
+        terms.isDeleted = true
+        termsRepository.save(terms)
+    }
 }
