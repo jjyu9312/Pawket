@@ -6,13 +6,18 @@ import com.kkw.pawket.notice.domain.Notice
 import com.kkw.pawket.notice.domain.TargetGroup
 import com.kkw.pawket.notice.domain.repository.NoticeRepository
 import com.kkw.pawket.notice.model.req.CreateNoticeReq
+import com.kkw.pawket.user.domain.repository.UserRepository
 import org.springframework.stereotype.Service
 
 @Service
 class NoticeService(
     private val noticeRepository: NoticeRepository,
+    private val userRepository: UserRepository,
 ) {
-    fun createNotice(req: CreateNoticeReq): String {
+    fun createNotice(userId: String, req: CreateNoticeReq): String {
+        userRepository.findByIdAndIsDeletedFalse(userId)
+            ?: throw BadRequestException(ResponseCode.USER_NOT_FOUND)
+
         val target = TargetGroup.fromString(req.target)
             ?: throw BadRequestException(ResponseCode.INVALID_TARGET_GROUP)
 
@@ -43,5 +48,25 @@ class NoticeService(
         noticeRepository.save(notice)
 
         return notice.id
+    }
+
+    fun updateNotice(userId: String, noticeId: String, req: CreateNoticeReq): String {
+        userRepository.findByIdAndIsDeletedFalse(userId)
+            ?: throw BadRequestException(ResponseCode.USER_NOT_FOUND)
+
+        val notice = noticeRepository.findByIdAndIsDeletedFalse(noticeId)
+            ?: throw BadRequestException(ResponseCode.NOTICE_NOT_FOUND)
+
+        val updateNotice = Notice.update(
+            notice = notice,
+            title = req.title,
+            content = req.content,
+            isRequired = req.isRequired,
+            priority = req.priority,
+        )
+
+        noticeRepository.save(updateNotice)
+
+        return updateNotice.id
     }
 }
