@@ -19,8 +19,6 @@ import com.kkw.pawket.partner.domain.repository.PartnerVisitHistoryRepository
 import com.kkw.pawket.pet.domain.Pet
 import com.kkw.pawket.pet.domain.repository.PetRepository
 import com.kkw.pawket.pet.service.PetService
-import com.kkw.pawket.reservation.domain.Reservation
-import com.kkw.pawket.reservation.domain.repository.ReservationRepository
 import com.kkw.pawket.reward.domain.RewardHistory
 import com.kkw.pawket.reward.domain.repository.RewardHistoryRepository
 import com.kkw.pawket.terms.domain.repository.UserTermsMappingRepository
@@ -74,7 +72,6 @@ class UserServiceUnitTest {
     private val userTermsMappingRepository = mockk<UserTermsMappingRepository>()
     private val rewardHistoryRepository = mockk<RewardHistoryRepository>()
     private val walkRecordRepository = mockk<WalkRecordRepository>()
-    private val reservationRepository = mockk<ReservationRepository>()
     private val postRepository = mockk<PostRepository>()
     private val adsRepository = mockk<AdsRepository>()
     private val companyRepository = mockk<CompanyRepository>()
@@ -99,7 +96,6 @@ class UserServiceUnitTest {
             partnerRepository = mockk(relaxed = true),
             companyRepository = mockk(relaxed = true),
             adsRepository = mockk(relaxed = true),
-            reservationRepository = mockk(relaxed = true),
             walkRecordRepository = mockk(relaxed = true),
             postRepository = mockk(relaxed = true),
             userTermsMappingRepository = mockk(relaxed = true),
@@ -401,9 +397,6 @@ class UserServiceUnitTest {
 
             every { walkRecordRepository.findAllByUserId(userId) } returns emptyList()
             every { walkRecordRepository.saveAll(any<List<WalkRecord>>()) } returns emptyList()
-
-            every { reservationRepository.findAllByUserId(userId) } returns emptyList()
-            every { reservationRepository.saveAll(any<List<Reservation>>()) } returns emptyList()
 
             every { postRepository.findAllByUserId(userId) } returns emptyList()
             every { postRepository.saveAll(any<List<Post>>()) } returns emptyList()
