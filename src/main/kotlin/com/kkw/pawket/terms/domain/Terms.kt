@@ -11,13 +11,13 @@ data class Terms(
     val id: String = UUID.randomUUID().toString(),
 
     @Column(nullable = false)
-    val title: String,
+    var title: String,
 
     @Column(nullable = false)
-    val content: String,
+    var content: String,
 
     @Column(nullable = false)
-    val isRequired: Boolean,
+    var isRequired: Boolean,
 
     ) : BaseEntity() {
 
