@@ -69,4 +69,15 @@ class NoticeService(
 
         return updateNotice.id
     }
+
+    fun deleteNotice(userId: String, noticeId: String) {
+        userRepository.findByIdAndIsDeletedFalse(userId)
+            ?: throw BadRequestException(ResponseCode.USER_NOT_FOUND)
+
+        val notice = noticeRepository.findByIdAndIsDeletedFalse(noticeId)
+            ?: throw BadRequestException(ResponseCode.NOTICE_NOT_FOUND)
+
+        notice.isDeleted = true
+        noticeRepository.save(notice)
+    }
 }

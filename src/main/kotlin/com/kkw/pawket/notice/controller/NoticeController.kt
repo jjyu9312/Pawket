@@ -76,6 +76,34 @@ class NoticeController(
     }
 
     /*
+    TODO 공지사항 정보 삭제
+     */
+    @Operation(
+        summary = "공지사항 삭제",
+        description = "공지사항 정보를 삭제합니다."
+    )
+    @DeleteMapping("/{noticeId}")
+    fun deleteNotice(
+        @AuthenticationPrincipal userId: String,
+        @PathVariable noticeId: String
+    ): ResponseEntity<ApiResponse<String>> {
+        return try {
+            noticeService.deleteNotice(userId, noticeId)
+            ApiResponseFactory.success("공지사항 삭제가 완료되었습니다.")
+        }  catch (e: BadRequestException) {
+            ApiResponseFactory.error(
+                responseCode = ResponseCode.BAD_REQUEST,
+                customMessage = e.message
+            )
+        } catch (e: Exception) {
+            ApiResponseFactory.error(
+                responseCode = ResponseCode.INTERNAL_SERVER_ERROR,
+                customMessage = e.message
+            )
+        }
+    }
+
+    /*
     TODO 공지사항 정보 조회
      */
 
