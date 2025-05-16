@@ -6,6 +6,7 @@ import com.kkw.pawket.notice.domain.Notice
 import com.kkw.pawket.notice.domain.TargetGroup
 import com.kkw.pawket.notice.domain.repository.NoticeRepository
 import com.kkw.pawket.notice.model.req.CreateNoticeReq
+import com.kkw.pawket.notice.model.res.NoticeDetailRes
 import com.kkw.pawket.user.domain.repository.UserRepository
 import org.springframework.stereotype.Service
 
@@ -79,5 +80,22 @@ class NoticeService(
 
         notice.isDeleted = true
         noticeRepository.save(notice)
+    }
+
+    fun findNoticeById(userId: String, noticeId: String): NoticeDetailRes {
+        userRepository.findByIdAndIsDeletedFalse(userId)
+            ?: throw BadRequestException(ResponseCode.USER_NOT_FOUND)
+
+        val notice = noticeRepository.findByIdAndIsDeletedFalse(noticeId)
+            ?: throw BadRequestException(ResponseCode.NOTICE_NOT_FOUND)
+
+        return NoticeDetailRes(
+            id = notice.id,
+            title = notice.title,
+            content = notice.content,
+            targetGroup = notice.targetGroup.toString(),
+            isRequired = notice.isRequired,
+            priority = notice.priority
+        )
     }
 }
