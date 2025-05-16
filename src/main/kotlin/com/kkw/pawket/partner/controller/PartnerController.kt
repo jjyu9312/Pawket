@@ -47,7 +47,7 @@ class PartnerController(
             )
         ]
     )
-    @PostMapping()
+    @PostMapping
     fun createPartner(
         @AuthenticationPrincipal userId: String,
         @RequestBody req: CreatePartnerReq
