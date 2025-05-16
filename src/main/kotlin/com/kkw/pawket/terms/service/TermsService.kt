@@ -9,7 +9,7 @@ import com.kkw.pawket.terms.domain.repository.TermsRepository
 import com.kkw.pawket.terms.domain.repository.UserTermsMappingRepository
 import com.kkw.pawket.terms.model.req.TermsCreateReq
 import com.kkw.pawket.terms.model.res.RequiredTermsAgreeCheckRes
-import com.kkw.pawket.terms.model.res.TermsListRes
+import com.kkw.pawket.terms.model.res.TermsDetailRes
 import com.kkw.pawket.user.domain.repository.UserRepository
 import org.springframework.stereotype.Service
 
@@ -31,11 +31,11 @@ class TermsService(
         return terms.id
     }
 
-    fun getTerms(): List<TermsListRes> {
+    fun getTerms(): List<TermsDetailRes> {
         val termsList = termsRepository.findAll()
 
         return termsList.map {
-            TermsListRes(
+            TermsDetailRes(
                 id = it.id,
                 name = it.title,
                 url = it.content,
