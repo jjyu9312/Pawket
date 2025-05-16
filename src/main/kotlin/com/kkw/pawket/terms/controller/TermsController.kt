@@ -5,7 +5,7 @@ import com.kkw.pawket.common.response.ApiResponseFactory
 import com.kkw.pawket.common.response.ResponseCode
 import com.kkw.pawket.terms.model.req.TermsCreateReq
 import com.kkw.pawket.terms.model.res.RequiredTermsAgreeCheckRes
-import com.kkw.pawket.terms.model.res.TermsListRes
+import com.kkw.pawket.terms.model.res.TermsDetailRes
 import com.kkw.pawket.terms.service.TermsService
 import io.swagger.v3.oas.annotations.Operation
 import org.apache.coyote.BadRequestException
@@ -44,7 +44,7 @@ class TermsController (
 
     @Operation(summary = "약관 목록 조회", description = "약관 목록을 조회합니다.")
     @GetMapping
-    fun getTerms(): ResponseEntity<ApiResponse<List<TermsListRes>>> {
+    fun getTerms(): ResponseEntity<ApiResponse<List<TermsDetailRes>>> {
         return try {
             val termsList = termsService.getTerms()
             ApiResponseFactory.success(termsList)
