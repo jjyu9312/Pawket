@@ -6,6 +6,7 @@ import com.kkw.pawket.common.response.ResponseCode
 import com.kkw.pawket.notice.domain.Notice
 import com.kkw.pawket.notice.domain.repository.NoticeRepository
 import com.kkw.pawket.notice.model.req.CreateNoticeReq
+import com.kkw.pawket.notice.model.res.NoticeDetailRes
 import com.kkw.pawket.notice.service.NoticeService
 import io.swagger.v3.oas.annotations.Operation
 import org.apache.coyote.BadRequestException
@@ -104,8 +105,32 @@ class NoticeController(
     }
 
     /*
-    TODO 공지사항 정보 조회
+    TODO 공지사항 ID로 조회
      */
+    @Operation(
+        summary = "공지사항 정보 조회",
+        description = "공지사항 정보를 조회합니다."
+    )
+    @GetMapping("/{noticeId}")
+    fun getNotice(
+        @AuthenticationPrincipal userId: String,
+        @PathVariable noticeId: String
+    ): ResponseEntity<ApiResponse<NoticeDetailRes>> {
+        return try {
+            val notice = noticeService.findNoticeById(userId, noticeId)
+            ApiResponseFactory.success(notice)
+        }  catch (e: BadRequestException) {
+            ApiResponseFactory.error(
+                responseCode = ResponseCode.BAD_REQUEST,
+                customMessage = e.message
+            )
+        } catch (e: Exception) {
+            ApiResponseFactory.error(
+                responseCode = ResponseCode.INTERNAL_SERVER_ERROR,
+                customMessage = e.message
+            )
+        }
+    }
 
     /*
     TODO 회원 유형으로 공지사항 정보 조회
