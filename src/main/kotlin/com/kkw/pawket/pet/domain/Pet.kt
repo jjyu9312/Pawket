@@ -1,8 +1,6 @@
 package com.kkw.pawket.pet.domain
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.kkw.pawket.common.domain.BaseEntity
-import com.kkw.pawket.pet.model.req.CreatePetReq
 import com.kkw.pawket.user.domain.User
 import jakarta.persistence.*
 import java.util.*
