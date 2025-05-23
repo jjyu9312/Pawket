@@ -1,4 +1,4 @@
-package com.kkw.pawket.reward.domain
+package com.kkw.pawket.point.domain
 
 import jakarta.persistence.Column
 import jakarta.persistence.DiscriminatorValue
@@ -7,11 +7,11 @@ import jakarta.persistence.PrimaryKeyJoinColumn
 
 @Entity
 @DiscriminatorValue("FEED")
-@PrimaryKeyJoinColumn(name = "reward_id")
-class FeedReward(
+@PrimaryKeyJoinColumn(name = "point_id")
+class FeedPoint(
     @Column(nullable = false)
     val postCnt: Int = 0
-) : Reward(
+) : Point(
     coin = postCnt * 10
 ) {
 }
