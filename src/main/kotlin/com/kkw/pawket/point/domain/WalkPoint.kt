@@ -1,4 +1,4 @@
-package com.kkw.pawket.reward.domain
+package com.kkw.pawket.point.domain
 
 import jakarta.persistence.Column
 import jakarta.persistence.DiscriminatorValue
@@ -7,11 +7,11 @@ import jakarta.persistence.PrimaryKeyJoinColumn
 
 @Entity
 @DiscriminatorValue("WALK")
-@PrimaryKeyJoinColumn(name = "reward_id")
-class WalkReward(
+@PrimaryKeyJoinColumn(name = "point_id")
+class WalkPoint(
     @Column(nullable = false)
     val distance: Double
-) : Reward(
+) : Point(
     coin = (distance * 100).toInt()
 )
 
