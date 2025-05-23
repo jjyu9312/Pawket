@@ -15,7 +15,7 @@ import com.kkw.pawket.pet.domain.PetType
 import com.kkw.pawket.pet.domain.Sex
 import com.kkw.pawket.pet.domain.repository.PetRepository
 import com.kkw.pawket.pet.service.PetService
-import com.kkw.pawket.reward.domain.repository.RewardHistoryRepository
+import com.kkw.pawket.point.domain.repository.UserPointHistoryRepository
 import com.kkw.pawket.terms.domain.repository.UserTermsMappingRepository
 import com.kkw.pawket.user.domain.Gender
 import com.kkw.pawket.user.domain.User
@@ -58,7 +58,7 @@ class UserService(
     private val postRepository: PostRepository,
     private val userTermsMappingRepository: UserTermsMappingRepository,
     private val partnerVisitHistoryRepository: PartnerVisitHistoryRepository,
-    private val rewardHistoryRepository: RewardHistoryRepository,
+    private val userPointHistoryRepository: UserPointHistoryRepository,
     private val petService: PetService,
     private val s3UploadService: S3UploadService,
 ) {
@@ -298,7 +298,7 @@ class UserService(
         userOAuthRepository.deleteAll(userOAuth)
 
         // 연관된 엔티티들도 모두 isDeleted true
-        // pet, partner, ad, company, walkRecord, feed, userTermsMapping, partnerVisitHistory, rewardHistory, ...
+        // pet, partner, ad, company, walkRecord, feed, userTermsMapping, partnerVisitHistory, pointHistory, ...
         val pets = petRepository.findAllByUserId(userId)
         pets.forEach { it.isDeleted = true }
 
@@ -329,9 +329,9 @@ class UserService(
         partnerVisitHistories.forEach { it.isDeleted = true }
         partnerVisitHistoryRepository.saveAll(partnerVisitHistories)
 
-        val rewardHistories = rewardHistoryRepository.findAllByUserId(userId)
-        rewardHistories.forEach { it.isDeleted = true }
-        rewardHistoryRepository.saveAll(rewardHistories)
+        val pointHistories = userPointHistoryRepository.findAllByUserId(userId)
+        pointHistories.forEach { it.isDeleted = true }
+        userPointHistoryRepository.saveAll(pointHistories)
 
         user.isDeleted = true
         userRepository.save(user)
