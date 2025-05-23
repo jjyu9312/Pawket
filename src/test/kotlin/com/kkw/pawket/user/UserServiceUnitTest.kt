@@ -19,8 +19,8 @@ import com.kkw.pawket.partner.domain.repository.PartnerVisitHistoryRepository
 import com.kkw.pawket.pet.domain.Pet
 import com.kkw.pawket.pet.domain.repository.PetRepository
 import com.kkw.pawket.pet.service.PetService
-import com.kkw.pawket.reward.domain.RewardHistory
-import com.kkw.pawket.reward.domain.repository.RewardHistoryRepository
+import com.kkw.pawket.point.domain.UserPointHistory
+import com.kkw.pawket.point.domain.repository.UserPointHistoryRepository
 import com.kkw.pawket.terms.domain.repository.UserTermsMappingRepository
 import com.kkw.pawket.user.domain.OAuthProvider
 import com.kkw.pawket.user.domain.User
@@ -70,7 +70,7 @@ class UserServiceUnitTest {
     private val partnerRepository = mockk<PartnerRepository>()
     private val partnerVisitHistoryRepository = mockk<PartnerVisitHistoryRepository>()
     private val userTermsMappingRepository = mockk<UserTermsMappingRepository>()
-    private val rewardHistoryRepository = mockk<RewardHistoryRepository>()
+    private val userPointHistoryRepository = mockk<UserPointHistoryRepository>()
     private val walkRecordRepository = mockk<WalkRecordRepository>()
     private val postRepository = mockk<PostRepository>()
     private val adsRepository = mockk<AdsRepository>()
@@ -100,7 +100,7 @@ class UserServiceUnitTest {
             postRepository = mockk(relaxed = true),
             userTermsMappingRepository = mockk(relaxed = true),
             partnerVisitHistoryRepository = mockk(relaxed = true),
-            rewardHistoryRepository = mockk(relaxed = true),
+            userPointHistoryRepository = mockk(relaxed = true),
             petService = petService,
             s3UploadService = s3UploadService,
         )
@@ -407,8 +407,8 @@ class UserServiceUnitTest {
             every { partnerVisitHistoryRepository.findAllByUserId(userId) } returns emptyList()
             every { partnerVisitHistoryRepository.saveAll(any<List<PartnerVisitHistory>>()) } returns emptyList()
 
-            every { rewardHistoryRepository.findAllByUserId(userId) } returns emptyList()
-            every { rewardHistoryRepository.saveAll(any<List<RewardHistory>>()) } returns emptyList()
+            every { userPointHistoryRepository.findAllByUserId(userId) } returns emptyList()
+            every { userPointHistoryRepository.saveAll(any<List<UserPointHistory>>()) } returns emptyList()
 
             // when
             val result = userService.deleteUser(userId)
