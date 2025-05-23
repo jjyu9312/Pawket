@@ -1,10 +1,10 @@
-package com.kkw.pawket.reward.controller
+package com.kkw.pawket.point.controller
 
 import com.kkw.pawket.common.response.ApiResponse
 import com.kkw.pawket.common.response.ApiResponseFactory
 import com.kkw.pawket.common.response.ResponseCode
-import com.kkw.pawket.reward.model.req.CreateRewardReq
-import com.kkw.pawket.reward.service.RewardService
+import com.kkw.pawket.point.model.req.CreatePointReq
+import com.kkw.pawket.point.service.PointService
 import io.swagger.v3.oas.annotations.Operation
 import org.apache.coyote.BadRequestException
 import org.springframework.http.HttpStatus
@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/v1/reward")
-class RewardController(
-    private val rewardService: RewardService,
+@RequestMapping("/api/v1/point")
+class PointController(
+    private val pointService: PointService,
 ) {
     /*
     TODO 보상 등록
@@ -28,12 +28,12 @@ class RewardController(
         description = "보상을 등록합니다."
     )
     @PostMapping
-    fun createReward(
+    fun createPoint(
         @AuthenticationPrincipal userId: String,
-        @RequestBody req: CreateRewardReq
+        @RequestBody req: CreatePointReq
     ): ResponseEntity<ApiResponse<String>> {
         return try {
-            val partnerId = rewardService.createReward(userId, req)
+            val partnerId = pointService.createPoint(userId, req)
             ApiResponseFactory.success(partnerId)
         } catch (e: BadRequestException) {
             ApiResponseFactory.error(
