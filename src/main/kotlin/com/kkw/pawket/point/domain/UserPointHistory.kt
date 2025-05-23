@@ -20,9 +20,26 @@ data class UserPointHistory(
     val point: Point,
 
     @Column(nullable = false)
-    val beforeCoin: Int,
+    val beforePoint: Int,
 
     @Column(nullable = false)
-    val afterCoin: Int,
+    val afterPoint: Int,
 
-    ) : BaseEntity()
+    ) : BaseEntity() {
+        companion object {
+            fun create(
+                user: User,
+                point: Point,
+                beforePoint: Int,
+                afterPoint: Int
+            ): UserPointHistory {
+                return UserPointHistory(
+                    id = PointHistoryId(user.id, point.id),
+                    user = user,
+                    point = point,
+                    beforePoint = beforePoint,
+                    afterPoint = afterPoint,
+                )
+            }
+        }
+    }
