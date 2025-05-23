@@ -27,11 +27,14 @@ enum class ResponseCode(val code: Int, val defaultMessage: String) {
     INVALID_OAUTH_PROVIDER(40035, "해당 Oauth 제공자는 존재하지 않습니다"),
     INVALID_OAUTH_PROVIDER_ENDPOINT(40036, "해당 Oauth 제공자 엔드포인트는 존재하지 않습니다"),
     INVALID_PET_TYPE(40037, "펫 종류가 맞지 않습니다"),
+    INVALID_POINT_TYPE(40038, "포인트 타입이 맞지 않습니다"),
     // INVALID
 
 
 
     ALREADY_AGREED_TERMS(40060, "이미 동의한 약관은 다시 동의할 수 없습니다"),
+    WALK_POINT_LIMIT_EXCEEDED(40061, "산책 포인트는 4회까지만 적립할 수 있습니다"),
+    ADS_POINT_LIMIT_EXCEEDED(40062, "광고 포인트는 2회까지만 적립할 수 있습니다"),
 
     //401
     UNAUTHORIZED(40100, "인증되지 않은 사용자입니다"),
