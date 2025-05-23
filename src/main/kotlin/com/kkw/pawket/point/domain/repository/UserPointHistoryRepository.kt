@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface UserPointHistoryRepository: JpaRepository<UserPointHistory, PointHistoryId> {
+interface UserPointHistoryRepository: JpaRepository<UserPointHistory, PointHistoryId>, UserPointRepositoryCustom {
     fun findAllByUserId(userId: String): List<UserPointHistory>
 }
