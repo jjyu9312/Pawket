@@ -15,7 +15,7 @@ data class Point(
     val type: PointType = PointType.WALK,
 
     @Column(nullable = false)
-    var point: Int,
+    var petPoint: Int,
 ) : BaseEntity() {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -27,10 +27,10 @@ data class Point(
     override fun hashCode(): Int = id.hashCode()
 
     companion object {
-        fun create(point: Int, type: PointType): Point = Point(
+        fun create(petPoint: Int, type: PointType): Point = Point(
             id = UUID.randomUUID().toString(),
             type = type,
-            point = point
+            petPoint = petPoint
         )
     }
 }
