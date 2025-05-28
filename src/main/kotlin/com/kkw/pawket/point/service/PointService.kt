@@ -45,7 +45,7 @@ class PointService(
 
         val point = Point.create(
             type = pointType,
-            point = req.point,
+            petPoint = req.point,
         )
         pointRepository.save(point)
 
@@ -54,7 +54,7 @@ class PointService(
             user = user,
             point = point,
             beforePoint = 0,
-            afterPoint = point.point,
+            afterPoint = point.petPoint,
         )
         userPointHistoryRepository.save(userPointHistory)
 
