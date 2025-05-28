@@ -5,8 +5,6 @@ import jakarta.persistence.*
 import java.util.*
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "dtype")
 data class Point(
     @Id
     @Column(nullable = false, columnDefinition = "CHAR(36)")
