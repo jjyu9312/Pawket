@@ -6,5 +6,6 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface PointShopRepository : JpaRepository<PointShop, String> {
+    fun findByIdAndIsDeletedFalse(id: String): PointShop?
     fun existsByNameAndIsDeletedFalse(name: String): Boolean
 }
