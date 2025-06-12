@@ -15,7 +15,10 @@ enum class ResponseCode(val code: Int, val defaultMessage: String) {
     EMAIL_NOT_FOUND(40013, "이메일을 찾을 수 없습니다"),
     TERMS_NOT_FOUND(40014, "약관을 찾을 수 없습니다"),
     NOTICE_NOT_FOUND(40015, "공지사항을 찾을 수 없습니다"),
+    POINT_SHOP_NOT_FOUND(40020, "포인트샵을 찾을 수 없습니다"),
+    POINT_SHOP_ITEM_NOT_FOUND(40021, "포인트샵 아이템을 찾을 수 없습니다"),
     POINT_SHOP_NAME_DUPLICATED(40016, "포인트샵 이름이 중복되었습니다"),
+    POINT_SHOP_ITEM_NAME_DUPLICATED(40017, "포인트샵 아이템 이름이 중복되었습니다"),
     // NOTFOUND
 
 
