@@ -6,5 +6,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface PetRepository : JpaRepository<Pet, String> {
+    fun findByIdAndIsDeletedFalse(id: String): Pet?
+
     fun findAllByUserId(userId: String): List<Pet>
 }
