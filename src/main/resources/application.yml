@@ -64,3 +64,8 @@ cloud:
         url-prefix:
           image: https://s3.ap-northeast-2.amazonaws.com/wag/upload/image/
           pets: https://s3.ap-northeast-2.amazonaws.com/wag/upload/pets/
+
+clova-ai:
+    open-api:
+        key: nv-c9cd13ac4f42478f9f471e532d9752f7zMq9
+        base-url: https://api.ncloud.com/v1/ai/clova
