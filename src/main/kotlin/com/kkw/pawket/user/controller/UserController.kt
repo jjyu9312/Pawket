@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1/users")
 @Tag(name = "User", description = "사용자 관련 API")
 class UserController (
     private val userService: UserService,
