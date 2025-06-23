@@ -19,7 +19,7 @@ class PointShopService(
     private val pointShopItemRepository: PointShopItemRepository,
 ) {
     fun createPointShop(userId: String, req: CreatePointShopReq): String {
-        if (userRepository.existsByIdAndIsDeletedFalse(userId))
+        if (!userRepository.existsByIdAndIsDeletedFalse(userId))
             throw BadRequestException(ResponseCode.USER_NOT_FOUND)
 
         if (pointShopRepository.existsByNameAndIsDeletedFalse(req.name))
