@@ -18,6 +18,7 @@ import com.kkw.pawket.partner.domain.repository.PartnerRepository
 import com.kkw.pawket.partner.domain.repository.PartnerVisitHistoryRepository
 import com.kkw.pawket.pet.domain.Pet
 import com.kkw.pawket.pet.domain.repository.PetRepository
+import com.kkw.pawket.pet.model.req.CreatePetReq
 import com.kkw.pawket.pet.service.PetService
 import com.kkw.pawket.point.domain.UserPointHistory
 import com.kkw.pawket.point.domain.repository.UserPointHistoryRepository
@@ -27,7 +28,10 @@ import com.kkw.pawket.user.domain.User
 import com.kkw.pawket.user.domain.UserOAuth
 import com.kkw.pawket.user.domain.repository.UserOAuthRepository
 import com.kkw.pawket.user.domain.repository.UserRepository
+import com.kkw.pawket.user.model.req.AddressInfo
 import com.kkw.pawket.user.model.req.CreateUserReq
+import com.kkw.pawket.user.model.req.PetDetails
+import com.kkw.pawket.user.model.req.PetInfo
 import com.kkw.pawket.user.service.UserService
 import com.kkw.pawket.walkRecord.domain.WalkRecord
 import com.kkw.pawket.walkRecord.domain.repository.WalkRecordRepository
@@ -221,7 +225,7 @@ class UserServiceUnitTest {
                 email = "test@example.com",
                 birth = LocalDate.of(1990, 1, 1),
                 gender = "male",
-                addressInfo = CreateUserReq.AddressInfo(
+                addressInfo = AddressInfo(
                     basic = "서울특별시 강남구",
                     lat = 37.5,
                     lng = 127.0,
@@ -232,7 +236,7 @@ class UserServiceUnitTest {
             )
 
             // when
-            val result = userService.createUser(userId, createUserReq)
+            val result = userService.createUser(userId, createUserReq, null, null)
 
             // then
             verify { userRepository.save(user) }
@@ -285,14 +289,14 @@ class UserServiceUnitTest {
                 )
             } returns """{"petDescription":"귀여운 강아지","foodBrand":"로얄캐닌","foodName":"미니 어덜트","foodType":"건식"}"""
 
-            val petDetailsReq = CreateUserReq.PetInfo.PetDetails(
+            val petDetailsReq = PetDetails(
                 petDescription = "귀여운 강아지",
                 foodBrand = "로얄캐닌",
                 foodName = "미니 어덜트",
                 foodType = "건식"
             )
 
-            val petInfoReq = CreateUserReq.PetInfo(
+            val petInfoReq = PetInfo(
                 registrationNum = "123456789",
                 name = "초코",
                 type = "DOG",
@@ -302,7 +306,7 @@ class UserServiceUnitTest {
                 weight = 5,
                 isNeutered = true,
                 petDetails = petDetailsReq,
-                imageUrls = listOf(mockMultipartFile)
+                imageUrls = listOf()
             )
 
             val createUserReq = CreateUserReq(
@@ -310,8 +314,8 @@ class UserServiceUnitTest {
                 email = "test@example.com",
                 birth = LocalDate.of(1990, 1, 1),
                 gender = "male",
-                imageUrl = mockMultipartFile,
-                addressInfo = CreateUserReq.AddressInfo(
+                imageUrl = null,
+                addressInfo = AddressInfo(
                     basic = "서울특별시 강남구",
                     lat = 37.5,
                     lng = 127.0,
@@ -321,7 +325,7 @@ class UserServiceUnitTest {
             )
 
             // when
-            val result = userService.createUser(userId, createUserReq)
+            val result = userService.createUser(userId, createUserReq, null, null)
 
             // then
             verify { userRepository.save(user) }
@@ -342,7 +346,7 @@ class UserServiceUnitTest {
                 email = "test@example.com",
                 birth = LocalDate.of(1990, 1, 1),
                 gender = "male",
-                addressInfo = CreateUserReq.AddressInfo(
+                addressInfo = AddressInfo(
                     basic = "서울특별시 강남구",
                     lat = 37.5,
                     lng = 127.0,
@@ -353,7 +357,7 @@ class UserServiceUnitTest {
 
             // when & then
             val exception = shouldThrow<BadRequestException> {
-                userService.createUser(userId, createUserReq)
+                userService.createUser(userId, createUserReq, null, null)
             }
 
             exception.responseCode shouldBe ResponseCode.USER_NOT_FOUND
