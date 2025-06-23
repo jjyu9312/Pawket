@@ -33,6 +33,17 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-rest")
     implementation("org.springframework.boot:spring-boot-starter-batch")
 
+    // ✅ CLOVA AI & WebFlux Dependencies (추가)
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+
+    // ✅ OpenAI 호환 클라이언트 (선택사항 - SDK 방식 사용 시)
+    implementation("com.theokanning.openai-gpt3-java:service:0.18.2")
+
+    // ✅ Redis for Session Management (선택사항 - 세션 관리용)
+    implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")
+
     // ✅ QueryDSL JPA 지원
     implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
     kapt("com.querydsl:querydsl-apt:5.0.0:jakarta")
