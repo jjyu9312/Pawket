@@ -68,4 +68,4 @@ cloud:
 clova-ai:
     open-api:
         key: nv-c9cd13ac4f42478f9f471e532d9752f7zMq9
-        base-url: https://api.ncloud.com/v1/ai/clova
+        base-url: https://clovastudio.stream.ntruss.com/
