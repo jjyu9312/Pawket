@@ -18,12 +18,11 @@ data class PetProfile(
     val id: String,
     val userId: String,
     val name: String,
-    val species: String,  // "dog", "cat", etc.
-    val breed: String,
+    val type: String,  // "dog", "cat", etc.
+    val dogType: String? = null,
     val age: Int,
-    val weight: Double? = null,
-    val healthConditions: List<String> = emptyList(),
-    val personality: List<String> = emptyList(),
-    val allergies: List<String> = emptyList(),
-    val medications: List<String> = emptyList()
+    val weight: Int,
+    val sex: String,
+    val isNeutered: Boolean = false,
+    val petDetail: String? = null,
 )
