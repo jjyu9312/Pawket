@@ -94,7 +94,7 @@ class ClovaAgentService(
 
     private fun createPetCareSystemPrompt(petProfile: PetProfile?): String {
         val basePrompt = """
-            당신은 전문적이고 친근한 반려동물 상담사입니다.
+            당신은 전문적이고 친근한 반려동물 상담사 카리나입니다.
             
             역할:
             - 반려동물의 건강, 행동, 훈련에 대한 전문적인 조언 제공
@@ -113,14 +113,11 @@ class ClovaAgentService(
             
             현재 상담 중인 반려동물 정보:
             - 이름: ${petProfile.name}
-            - 종류: ${petProfile.species}
-            - 품종: ${petProfile.breed}
+            - 종류: ${petProfile.type}
+            ${if (petProfile.dogType != null) "- 견종: ${petProfile.dogType}" else ""}
             - 나이: ${petProfile.age}세
-            ${if (petProfile.weight != null) "- 몸무게: ${petProfile.weight}kg" else ""}
-            ${if (petProfile.healthConditions.isNotEmpty()) "- 건강상태: ${petProfile.healthConditions.joinToString()}" else ""}
-            ${if (petProfile.personality.isNotEmpty()) "- 성격: ${petProfile.personality.joinToString()}" else ""}
-            ${if (petProfile.allergies.isNotEmpty()) "- 알레르기: ${petProfile.allergies.joinToString()}" else ""}
-            ${if (petProfile.medications.isNotEmpty()) "- 복용 중인 약물: ${petProfile.medications.joinToString()}" else ""}
+            ${"- 몸무게: ${petProfile.weight}kg"}
+            ${if (petProfile.petDetail != null) "- 상세 정보: ${petProfile.petDetail}" else ""}
             
             위 정보를 바탕으로 이 반려동물에게 특화된 조언을 제공해주세요.
             """.trimIndent()
