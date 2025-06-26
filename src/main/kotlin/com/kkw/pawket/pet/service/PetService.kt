@@ -1,6 +1,8 @@
 package com.kkw.pawket.pet.service
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.kkw.pawket.ai.model.common.PetProfile
+import com.kkw.pawket.ai.model.res.PetProfileRes
 import com.kkw.pawket.common.exception.BadRequestException
 import com.kkw.pawket.common.response.ResponseCode
 import com.kkw.pawket.pet.domain.DogType
@@ -82,5 +84,36 @@ class PetService(
             "foodType" to foodType
         )
         return objectMapper.writeValueAsString(detailMap)
+    }
+
+    fun findPetProfileByUserAndPetId(userId: String, petId: String): PetProfileRes {
+        val user = userRepository.findByIdAndIsDeletedFalse(userId)
+            ?: throw BadRequestException(ResponseCode.USER_NOT_FOUND)
+
+        val pet = petRepository.findByIdAndIsDeletedFalse(petId)
+            ?: throw BadRequestException(ResponseCode.PET_NOT_FOUND)
+
+        val petProfile = PetProfile(
+            id = pet.id,
+            userId = user.id,
+            name = pet.name,
+            type = pet.type.name,
+            dogType = pet.dogType?.name,
+            age = pet.age,
+            weight = pet.weight,
+            sex = pet.sex.name,
+            isNeutered = pet.isNeutered,
+            petDetail = pet.petDetail,
+        )
+
+        return PetProfileRes(
+            petProfile = petProfile,
+            createdAt = pet.createdAt,
+            updatedAt = pet.updatedAt,
+        )
+    }
+
+    fun findPetProfilesByUserId(userId: String, page: Int, size: Int): List<PetProfileRes>? {
+        TODO("Not yet implemented")
     }
 }
