@@ -44,16 +44,16 @@ class PetAgentController(
             } ?: emptyList()
 
             // 사용자의 반려동물 프로필 조회 (있는 경우)
-            val petProfile = petService.findPetProfileByUserAndPetId(
+            val petProfileRes = petService.findPetProfileByUserAndPetId(
                 userId = userId,
                 petId = req.petId
-            ) ?: throw BadRequestException("해당 반려동물 프로필이 존재하지 않습니다.")
+            )
 
             // CLOVA 응답 생성
             val (reply, tokenUsage) = clovaAgentService.generateResponse(
                 userMessage = req.message,
                 context = context,
-                petProfile = petProfile
+                petProfile = petProfileRes.petProfile
             )
 
             // 세션 업데이트
@@ -166,9 +166,9 @@ class PetAgentController(
         @PathVariable petId: String
     ): ResponseEntity<ApiResponse<PetProfileRes>> {
         return try {
-            val profile = petService.findPetProfileByUserAndPetId(userId, petId)
-            val response = PetProfileRes(profile = profile)
-            ApiResponseFactory.success(response)
+            val petProfileRes = petService.findPetProfileByUserAndPetId(userId, petId)
+
+            ApiResponseFactory.success(petProfileRes)
 
         } catch (e: BadRequestException) {
             ApiResponseFactory.error(
