@@ -30,7 +30,7 @@ class PetAgentController(
      */
     @Operation(
         summary = "AI 채팅 상담",
-        description = "반려동물 관련 질문에 대해 AI 상담을 받습니다."
+        description = "내 반려동물 관련 질문에 대해 AI 상담을 받습니다."
     )
     @PostMapping("/chat")
     suspend fun chat(
@@ -43,7 +43,7 @@ class PetAgentController(
                 chatSessionService.getContext(it)
             } ?: emptyList()
 
-            // 사용자의 반려동물 프로필 조회 (있는 경우)
+            // 사용자의 반려동물 프로필 조회
             val petProfileRes = petService.findPetProfileByUserAndPetId(
                 userId = userId,
                 petId = req.petId
