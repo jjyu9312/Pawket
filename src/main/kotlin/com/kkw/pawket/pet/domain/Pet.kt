@@ -36,7 +36,7 @@ data class Pet(
     var imagePaths: String? = null,
 
     @Column(nullable = false)
-    val age: Int,
+    var age: Int,
 
     @Column(nullable = false)
     var weight: Int,
