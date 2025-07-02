@@ -14,8 +14,10 @@ import com.kkw.pawket.pet.model.req.CreatePetReq
 import com.kkw.pawket.user.domain.repository.UserRepository
 import com.kkw.pawket.common.exception.IllegalArgumentException
 import com.kkw.pawket.common.service.S3UploadService
+import com.kkw.pawket.pet.model.req.UpdatePetReq
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
+import org.springframework.web.multipart.MultipartFile
 
 @Service
 class PetService(
@@ -26,12 +28,16 @@ class PetService(
     private val logger = LoggerFactory.getLogger(this::class.java)
     private val objectMapper = jacksonObjectMapper()
 
-    fun createPet(userId: String, req: CreatePetReq): String {
+    fun createPet(
+        userId: String,
+        req: CreatePetReq,
+        petImages: List<MultipartFile>,
+    ): String {
         val user = userRepository.findByIdAndIsDeletedFalse(userId)
             ?: throw BadRequestException(ResponseCode.USER_NOT_FOUND)
 
         val dogImageUrls = s3UploadService.uploadMultipleFiles(
-            req.imageUrls,  // 리스트를 직접 전달
+            petImages,  // 리스트를 직접 전달
             dirName = "${user.id}/pet-images"  // 디렉토리 경로 지정
         )
 
@@ -115,5 +121,50 @@ class PetService(
 
     fun findPetProfilesByUserId(userId: String, page: Int, size: Int): List<PetProfileRes>? {
         TODO("Not yet implemented")
+    }
+
+    fun updatePet(
+        userId: String,
+        petId: String,
+        req: UpdatePetReq,
+        petImages: List<MultipartFile>?
+    ): String {
+        val user = userRepository.findByIdAndIsDeletedFalse(userId)
+            ?: throw BadRequestException(ResponseCode.USER_NOT_FOUND)
+
+        val pet = petRepository.findByIdAndIsDeletedFalse(petId)
+            ?: throw BadRequestException(ResponseCode.PET_NOT_FOUND)
+
+        if (pet.user.id != user.id) {
+            throw BadRequestException(ResponseCode.UNAUTHORIZED_USER)
+        }
+
+        // 이미지가 있는 경우 S3에 업로드하고 URL을 가져옴
+        if (petImages != null && petImages.isNotEmpty()) {
+            val dogImageUrls = s3UploadService.uploadMultipleFiles(
+                petImages,
+                dirName = "${user.id}/pet-images"
+            )
+            pet.mainImagePath = dogImageUrls.firstOrNull() // 첫 번째 이미지를 메인 이미지로 설정
+            pet.imagePaths = dogImageUrls.joinToString(",") // 모든 이미지 URL을 쉼표로 구분
+        }
+
+        pet.registrationNum = req.registrationNum
+        pet.age = req.age
+        pet.weight = req.weight
+        pet.petDetail = if (req.petDetails != null) {
+            createPetDetailJson(
+                petDescription = req.petDetails.petDescription,
+                foodBrand = req.petDetails.foodBrand,
+                foodName = req.petDetails.foodName,
+                foodType = req.petDetails.foodType
+            )
+        } else {
+            null
+        }
+
+        petRepository.save(pet)
+
+        return pet.id
     }
 }
