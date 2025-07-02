@@ -33,6 +33,7 @@ enum class ResponseCode(val code: Int, val defaultMessage: String) {
     INVALID_OAUTH_PROVIDER_ENDPOINT(40036, "해당 Oauth 제공자 엔드포인트는 존재하지 않습니다"),
     INVALID_PET_TYPE(40037, "펫 종류가 맞지 않습니다"),
     INVALID_POINT_TYPE(40038, "포인트 타입이 맞지 않습니다"),
+    UNAUTHORIZED_USER(40039, "인증되지 않은 사용자입니다"),
     // INVALID
 
 
