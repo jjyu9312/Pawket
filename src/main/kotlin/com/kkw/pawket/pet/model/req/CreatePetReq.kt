@@ -17,9 +17,6 @@ data class CreatePetReq(
     @Schema(description = "Type of the dog", example = "포메라니안")
     val dogType: String?,
 
-    @Schema(description = "List of images of the pet", example = "imageUrls")
-    val imageUrls: List<MultipartFile>?,
-
     @Schema(description = "Age of the pet", example = "3")
     val age: Int,
 
@@ -28,7 +25,14 @@ data class CreatePetReq(
 
     @Schema(description = "Sex of the pet (male/female)", example = "male")
     val sex: String,
+
+    @Schema(description = "neutered status of the pet", example = "true")
     val isNeutered: Boolean,
+
+    @Schema(
+        description = "pet details including description, food brand, name, and type",
+        example = "{\"petDescription\": \"Friendly and playful\", \"foodBrand\": \"BrandX\", \"foodName\": \"Premium Dog Food\", \"foodType\": \"Dry\"}"
+    )
     val petDetails: PetDetails? = null,
 ) {
     data class PetDetails(
