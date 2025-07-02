@@ -175,7 +175,12 @@ class UserService(
     }
 
     @Transactional(rollbackOn = [Exception::class])
-    fun createUser(userId: String, req: CreateUserReq, profileImage: MultipartFile?, petImages: List<MultipartFile>?): CreateUserRes {
+    fun createUser(
+        userId: String,
+        req: CreateUserReq,
+        profileImage: MultipartFile?,
+        petImages: List<MultipartFile>?
+    ): CreateUserRes {
         logger.info("Creating user with name: ${req.name}, email: ${req.email}")
 
         val gender = Gender.fromString(req.gender)
