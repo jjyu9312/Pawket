@@ -53,8 +53,9 @@ class TermsService(
 
         val termsList = termsRepository.findAllById(agreeTermsList)
 
-        val alreadyAgreedTermsIdList = userTermsMappingRepository.findAllByUserIdAndTermsIdIn(userId, termsList.map { it.id })
-            .map { it.terms.id }
+        val alreadyAgreedTermsIdList =
+            userTermsMappingRepository.findAllByUserIdAndTermsIdIn(userId, termsList.map { it.id })
+                .map { it.terms.id }
 
         val duplicatedTerms = termsList.filter { alreadyAgreedTermsIdList.contains(it.id) }
         if (duplicatedTerms.isNotEmpty()) {
