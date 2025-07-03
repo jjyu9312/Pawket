@@ -140,4 +140,34 @@ class UserController (
             )
         }
     }
+
+    @DeleteMapping
+    @Operation(
+        summary = "회원 탈퇴",
+        description = "사용자를 탈퇴 처리합니다."
+    )
+    fun deleteUser(
+        @AuthenticationPrincipal userId: String,
+    ): ResponseEntity<ApiResponse<String>> {
+        return try {
+            if (userService.deleteUser(userId)) {
+                ApiResponseFactory.success("회원 탈퇴가 완료되었습니다.")
+            } else {
+                ApiResponseFactory.error(
+                    responseCode = ResponseCode.BAD_REQUEST,
+                    customMessage = "회원 탈퇴에 실패했습니다."
+                )
+            }
+        } catch (e: BadRequestException) {
+            ApiResponseFactory.error(
+                responseCode = ResponseCode.BAD_REQUEST,
+                customMessage = e.message
+            )
+        } catch (e: Exception) {
+            ApiResponseFactory.error(
+                responseCode = ResponseCode.INTERNAL_SERVER_ERROR,
+                customMessage = e.message
+            )
+        }
+    }
 }
