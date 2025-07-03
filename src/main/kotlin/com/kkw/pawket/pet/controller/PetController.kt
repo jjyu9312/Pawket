@@ -52,8 +52,8 @@ class PetController(private val petService: PetService) {
         @RequestPart("petImages", required = false) petImages: List<MultipartFile>?
     ): ResponseEntity<ApiResponse<String>> {
         return try {
-            val petId = petService.updatePet(userId, petId, req, petImages)
-            ApiResponseFactory.success(petId)
+            petService.updatePet(userId, petId, req, petImages)
+            ApiResponseFactory.success("Pet updated successfully")
         } catch (e: BadRequestException) {
             ApiResponseFactory.error(
                 responseCode = ResponseCode.BAD_REQUEST,
