@@ -9,7 +9,7 @@ import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.s3.S3Client
 
 @Configuration
-class AwsS3Config {
+class AwSS3Config {
     @Value("\${cloud.aws.credentials.access-key}")
     private lateinit var accessKey: String
 
