@@ -34,6 +34,7 @@ class PointService(
                     throw BadRequestException(ResponseCode.WALK_POINT_LIMIT_EXCEEDED)
                 }
             }
+
             PointType.AD -> {
                 if (historyCount > 2L) {
                     throw BadRequestException(ResponseCode.ADS_POINT_LIMIT_EXCEEDED)
