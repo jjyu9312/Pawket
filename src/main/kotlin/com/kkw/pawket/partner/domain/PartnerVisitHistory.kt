@@ -4,7 +4,6 @@ import com.kkw.pawket.common.domain.BaseEntity
 import com.kkw.pawket.user.domain.User
 import jakarta.persistence.*
 import java.time.LocalDateTime
-import java.util.*
 
 @Entity
 data class PartnerVisitHistory(
