@@ -9,6 +9,7 @@ enum class ResponseCode(val code: Int, val defaultMessage: String) {
     USER_CREATION_FAILED(40001, "user 생성에 실패했습니다"),
     DOG_CREATION_FAILED(40003, "dog 생성에 실패했습니다"),
     NOT_FOUND_IMAGE(40004, "이미지를 찾을 수 없습니다"),
+    // FAILED
 
     USER_NOT_FOUND(40010, "user가 존재하지 않습니다"),
     COMPANY_NOT_FOUND(40011, "company가 존재하지 않습니다"),
