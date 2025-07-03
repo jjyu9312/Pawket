@@ -68,4 +68,27 @@ class PetController(private val petService: PetService) {
             )
         }
     }
+
+    @DeleteMapping("/{petId}")
+    fun deletePet(
+        @AuthenticationPrincipal userId: String,
+        @PathVariable petId: String
+    ): ResponseEntity<ApiResponse<String>> {
+        return try {
+            petService.deletePet(userId, petId)
+            ApiResponseFactory.success("Pet deleted successfully")
+        } catch (e: BadRequestException) {
+            ApiResponseFactory.error(
+                responseCode = ResponseCode.BAD_REQUEST,
+                httpStatus = HttpStatus.BAD_REQUEST,
+                customMessage = e.message
+            )
+        } catch (e: Exception) {
+            ApiResponseFactory.error(
+                responseCode = ResponseCode.INTERNAL_SERVER_ERROR,
+                httpStatus = HttpStatus.INTERNAL_SERVER_ERROR,
+                customMessage = e.message
+            )
+        }
+    }
 }
