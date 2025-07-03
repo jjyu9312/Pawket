@@ -55,7 +55,6 @@ class PartnerService(
                         contactNumber = partner.contactNumber,
                         link = partner.link,
                     )
-
                 }
             )
         } else {
