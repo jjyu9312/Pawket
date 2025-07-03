@@ -128,7 +128,7 @@ class PetService(
         petId: String,
         req: UpdatePetReq,
         petImages: List<MultipartFile>?
-    ): String {
+    ) {
         val user = userRepository.findByIdAndIsDeletedFalse(userId)
             ?: throw BadRequestException(ResponseCode.USER_NOT_FOUND)
 
@@ -164,7 +164,21 @@ class PetService(
         }
 
         petRepository.save(pet)
+    }
 
-        return pet.id
+    fun deletePet(userId: String, petId: String) {
+        val user = userRepository.findByIdAndIsDeletedFalse(userId)
+            ?: throw BadRequestException(ResponseCode.USER_NOT_FOUND)
+
+        val pet = petRepository.findByIdAndIsDeletedFalse(petId)
+            ?: throw BadRequestException(ResponseCode.PET_NOT_FOUND)
+
+        if (userId != pet.user.id) {
+            throw BadRequestException(ResponseCode.UNAUTHORIZED_USER)
+        }
+
+        pet.isDeleted = true
+
+        petRepository.save(pet)
     }
 }
