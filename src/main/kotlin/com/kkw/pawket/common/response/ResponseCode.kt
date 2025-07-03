@@ -9,17 +9,19 @@ enum class ResponseCode(val code: Int, val defaultMessage: String) {
     USER_CREATION_FAILED(40001, "user 생성에 실패했습니다"),
     DOG_CREATION_FAILED(40003, "dog 생성에 실패했습니다"),
     NOT_FOUND_IMAGE(40004, "이미지를 찾을 수 없습니다"),
+
     USER_NOT_FOUND(40010, "user가 존재하지 않습니다"),
     COMPANY_NOT_FOUND(40011, "company가 존재하지 않습니다"),
     WALK_RECORD_NOT_FOUND(40012, "산책 기록이 존재하지 않습니다"),
     EMAIL_NOT_FOUND(40013, "이메일을 찾을 수 없습니다"),
     TERMS_NOT_FOUND(40014, "약관을 찾을 수 없습니다"),
     NOTICE_NOT_FOUND(40015, "공지사항을 찾을 수 없습니다"),
-    POINT_SHOP_NOT_FOUND(40020, "포인트샵을 찾을 수 없습니다"),
-    POINT_SHOP_ITEM_NOT_FOUND(40021, "포인트샵 아이템을 찾을 수 없습니다"),
     POINT_SHOP_NAME_DUPLICATED(40016, "포인트샵 이름이 중복되었습니다"),
     POINT_SHOP_ITEM_NAME_DUPLICATED(40017, "포인트샵 아이템 이름이 중복되었습니다"),
     PET_NOT_FOUND(40018, "펫이 존재하지 않습니다"),
+    PARTNER_NOT_FOUND(40019, "제휴업체를 찾을 수 없습니다"),
+    POINT_SHOP_NOT_FOUND(40020, "포인트샵을 찾을 수 없습니다"),
+    POINT_SHOP_ITEM_NOT_FOUND(40021, "포인트샵 아이템을 찾을 수 없습니다"),
     // NOTFOUND
 
 
