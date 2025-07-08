@@ -16,16 +16,16 @@ data class Partner(
     val user: User,
 
     @Column(nullable = false, length = 50)
-    val name: String,
+    var name: String,
 
     @Column(nullable = false, length = 50)
-    val ownerName: String,
+    var ownerName: String,
 
     @Column(nullable = false, length = 50)
-    val contactNumber: String,
+    var contactNumber: String,
 
     @Column(nullable = true)
-    val link: String? = null,
+    var link: String? = null,
 
     ) : BaseEntity() {
 
