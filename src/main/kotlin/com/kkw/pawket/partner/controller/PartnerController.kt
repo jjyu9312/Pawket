@@ -4,6 +4,7 @@ import com.kkw.pawket.common.response.ApiResponse
 import com.kkw.pawket.common.response.ApiResponseFactory
 import com.kkw.pawket.common.response.ResponseCode
 import com.kkw.pawket.partner.model.req.CreatePartnerReq
+import com.kkw.pawket.partner.model.req.UpdatePartnerReq
 import com.kkw.pawket.partner.model.res.PartnerRegistrationStatusRes
 import com.kkw.pawket.partner.service.PartnerService
 import io.swagger.v3.oas.annotations.Operation
@@ -98,6 +99,29 @@ class PartnerController(
     /*
     TODO 제휴업체 정보 수정
      */
+    @PutMapping("/{partnerId}")
+    fun updatePartner(
+        @AuthenticationPrincipal userId: String,
+        @PathVariable partnerId: String,
+        @RequestBody req: UpdatePartnerReq
+    ): ResponseEntity<ApiResponse<String>> {
+        return try {
+            val updatedPartnerId = partnerService.updatePartner(userId, partnerId, req)
+            ApiResponseFactory.success(updatedPartnerId)
+        } catch (e: BadRequestException) {
+            ApiResponseFactory.error(
+                responseCode = ResponseCode.BAD_REQUEST,
+                httpStatus = HttpStatus.BAD_REQUEST,
+                customMessage = e.message
+            )
+        } catch (e: Exception) {
+            ApiResponseFactory.error(
+                responseCode = ResponseCode.INTERNAL_SERVER_ERROR,
+                httpStatus = HttpStatus.INTERNAL_SERVER_ERROR,
+                customMessage = e.message
+            )
+        }
+    }
 
     /*
     TODO 내 위치 근처 제휴업체 조회
