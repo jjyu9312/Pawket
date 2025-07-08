@@ -5,6 +5,7 @@ import com.kkw.pawket.common.response.ResponseCode
 import com.kkw.pawket.partner.domain.Partner
 import com.kkw.pawket.partner.domain.repository.PartnerRepository
 import com.kkw.pawket.partner.model.req.CreatePartnerReq
+import com.kkw.pawket.partner.model.req.UpdatePartnerReq
 import com.kkw.pawket.partner.model.res.PartnerInfo
 import com.kkw.pawket.partner.model.res.PartnerRegistrationStatusRes
 import com.kkw.pawket.user.domain.repository.UserRepository
@@ -61,5 +62,22 @@ class PartnerService(
             // 제휴업체로 등록되지 않은 경우
             PartnerRegistrationStatusRes(isRegistered = false, partners = emptyList())
         }
+    }
+
+    fun updatePartner(userId: String, partnerId: String, req: UpdatePartnerReq): String {
+        val user = userRepository.findByIdAndIsDeletedFalse(userId)
+            ?: throw BadRequestException(ResponseCode.USER_NOT_FOUND)
+
+        val partner = partnerRepository.findByIdAndIsDeletedFalse(partnerId)
+            ?: throw BadRequestException(ResponseCode.PARTNER_NOT_FOUND)
+
+        partner.name = req.name
+        partner.ownerName = req.ownerName
+        partner.contactNumber = req.contactNumber
+        partner.link = req.link
+
+        partnerRepository.save(partner)
+
+        return partner.id
     }
 }
