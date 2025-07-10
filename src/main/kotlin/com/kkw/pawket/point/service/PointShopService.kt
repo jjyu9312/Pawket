@@ -54,6 +54,7 @@ class PointShopService(
     }
 
     fun getPointShopsByUser(userId: String): List<ReadPointShopRes>? {
-        TODO("Not yet implemented")
+        val user = userRepository.findByIdAndIsDeletedFalse(userId)
+            ?: throw BadRequestException(ResponseCode.USER_NOT_FOUND)
     }
 }
