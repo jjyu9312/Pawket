@@ -1,5 +1,6 @@
 package com.kkw.pawket.point.domain
 
+import com.kkw.pawket.common.domain.BaseDateTimeEntity
 import com.kkw.pawket.common.domain.BaseEntity
 import com.kkw.pawket.user.domain.User
 import jakarta.persistence.*
@@ -29,7 +30,7 @@ data class UserPointHistory(
     @Column(nullable = false)
     var afterPoint: Int = 0,
 
-    ) : BaseEntity() {
+    ) : BaseDateTimeEntity() {
         companion object {
             fun createByCollectPoint(
                 user: User,
