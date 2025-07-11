@@ -32,7 +32,7 @@ data class User(
     var imagePath: String? = null,
 
     @Column(nullable = false)
-    var totalCoin: Int = 0,
+    var totalPoint: Int = 0,
 
     @Column(nullable = false)
     var addressBasic: String,
@@ -96,16 +96,16 @@ data class User(
         return email.matches(emailRegex.toRegex())
     }
 
-    fun addCoin(coin: Int): Int {
-        require(coin > 0) { "추가할 코인은 양수여야 합니다." }
-        this.totalCoin += coin
-        return this.totalCoin
+    fun collectPoint(point: Int): Int {
+        require(point > 0) { "추가할 코인은 양수여야 합니다." }
+        this.totalPoint += point
+        return this.totalPoint
     }
 
-    fun subtractCoin(coin: Int): Int {
-        require(coin > 0) { "차감할 코인은 양수여야 합니다." }
-        require(this.totalCoin >= coin) { "보유 코인보다 많은 코인은 차감할 수 없습니다." }
-        this.totalCoin -= coin
-        return this.totalCoin
+    fun usePoint(point: Int): Int {
+        require(point > 0) { "차감할 코인은 양수여야 합니다." }
+        require(this.totalPoint >= point) { "보유 코인보다 많은 코인은 차감할 수 없습니다." }
+        this.totalPoint -= point
+        return this.totalPoint
     }
 }
