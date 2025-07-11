@@ -1,9 +1,9 @@
 package com.kkw.pawket.mission.domain
 
 enum class DayType(val stringValue: String) {
-    daily("daily"),
-    weekly("weekly"),
-    monthly("monthly");
+    DAILY("daily"),
+    WEEKLY("weekly"),
+    MONTHLY("monthly");
     ;
 
     companion object {
