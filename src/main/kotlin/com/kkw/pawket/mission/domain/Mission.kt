@@ -1,36 +1,26 @@
 package com.kkw.pawket.mission.domain
 
 import com.kkw.pawket.common.domain.BaseEntity
-import com.kkw.pawket.pet.domain.Pet
 import jakarta.persistence.*
-import java.time.LocalDate
-import java.time.LocalDateTime
 import java.util.*
 
-@Entity(name = "mission")
+@Entity(name = "check_type")
 data class Mission(
     @Id
     @Column(nullable = false, columnDefinition = "CHAR(36)")
     val id: String = UUID.randomUUID().toString(),
 
-    @JoinColumn(name = "pet_id", columnDefinition = "CHAR(36)")
-    @ManyToOne(fetch = FetchType.LAZY)
-    val pet: Pet,
-
-    @JoinColumn(name = "check_type_id", nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY)
-    val missionType: MissionType,
+    @Column(nullable = false, unique = true)
+    val name: String,
 
     @Column(nullable = false)
-    var isSucceed: Boolean = false,
+    val content: String? = null,
 
     @Column(nullable = false)
-    var startedAt: LocalDateTime,
+    @Enumerated(EnumType.STRING)
+    val dayType: DayType = DayType.DAILY
 
-    @Column(nullable = true)
-    var finishedAt: LocalDateTime? = null,
-
-    ) : BaseEntity() {
+) : BaseEntity() {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -42,18 +32,22 @@ data class Mission(
     override fun hashCode(): Int = id.hashCode()
 
     companion object {
+        private val regex = Regex("^[A-Za-z]+$")
+
         fun create(
-            pet: Pet,
-            missionType: MissionType,
-            isSucceed: Boolean = false,
-            startedAt: LocalDateTime = LocalDateTime.now(),
-            finishedAt: LocalDateTime? = null
-        ): Mission = Mission(
-            pet = pet,
-            missionType = missionType,
-            isSucceed = isSucceed,
-            startedAt = startedAt,
-            finishedAt = finishedAt
-        )
+            name: String,
+            content: String? = null,
+            dayType: DayType = DayType.DAILY
+        ): Mission {
+            require(name.isNotBlank()) { "Name must not be blank" }
+            require(name.length <= 50) { "Name must be less than or equal to 50 characters" }
+
+            return Mission(
+                name = name,
+                content = content,
+                dayType = dayType
+            )
+        }
+
     }
 }
