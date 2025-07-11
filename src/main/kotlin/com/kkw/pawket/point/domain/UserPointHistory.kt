@@ -19,26 +19,49 @@ data class UserPointHistory(
     @JoinColumn(name = "point_id", columnDefinition = "CHAR(36)")
     val point: Point,
 
-    @Column(nullable = false)
-    val beforePoint: Int,
+    @Column()
+    @Enumerated(EnumType.STRING)
+    val type: PointHistoryType = PointHistoryType.COLLECT,
 
     @Column(nullable = false)
-    val afterPoint: Int,
+    var beforePoint: Int = 0,
+
+    @Column(nullable = false)
+    var afterPoint: Int = 0,
 
     ) : BaseEntity() {
         companion object {
-            fun create(
+            fun createByCollectPoint(
                 user: User,
                 point: Point,
-                beforePoint: Int,
-                afterPoint: Int
             ): UserPointHistory {
+                val beforePoint = user.totalPoint
+                val afterPoint = beforePoint + point.petPoint
+
                 return UserPointHistory(
                     id = PointHistoryId(user.id, point.id),
                     user = user,
                     point = point,
+                    type = PointHistoryType.COLLECT,
                     beforePoint = beforePoint,
-                    afterPoint = afterPoint,
+                    afterPoint = afterPoint
+                )
+            }
+
+            fun createByUsePoint(
+                user: User,
+                point: Point,
+            ): UserPointHistory {
+                val beforePoint = user.totalPoint
+                val afterPoint = beforePoint - point.petPoint
+
+                return UserPointHistory(
+                    id = PointHistoryId(user.id, point.id),
+                    user = user,
+                    point = point,
+                    type = PointHistoryType.USE,
+                    beforePoint = beforePoint,
+                    afterPoint = afterPoint
                 )
             }
         }
