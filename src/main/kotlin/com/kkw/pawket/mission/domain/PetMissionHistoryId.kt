@@ -5,7 +5,7 @@ import jakarta.persistence.Embeddable
 import java.io.Serializable
 
 @Embeddable
-data class PetMissionMappingId(
+data class PetMissionHistoryId(
     @Column(name = "pet_id", columnDefinition = "CHAR(36)")
     val petId: String,
 
