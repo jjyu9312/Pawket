@@ -5,10 +5,10 @@ import com.kkw.pawket.pet.domain.Pet
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
-@Entity(name = "pet_mission_mapping")
-data class PetMissionMapping(
+@Entity(name = "pet_mission_history")
+data class PetMissionHistory(
     @EmbeddedId
-    val id: PetMissionMappingId,
+    val id: PetMissionHistoryId,
 
     @MapsId("petId")
     @JoinColumn(name = "pet_id", columnDefinition = "CHAR(36)")
@@ -16,12 +16,15 @@ data class PetMissionMapping(
     val pet: Pet,
 
     @MapsId("missionId")
-    @JoinColumn(name = "check_type_id", nullable = false)
+    @JoinColumn(name = "mission_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     val mission: Mission,
 
     @Column(nullable = false)
     var isSucceed: Boolean = false,
+
+    @Column(nullable = true, length = 1000)
+    var notes: String? = null,
 
     @Column(nullable = false)
     var startedAt: LocalDateTime,
@@ -34,7 +37,7 @@ data class PetMissionMapping(
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
-        other as PetMissionMapping
+        other as PetMissionHistory
         return id == other.id
     }
 
@@ -44,12 +47,14 @@ data class PetMissionMapping(
         fun create(
             pet: Pet,
             mission: Mission,
-        ): PetMissionMapping {
-            return PetMissionMapping(
-                id = PetMissionMappingId(pet.id, mission.id),
+            notes: String?,
+        ): PetMissionHistory {
+            return PetMissionHistory(
+                id = PetMissionHistoryId(pet.id, mission.id),
                 pet = pet,
                 mission = mission,
                 isSucceed = false,
+                notes = notes,
                 startedAt = LocalDateTime.now(),
                 finishedAt = null
             )
