@@ -32,6 +32,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-data-rest")
     implementation("org.springframework.boot:spring-boot-starter-batch")
+    implementation("org.springframework.boot:spring-boot-starter-websocket")
 
     // ✅ CLOVA AI & WebFlux Dependencies (추가)
     implementation("org.springframework.boot:spring-boot-starter-webflux")
