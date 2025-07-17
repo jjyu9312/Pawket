@@ -29,6 +29,9 @@ class WalkRecord(
     @Column(nullable = true, columnDefinition = "TEXT")
     var walkLocation: String? = null,
 
+    @Column(nullable = true, length = 1000)
+    var notes: String? = null,
+
 ): BaseEntity() {
 
     override fun equals(other: Any?): Boolean {
@@ -44,11 +47,13 @@ class WalkRecord(
         fun create(
             user: User,
             petId: String,
+            notes: String? = null,
         ): WalkRecord = WalkRecord(
             id = UUID.randomUUID().toString(),
             user = user,
             petId = petId,
             startedAt = LocalDateTime.now(),
+            notes = notes,
         )
     }
 
