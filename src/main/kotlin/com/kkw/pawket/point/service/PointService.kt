@@ -51,13 +51,19 @@ class PointService(
         pointRepository.save(point)
 
         // TODO 포인트 이력 저장
-        val userPointHistory = UserPointHistory.create(
-            user = user,
-            point = point,
-            beforePoint = 0,
-            afterPoint = point.petPoint,
-        )
-        userPointHistoryRepository.save(userPointHistory)
+        if (req.pointHistoryType == PointHistoryType.COLLECT.name) {
+            val userPointHistory = UserPointHistory.createByCollectPoint(
+                user = user,
+                point = point,
+            )
+            userPointHistoryRepository.save(userPointHistory)
+        } else {
+            val userPointHistory = UserPointHistory.createByUsePoint(
+                user = user,
+                point = point,
+            )
+            userPointHistoryRepository.save(userPointHistory)
+        }
 
         return point.id
     }
