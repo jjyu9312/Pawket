@@ -53,10 +53,10 @@ class PointShopService(
         return pointShopItem.id
     }
 
-    fun getPointShopsByUser(userId: String): List<ReadPointShopRes>? {
-        val user = userRepository.findByIdAndIsDeletedFalse(userId)
-            ?: throw BadRequestException(ResponseCode.USER_NOT_FOUND)
-
-        return "asdad"
-    }
+//    fun getPointShopsByUser(userId: String): List<ReadPointShopRes>? {
+//        val user = userRepository.findByIdAndIsDeletedFalse(userId)
+//            ?: throw BadRequestException(ResponseCode.USER_NOT_FOUND)
+//
+//
+//    }
 }
