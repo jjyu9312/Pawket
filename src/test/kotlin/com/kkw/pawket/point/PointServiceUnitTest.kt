@@ -37,7 +37,7 @@ class PointServiceUnitTest {
     fun `유저가 존재하지 않을 때 예외 발생`() {
         // given
         val userId = "user1"
-        val req = CreatePointReq(type = "walk", point = 100)
+        val req = CreatePointReq(type = "walk", pointHistoryType = "collect", point = 100)
 
         every { userRepository.findByIdAndIsDeletedFalse(userId) } returns null
 
@@ -53,7 +53,7 @@ class PointServiceUnitTest {
         // given
         val userId = "user1"
         val user = mockk<User>()
-        val req = CreatePointReq(type = "invalid", point = 100)
+        val req = CreatePointReq(type = "invalid", pointHistoryType = "collect", point = 100)
 
         every { userRepository.findByIdAndIsDeletedFalse(userId) } returns user
         mockkObject(PointType.Companion)
@@ -71,7 +71,7 @@ class PointServiceUnitTest {
         // given
         val userId = "user1"
         val user = mockk<User>()
-        val req = CreatePointReq(type = "walk", point = 100)
+        val req = CreatePointReq(type = "walk", pointHistoryType = "collect", point = 100)
 
         every { userRepository.findByIdAndIsDeletedFalse(userId) } returns user
         mockkObject(PointType.Companion)
@@ -90,7 +90,7 @@ class PointServiceUnitTest {
         // given
         val userId = "user1"
         val user = mockk<User>()
-        val req = CreatePointReq(type = "ad", point = 50)
+        val req = CreatePointReq(type = "ad", pointHistoryType = "collect",point = 50)
 
         every { userRepository.findByIdAndIsDeletedFalse(userId) } returns user
         mockkObject(PointType.Companion)
@@ -109,7 +109,7 @@ class PointServiceUnitTest {
         // given
         val userId = "user1"
         val user = mockk<User>()
-        val req = CreatePointReq(type = "walk", point = 100)
+        val req = CreatePointReq(type = "walk", pointHistoryType = "collect",point = 100)
         val pointId = "point1"
         val point = mockk<Point>()
 
@@ -126,7 +126,7 @@ class PointServiceUnitTest {
 
         mockkObject(UserPointHistory.Companion)
         val userPointHistory = mockk<UserPointHistory>()
-        every { UserPointHistory.create(user, point, 0, 100) } returns userPointHistory
+        every { UserPointHistory.createByCollectPoint(user, point) } returns userPointHistory
         every { userPointHistoryRepository.save(userPointHistory) } returns userPointHistory
 
         // when
@@ -143,7 +143,7 @@ class PointServiceUnitTest {
         // given
         val userId = "user1"
         val user = mockk<User>()
-        val req = CreatePointReq(type = "ad", point = 50)
+        val req = CreatePointReq(type = "ad", pointHistoryType = "collect",point = 50)
         val pointId = "point2"
         val point = mockk<Point>()
 
@@ -160,7 +160,7 @@ class PointServiceUnitTest {
 
         mockkObject(UserPointHistory.Companion)
         val userPointHistory = mockk<UserPointHistory>()
-        every { UserPointHistory.create(user, point, 0, 50) } returns userPointHistory
+        every { UserPointHistory.createByCollectPoint(user, point) } returns userPointHistory
         every { userPointHistoryRepository.save(userPointHistory) } returns userPointHistory
 
         // when
