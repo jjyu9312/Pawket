@@ -30,7 +30,7 @@ data class UserPointHistory(
     @Column(nullable = false)
     var afterPoint: Int = 0,
 
-    ) : BaseDateTimeEntity() {
+    ) : BaseEntity() {
         companion object {
             fun createByCollectPoint(
                 user: User,
