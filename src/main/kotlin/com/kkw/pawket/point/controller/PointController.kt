@@ -119,31 +119,31 @@ class PointController(
     /*
     TODO 유저가 등록한 포인트샵 조회
      */
-    @Operation(
-        summary = "유저가 등록한 포인트샵 조회",
-        description = "유저가 등록한 포인트샵 목록을 조회합니다."
-    )
-    @GetMapping("/shops/byUser")
-    fun getPointShopsByUser(
-        @AuthenticationPrincipal userId: String
-    ): ResponseEntity<ApiResponse<List<ReadPointShopRes>>> {
-        return try {
-            val pointShops = pointShopService.getPointShopsByUser(userId)
-            ApiResponseFactory.success(pointShops)
-        } catch (e: BadRequestException) {
-            ApiResponseFactory.error(
-                responseCode = ResponseCode.BAD_REQUEST,
-                httpStatus = HttpStatus.BAD_REQUEST,
-                customMessage = e.message
-            )
-        } catch (e: Exception) {
-            ApiResponseFactory.error(
-                responseCode = ResponseCode.INTERNAL_SERVER_ERROR,
-                httpStatus = HttpStatus.INTERNAL_SERVER_ERROR,
-                customMessage = e.message
-            )
-        }
-    }
+//    @Operation(
+//        summary = "유저가 등록한 포인트샵 조회",
+//        description = "유저가 등록한 포인트샵 목록을 조회합니다."
+//    )
+//    @GetMapping("/shops/byUser")
+//    fun getPointShopsByUser(
+//        @AuthenticationPrincipal userId: String
+//    ): ResponseEntity<ApiResponse<List<ReadPointShopRes>>> {
+//        return try {
+//            val pointShops = pointShopService.getPointShopsByUser(userId)
+//            ApiResponseFactory.success(pointShops)
+//        } catch (e: BadRequestException) {
+//            ApiResponseFactory.error(
+//                responseCode = ResponseCode.BAD_REQUEST,
+//                httpStatus = HttpStatus.BAD_REQUEST,
+//                customMessage = e.message
+//            )
+//        } catch (e: Exception) {
+//            ApiResponseFactory.error(
+//                responseCode = ResponseCode.INTERNAL_SERVER_ERROR,
+//                httpStatus = HttpStatus.INTERNAL_SERVER_ERROR,
+//                customMessage = e.message
+//            )
+//        }
+//    }
 
     /*
     TODO 특정 포인트샵 제품 목록 조회
