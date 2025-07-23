@@ -38,7 +38,7 @@ class PointShopService(
             throw BadRequestException(ResponseCode.USER_NOT_FOUND)
 
         if (!pointShopItemRepository.existsByNameAndIsDeletedFalse(req.pointShopId))
-            throw BadRequestException(ResponseCode.POINT_SHOP_ITEM_NAME_DUPLICATED)
+            throw BadRequestException(ResponseCode.POINT_SHOP_ITEM_DUPLICATED)
 
         val pointShop = pointShopRepository.findByIdAndIsDeletedFalse(req.pointShopId)
             ?: throw BadRequestException(ResponseCode.POINT_SHOP_NOT_FOUND)
