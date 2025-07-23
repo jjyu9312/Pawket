@@ -18,7 +18,7 @@ enum class ResponseCode(val code: Int, val defaultMessage: String) {
     TERMS_NOT_FOUND(40014, "약관을 찾을 수 없습니다"),
     NOTICE_NOT_FOUND(40015, "공지사항을 찾을 수 없습니다"),
     POINT_SHOP_NAME_DUPLICATED(40016, "포인트샵 이름이 중복되었습니다"),
-    POINT_SHOP_ITEM_NAME_DUPLICATED(40017, "포인트샵 아이템 이름이 중복되었습니다"),
+    POINT_SHOP_ITEM_DUPLICATED(40017, "포인트샵 아이템이 중복되었습니다"),
     PET_NOT_FOUND(40018, "펫이 존재하지 않습니다"),
     PARTNER_NOT_FOUND(40019, "제휴업체를 찾을 수 없습니다"),
     POINT_SHOP_NOT_FOUND(40020, "포인트샵을 찾을 수 없습니다"),
