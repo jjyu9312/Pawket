@@ -41,6 +41,8 @@ class SecurityConfig(
                     .requestMatchers("/private/v1/**").hasRole(UserRole.ADMIN.name)
                     .requestMatchers("/api/v1/**").hasRole(UserRole.USER.name)
                     .requestMatchers(
+                        "/v3/api-docs/**",
+                        "/swagger-ui/**",
                         "/api/v1/user/login",
                         "/api/v1/login/*",
                         "/api/v1/oauth2/authorization/*",  // OAuth 인증 시작 경로
@@ -59,17 +61,17 @@ class SecurityConfig(
                     .invalidateHttpSession(true)
                     .deleteCookies("JSESSIONID")
             }
-            .oauth2Login { oauth ->
-                oauth
-                    .loginPage("/api/v1/login")
-                    .authorizationEndpoint { endpoint ->
-                        endpoint.baseUri("/api/v1/oauth2/authorization")
-                    }
-                    .redirectionEndpoint { endpoint ->
-                        endpoint.baseUri("/api/v1/login/oauth2/code/*")
-                    }
-                    .successHandler(OAuth2SuccessHandler(jwtTokenProvider, userService))
-            }
+//            .oauth2Login { oauth ->
+//                oauth
+//                    .loginPage("/api/v1/login")
+//                    .authorizationEndpoint { endpoint ->
+//                        endpoint.baseUri("/api/v1/oauth2/authorization")
+//                    }
+//                    .redirectionEndpoint { endpoint ->
+//                        endpoint.baseUri("/api/v1/login/oauth2/code/*")
+//                    }
+//                    .successHandler(OAuth2SuccessHandler(jwtTokenProvider, userService))
+//            }
 
         // JWT 필터 추가
         http.addFilterBefore(
