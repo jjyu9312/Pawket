@@ -4,7 +4,7 @@ import com.kkw.pawket.common.domain.BaseEntity
 import jakarta.persistence.*
 import java.util.*
 
-@Entity(name = "check_type")
+@Entity
 data class Mission(
     @Id
     @Column(nullable = false, columnDefinition = "CHAR(36)")
