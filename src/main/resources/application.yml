@@ -29,6 +29,18 @@ spring:
             authorization-uri: https://appleid.apple.com/auth/authorize
             token-uri: https://appleid.apple.com/auth/token
             user-info-uri: https://appleid.apple.com/auth/userinfo
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+  show-actuator: true
+  packages-to-scan: com.kkw.pawket
+  paths-to-match: /**
+
 app:
   backend-url: http://localhost:8080
   oauth:
