@@ -43,3 +43,7 @@ out/
 gradle/
 .gradle/
 .idea/
+
+### logs ###
+logs/
+*.log
