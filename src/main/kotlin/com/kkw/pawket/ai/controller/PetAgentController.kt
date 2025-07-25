@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import org.apache.coyote.BadRequestException
+import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
@@ -24,6 +25,7 @@ class PetAgentController(
     private val chatSessionService: ChatSessionService,
     private val petService: PetService,
 ) {
+    private val logger = LoggerFactory.getLogger(PetAgentController::class.java)
 
     /*
     TODO AI 채팅 상담
@@ -42,6 +44,9 @@ class PetAgentController(
             val context = req.sessionId?.let {
                 chatSessionService.getContext(it)
             } ?: emptyList()
+
+            logger.info("User $userId is chatting with pet agent. Session ID: ${req.sessionId}, Message: ${req.message}")
+            logger.info("Context for session ${req.sessionId}: $context")
 
             // 사용자의 반려동물 프로필 조회
             val petProfileRes = petService.findPetProfileByUserAndPetId(
