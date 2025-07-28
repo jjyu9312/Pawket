@@ -4,7 +4,7 @@ import com.kkw.pawket.shop.service.ShopService
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/api/v1/shop")
+@RequestMapping("/api/v1/shops")
 class ShopController(
     private val shopService: ShopService
 ) {
