@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 
 @RestController
-@RequestMapping("/api/v1/pet")
+@RequestMapping("/api/v1/pets")
 class PetController(private val petService: PetService) {
     /*
     TODO Pet 생성
