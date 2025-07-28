@@ -19,7 +19,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/api/v1/partner")
+@RequestMapping("/api/v1/partners")
 @Tag(name = "Partner", description = "제휴업체 관련 API")
 class PartnerController(
     private val partnerService: PartnerService,
