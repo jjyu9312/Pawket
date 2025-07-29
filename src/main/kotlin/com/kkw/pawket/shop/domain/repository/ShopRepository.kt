@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository
 interface ShopRepository: JpaRepository<Shop, String> {
     fun findByIdAndIsDeletedFalse(id: String): Shop?
     fun findAllByUserId(userId: String): List<Shop>
+    fun findByIdAndUserIdAndIsDeletedFalse(shopId: String, userId: String): Shop?
 }
