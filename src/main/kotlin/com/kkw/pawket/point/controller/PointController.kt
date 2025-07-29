@@ -92,7 +92,7 @@ class PointController(
         summary = "포인트샵 제품 등록",
         description = "포인트샵 제품을 등록합니다."
     )
-    @PostMapping("/shop/item")
+    @PostMapping("/shops/items")
     fun createPointShopItem(
         @AuthenticationPrincipal userId: String,
         @RequestBody req: CreatePointShopItemReq
