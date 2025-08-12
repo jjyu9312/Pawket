@@ -1,4 +1,4 @@
-package com.kkw.pawket.pet.domain
+package com.kkw.pawket.dog.domain
 
 enum class DogType(val stringValue: String) {
     JINDO("jindo"),
