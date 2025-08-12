@@ -1,11 +1,11 @@
-package com.kkw.pawket.pet.controller
+package com.kkw.pawket.dog.controller
 
 import com.kkw.pawket.common.response.ApiResponse
 import com.kkw.pawket.common.response.ApiResponseFactory
 import com.kkw.pawket.common.response.ResponseCode
-import com.kkw.pawket.pet.model.req.CreatePetReq
-import com.kkw.pawket.pet.model.req.UpdatePetReq
-import com.kkw.pawket.pet.service.PetService
+import com.kkw.pawket.dog.model.req.CreateDogReq
+import com.kkw.pawket.dog.model.req.UpdateDogReq
+import com.kkw.pawket.dog.service.DogService
 import jakarta.validation.Valid
 import org.apache.coyote.BadRequestException
 import org.springframework.http.HttpStatus
@@ -15,20 +15,20 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 
 @RestController
-@RequestMapping("/api/v1/pets")
-class PetController(private val petService: PetService) {
+@RequestMapping("/api/v1/dogs")
+class DogController(private val dogService: DogService) {
     /*
-    TODO Pet 생성
+    TODO dog 생성
      */
     @PostMapping
-    fun createPet(
+    fun createDog(
         @AuthenticationPrincipal userId: String,
-        @Valid @RequestPart("petData") req: CreatePetReq,
-        @RequestPart("petImages", required = false) petImages: List<MultipartFile>
+        @Valid @RequestPart("dogData") req: CreateDogReq,
+        @RequestPart("dogImages", required = false) dogImages: List<MultipartFile>
     ): ResponseEntity<ApiResponse<String>> {
         return try {
-            val petId = petService.createPet(userId, req, petImages)
-            ApiResponseFactory.success(petId)
+            val dogId = dogService.createDog(userId, req, dogImages)
+            ApiResponseFactory.success(dogId)
         } catch (e: BadRequestException) {
             ApiResponseFactory.error(
                 responseCode = ResponseCode.BAD_REQUEST,  // 400 응답 코드
@@ -44,16 +44,16 @@ class PetController(private val petService: PetService) {
         }
     }
 
-    @PutMapping("/{petId}")
-    fun updatePet(
+    @PutMapping("/{dogId}")
+    fun updateDog(
         @AuthenticationPrincipal userId: String,
-        @PathVariable petId: String,
-        @Valid @RequestPart("petData") req: UpdatePetReq,
-        @RequestPart("petImages", required = false) petImages: List<MultipartFile>?
+        @PathVariable dogId: String,
+        @Valid @RequestPart("dogData") req: UpdateDogReq,
+        @RequestPart("dogImages", required = false) dogImages: List<MultipartFile>?
     ): ResponseEntity<ApiResponse<String>> {
         return try {
-            petService.updatePet(userId, petId, req, petImages)
-            ApiResponseFactory.success("Pet updated successfully")
+            dogService.updateDog(userId, dogId, req, dogImages)
+            ApiResponseFactory.success("dog updated successfully")
         } catch (e: BadRequestException) {
             ApiResponseFactory.error(
                 responseCode = ResponseCode.BAD_REQUEST,
@@ -69,14 +69,14 @@ class PetController(private val petService: PetService) {
         }
     }
 
-    @DeleteMapping("/{petId}")
-    fun deletePet(
+    @DeleteMapping("/{dogId}")
+    fun deleteDog(
         @AuthenticationPrincipal userId: String,
-        @PathVariable petId: String
+        @PathVariable dogId: String
     ): ResponseEntity<ApiResponse<String>> {
         return try {
-            petService.deletePet(userId, petId)
-            ApiResponseFactory.success("Pet deleted successfully")
+            dogService.deleteDog(userId, dogId)
+            ApiResponseFactory.success("dog deleted successfully")
         } catch (e: BadRequestException) {
             ApiResponseFactory.error(
                 responseCode = ResponseCode.BAD_REQUEST,
