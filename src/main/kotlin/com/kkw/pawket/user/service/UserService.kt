@@ -9,12 +9,11 @@ import com.kkw.pawket.common.service.*
 import com.kkw.pawket.post.repository.PostRepository
 import com.kkw.pawket.partner.domain.repository.PartnerRepository
 import com.kkw.pawket.partner.domain.repository.PartnerVisitHistoryRepository
-import com.kkw.pawket.pet.domain.Pet
-import com.kkw.pawket.pet.domain.DogType
-import com.kkw.pawket.pet.domain.PetType
-import com.kkw.pawket.pet.domain.Sex
-import com.kkw.pawket.pet.domain.repository.PetRepository
-import com.kkw.pawket.pet.service.PetService
+import com.kkw.pawket.dog.domain.Dog
+import com.kkw.pawket.dog.domain.DogType
+import com.kkw.pawket.dog.domain.Sex
+import com.kkw.pawket.dog.domain.repository.DogRepository
+import com.kkw.pawket.dog.service.DogService
 import com.kkw.pawket.point.domain.repository.UserPointHistoryRepository
 import com.kkw.pawket.terms.domain.repository.UserTermsMappingRepository
 import com.kkw.pawket.user.domain.Gender
@@ -50,7 +49,7 @@ class UserService(
     private val response: HttpServletResponse,
     private val userRepository: UserRepository,
     private val userOAuthRepository: UserOAuthRepository,
-    private val petRepository: PetRepository,
+    private val dogRepository: DogRepository,
     private val partnerRepository: PartnerRepository,
     private val companyRepository: CompanyRepository,
     private val adsRepository: AdsRepository,
@@ -59,7 +58,7 @@ class UserService(
     private val userTermsMappingRepository: UserTermsMappingRepository,
     private val partnerVisitHistoryRepository: PartnerVisitHistoryRepository,
     private val userPointHistoryRepository: UserPointHistoryRepository,
-    private val petService: PetService,
+    private val dogService: DogService,
     private val s3UploadService: S3UploadService,
 ) {
     @Value("\${app.backend-url}")
@@ -237,33 +236,33 @@ class UserService(
         } ?: emptyList()
 
         if (req.petInfo != null) {
-            val type = PetType.fromString(req.petInfo.type)!!
             val sex = Sex.fromString(req.petInfo.sex)!!
-            val pet = Pet.create(
-                user = user,
-                registrationNum = req.petInfo.registrationNum,
-                name = req.petInfo.name,
-                type = type,
-                dogType = req.petInfo.dogType?.let { DogType.fromString(it) },
-                mainImagePath = dogImageUrls.firstOrNull(), // 리스트가 비어있으면 null
-                imagePaths = dogImageUrls.joinToString(","), // 모든 이미지 URL을 쉼표로 구분
-                age = req.petInfo.age,
-                sex = sex,
-                weight = req.petInfo.weight,
-                isNeutered = req.petInfo.isNeutered,
-            )
+            val dog = DogType.fromString(req.petInfo.type)?.let {
+                Dog.create(
+                    user = user,
+                    registrationNum = req.petInfo.registrationNum,
+                    name = req.petInfo.name,
+                    type = it,
+                    mainImagePath = dogImageUrls.firstOrNull(), // 리스트가 비어있으면 null
+                    imagePaths = dogImageUrls.joinToString(","), // 모든 이미지 URL을 쉼표로 구분
+                    age = req.petInfo.age,
+                    sex = sex,
+                    weight = req.petInfo.weight,
+                    isNeutered = req.petInfo.isNeutered,
+                )
+            }
 
             if (req.petInfo.petDetails != null) {
-                val petDetailJson = petService.createPetDetailJson(
+                val petDetailJson = dogService.createPetDetailJson(
                     petDescription = req.petInfo.petDetails.petDescription,
                     foodBrand = req.petInfo.petDetails.foodBrand,
                     foodName = req.petInfo.petDetails.foodName,
                     foodType = req.petInfo.petDetails.foodType
                 )
-                pet.petDetail = petDetailJson
+                dog.petDetail = petDetailJson
             }
 
-            petRepository.save(pet)
+            dogRepository.save(dog)
         }
 
         userRepository.save(user)
@@ -304,7 +303,7 @@ class UserService(
 
         // 연관된 엔티티들도 모두 isDeleted true
         // pet, partner, ad, company, walkRecord, feed, userTermsMapping, partnerVisitHistory, pointHistory, ...
-        val pets = petRepository.findAllByUserId(userId)
+        val pets = dogRepository.findAllByUserId(userId)
         pets.forEach { it.isDeleted = true }
 
         val partners = partnerRepository.findAllByUserId(userId)

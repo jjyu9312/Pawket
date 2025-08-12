@@ -16,10 +16,9 @@ import com.kkw.pawket.partner.domain.Partner
 import com.kkw.pawket.partner.domain.PartnerVisitHistory
 import com.kkw.pawket.partner.domain.repository.PartnerRepository
 import com.kkw.pawket.partner.domain.repository.PartnerVisitHistoryRepository
-import com.kkw.pawket.pet.domain.Pet
-import com.kkw.pawket.pet.domain.repository.PetRepository
-import com.kkw.pawket.pet.model.req.CreatePetReq
-import com.kkw.pawket.pet.service.PetService
+import com.kkw.pawket.dog.domain.Dog
+import com.kkw.pawket.dog.domain.repository.DogRepository
+import com.kkw.pawket.dog.service.DogService
 import com.kkw.pawket.point.domain.UserPointHistory
 import com.kkw.pawket.point.domain.repository.UserPointHistoryRepository
 import com.kkw.pawket.terms.domain.repository.UserTermsMappingRepository
@@ -70,7 +69,7 @@ class UserServiceUnitTest {
     private val response = mockk<HttpServletResponse>()
     private val userRepository = mockk<UserRepository>()
     private val userOAuthRepository = mockk<UserOAuthRepository>()
-    private val petRepository = mockk<PetRepository>()
+    private val dogRepository = mockk<DogRepository>()
     private val partnerRepository = mockk<PartnerRepository>()
     private val partnerVisitHistoryRepository = mockk<PartnerVisitHistoryRepository>()
     private val userTermsMappingRepository = mockk<UserTermsMappingRepository>()
@@ -79,7 +78,7 @@ class UserServiceUnitTest {
     private val postRepository = mockk<PostRepository>()
     private val adsRepository = mockk<AdsRepository>()
     private val companyRepository = mockk<CompanyRepository>()
-    private val petService = mockk<PetService>()
+    private val dogService = mockk<DogService>()
     private val s3UploadService = mockk<S3UploadService>()
 
     // 테스트할 서비스 생성
@@ -96,7 +95,7 @@ class UserServiceUnitTest {
             response = response,
             userRepository = userRepository,
             userOAuthRepository = userOAuthRepository,
-            petRepository = petRepository,
+            dogRepository = dogRepository,
             partnerRepository = mockk(relaxed = true),
             companyRepository = mockk(relaxed = true),
             adsRepository = mockk(relaxed = true),
@@ -105,7 +104,7 @@ class UserServiceUnitTest {
             userTermsMappingRepository = mockk(relaxed = true),
             partnerVisitHistoryRepository = mockk(relaxed = true),
             userPointHistoryRepository = mockk(relaxed = true),
-            petService = petService,
+            dogService = dogService,
             s3UploadService = s3UploadService,
         )
 
@@ -277,11 +276,11 @@ class UserServiceUnitTest {
             every { userRepository.findByIdOrNull(userId) } returns user
             every { userRepository.existsById(userId) } returns false
             every { userRepository.save(any<User>()) } returns user
-            every { petRepository.save(any<Pet>()) } returns mockk()
+            every { dogRepository.save(any<Dog>()) } returns mockk()
 
             // PetService 목킹
             every {
-                petService.createPetDetailJson(
+                dogService.createPetDetailJson(
                     petDescription = any(),
                     foodBrand = any(),
                     foodName = any(),
@@ -329,7 +328,7 @@ class UserServiceUnitTest {
 
             // then
             verify { userRepository.save(user) }
-            verify { petRepository.save(any<Pet>()) }
+            verify { dogRepository.save(any<Dog>()) }
             result.userId shouldBe userId
         }
 
@@ -388,7 +387,7 @@ class UserServiceUnitTest {
             every { userOAuthRepository.findAllByUserId(userId) } returns emptyList()
             every { userOAuthRepository.deleteAll(any()) } just runs
 
-            every { petRepository.findAllByUserId(userId) } returns emptyList()
+            every { dogRepository.findAllByUserId(userId) } returns emptyList()
 
             every { partnerRepository.findAllByUserId(userId) } returns emptyList()
             every { partnerRepository.saveAll(any<List<Partner>>()) } returns emptyList()

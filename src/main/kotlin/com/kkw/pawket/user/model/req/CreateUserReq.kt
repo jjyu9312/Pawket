@@ -1,7 +1,6 @@
 package com.kkw.pawket.user.model.req
 
-import com.kkw.pawket.pet.domain.PetType
-import com.kkw.pawket.pet.domain.Sex
+import com.kkw.pawket.dog.domain.Sex
 import com.kkw.pawket.user.domain.Gender
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.Valid
@@ -68,12 +67,8 @@ data class PetInfo (
     @Schema(description = "Name of the pet", example = "Kong-i")
     val name: String,
 
-    @field:NotNull(message = "반려동물 종류는 필수입니다")
-    @Schema(description = "Type of the pet (DOG, CAT, OTHER)", example = "DOG")
-    val type: String,
-
     @Schema(description = "Breed of the dog", example = "Pomeranian")
-    val dogType: String? = null,
+    val type: String,
 
     @Schema(description = "List of pet image URLs", example = "[\"https://storage.pawket.com/pets/dog1.jpg\"]")
     val imageUrls: List<String> = emptyList(),
