@@ -19,7 +19,7 @@ enum class ResponseCode(val code: Int, val defaultMessage: String) {
     NOTICE_NOT_FOUND(40015, "공지사항을 찾을 수 없습니다"),
     POINT_SHOP_NAME_DUPLICATED(40016, "포인트샵 이름이 중복되었습니다"),
     POINT_SHOP_ITEM_DUPLICATED(40017, "포인트샵 아이템이 중복되었습니다"),
-    PET_NOT_FOUND(40018, "펫이 존재하지 않습니다"),
+    DOG_NOT_FOUND(40018, "펫이 존재하지 않습니다"),
     PARTNER_NOT_FOUND(40019, "제휴업체를 찾을 수 없습니다"),
     SHOP_NOT_FOUND(40020, "포인트샵을 찾을 수 없습니다"),
     SHOP_ITEM_NOT_FOUND(40021, "포인트샵 아이템을 찾을 수 없습니다"),
@@ -34,7 +34,6 @@ enum class ResponseCode(val code: Int, val defaultMessage: String) {
     INVALID_TARGET_GROUP(40034, "해당 타겟 그룹은 존재하지 않습니다"),
     INVALID_OAUTH_PROVIDER(40035, "해당 Oauth 제공자는 존재하지 않습니다"),
     INVALID_OAUTH_PROVIDER_ENDPOINT(40036, "해당 Oauth 제공자 엔드포인트는 존재하지 않습니다"),
-    INVALID_PET_TYPE(40037, "펫 종류가 맞지 않습니다"),
     INVALID_POINT_TYPE(40038, "포인트 타입이 맞지 않습니다"),
     UNAUTHORIZED_USER(40039, "인증되지 않은 사용자입니다"),
     // INVALID
