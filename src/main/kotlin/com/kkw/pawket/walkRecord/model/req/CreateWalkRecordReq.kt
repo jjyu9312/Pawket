@@ -6,5 +6,5 @@ import java.time.LocalDateTime
 
 data class CreateWalkRecordReq(
     @Schema(description = "Database id of the pet", example = "petId")
-    val petId: String,
+    val dogId: String,
 )
