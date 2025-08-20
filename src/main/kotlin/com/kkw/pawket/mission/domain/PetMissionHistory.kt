@@ -1,7 +1,7 @@
 package com.kkw.pawket.mission.domain
 
 import com.kkw.pawket.common.domain.BaseEntity
-import com.kkw.pawket.pet.domain.Pet
+import com.kkw.pawket.dog.domain.Dog
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
@@ -13,7 +13,7 @@ data class PetMissionHistory(
     @MapsId("petId")
     @JoinColumn(name = "pet_id", columnDefinition = "CHAR(36)")
     @ManyToOne(fetch = FetchType.LAZY)
-    val pet: Pet,
+    val dog: Dog,
 
     @MapsId("missionId")
     @JoinColumn(name = "mission_id", nullable = false)
@@ -45,13 +45,13 @@ data class PetMissionHistory(
 
     companion object {
         fun create(
-            pet: Pet,
+            dog: Dog,
             mission: Mission,
             notes: String?,
         ): PetMissionHistory {
             return PetMissionHistory(
-                id = PetMissionHistoryId(pet.id, mission.id),
-                pet = pet,
+                id = PetMissionHistoryId(dog.id, mission.id),
+                dog = dog,
                 mission = mission,
                 isSucceed = false,
                 notes = notes,
