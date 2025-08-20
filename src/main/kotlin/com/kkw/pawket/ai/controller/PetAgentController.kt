@@ -3,11 +3,11 @@ package com.kkw.pawket.ai.controller
 import com.kkw.pawket.common.response.ApiResponse
 import com.kkw.pawket.common.response.ApiResponseFactory
 import com.kkw.pawket.common.response.ResponseCode
-import com.kkw.pawket.ai.model.req.PetChatReq
+import com.kkw.pawket.ai.model.req.DogChatReq
 import com.kkw.pawket.ai.model.res.*
 import com.kkw.pawket.ai.service.ClovaAgentService
 import com.kkw.pawket.ai.service.ChatSessionService
-import com.kkw.pawket.pet.service.PetService
+import com.kkw.pawket.dog.service.DogService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
@@ -17,15 +17,15 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
-@Tag(name = "Pet Agent API", description = "반려동물 AI 상담 API")
+@Tag(name = "Dog Agent API", description = "반려동물 AI 상담 API")
 @RestController
-@RequestMapping("/api/v1/pet-agent")
-class PetAgentController(
+@RequestMapping("/api/v1/dog-agent")
+class DogAgentController(
     private val clovaAgentService: ClovaAgentService,
     private val chatSessionService: ChatSessionService,
-    private val petService: PetService,
+    private val dogService: DogService,
 ) {
-    private val logger = LoggerFactory.getLogger(PetAgentController::class.java)
+    private val logger = LoggerFactory.getLogger(DogAgentController::class.java)
 
     /*
     TODO AI 채팅 상담
@@ -37,28 +37,28 @@ class PetAgentController(
     @PostMapping("/chat")
     suspend fun chat(
         @AuthenticationPrincipal userId: String,
-        @Valid @RequestBody req: PetChatReq
-    ): ResponseEntity<ApiResponse<PetChatRes>> {
+        @Valid @RequestBody req: DogChatReq
+    ): ResponseEntity<ApiResponse<DogChatRes>> {
         return try {
             // 세션 컨텍스트 조회
             val context = req.sessionId?.let {
                 chatSessionService.getContext(it)
             } ?: emptyList()
 
-            logger.info("User $userId is chatting with pet agent. Session ID: ${req.sessionId}, Message: ${req.message}")
+            logger.info("User $userId is chatting with Dog agent. Session ID: ${req.sessionId}, Message: ${req.message}")
             logger.info("Context for session ${req.sessionId}: $context")
 
             // 사용자의 반려동물 프로필 조회
-            val petProfileRes = petService.findPetProfileByUserAndPetId(
+            val DogProfileRes = dogService.findDogProfileByUserAndDogId(
                 userId = userId,
-                petId = req.petId
+                dogId = req.dogId
             )
 
             // CLOVA 응답 생성
             val (reply, tokenUsage) = clovaAgentService.generateResponse(
                 userMessage = req.message,
                 context = context,
-                petProfile = petProfileRes.petProfile
+                dogProfile = DogProfileRes.dogProfile
             )
 
             // 세션 업데이트
@@ -69,7 +69,7 @@ class PetAgentController(
                 assistantReply = reply
             )
 
-            val response = PetChatRes(
+            val response = DogChatRes(
                 reply = reply,
                 sessionId = sessionId,
                 tokenUsage = tokenUsage
@@ -165,15 +165,15 @@ class PetAgentController(
         summary = "반려동물 프로필 조회",
         description = "반려동물 프로필 정보를 조회합니다."
     )
-    @GetMapping("/profile/{petId}")
-    fun getPetProfile(
+    @GetMapping("/profile/{DogId}")
+    fun getDogProfile(
         @AuthenticationPrincipal userId: String,
-        @PathVariable petId: String
-    ): ResponseEntity<ApiResponse<PetProfileRes>> {
+        @PathVariable DogId: String
+    ): ResponseEntity<ApiResponse<DogProfileRes>> {
         return try {
-            val petProfileRes = petService.findPetProfileByUserAndPetId(userId, petId)
+            val DogProfileRes = dogService.findDogProfileByUserAndDogId(userId, DogId)
 
-            ApiResponseFactory.success(petProfileRes)
+            ApiResponseFactory.success(DogProfileRes)
 
         } catch (e: BadRequestException) {
             ApiResponseFactory.error(
@@ -196,13 +196,13 @@ class PetAgentController(
         description = "사용자의 모든 반려동물 프로필 목록을 조회합니다."
     )
     @GetMapping("/profiles")
-    fun getPetProfiles(
+    fun getDogProfiles(
         @AuthenticationPrincipal userId: String,
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "10") size: Int
-    ): ResponseEntity<ApiResponse<List<PetProfileRes>>> {
+    ): ResponseEntity<ApiResponse<List<DogProfileRes>>> {
         return try {
-            val profiles = petService.findPetProfilesByUserId(userId, page, size)
+            val profiles = dogService.findDogProfilesByUserId(userId, page, size)
             ApiResponseFactory.success(profiles)
 
         } catch (e: BadRequestException) {
@@ -251,14 +251,14 @@ class PetAgentController(
      */
     @Operation(
         summary = "서비스 상태 확인",
-        description = "Pet Agent 서비스의 상태를 확인합니다."
+        description = "Dog Agent 서비스의 상태를 확인합니다."
     )
     @GetMapping("/health")
     fun healthCheck(): ResponseEntity<ApiResponse<Map<String, Any>>> {
         return try {
             val healthInfo = mapOf(
                 "status" to "UP",
-                "service" to "Pet Agent API",
+                "service" to "Dog Agent API",
                 "version" to "1.0.0",
                 "timestamp" to System.currentTimeMillis()
             )
