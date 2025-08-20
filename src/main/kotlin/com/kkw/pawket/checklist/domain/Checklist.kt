@@ -1,7 +1,7 @@
 package com.kkw.pawket.checklist.domain
 
 import com.kkw.pawket.common.domain.BaseEntity
-import com.kkw.pawket.pet.domain.Pet
+import com.kkw.pawket.dog.domain.Dog
 import jakarta.persistence.*
 import java.time.LocalDate
 import java.util.*
@@ -14,7 +14,7 @@ data class Checklist(
 
     @JoinColumn(name = "pet_id", columnDefinition = "CHAR(36)")
     @ManyToOne(fetch = FetchType.LAZY)
-    val pet: Pet,
+    val dog: Dog,
 
     @JoinColumn(name = "check_type_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
@@ -39,11 +39,11 @@ data class Checklist(
 
     companion object {
         fun create(
-            pet: Pet,
+            dog: Dog,
             checkType: CheckType,
             isChecked: Boolean = false,
         ): Checklist = Checklist(
-            pet = pet,
+            dog = dog,
             checkType = checkType,
             isChecked = isChecked,
         )
