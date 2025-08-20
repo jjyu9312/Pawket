@@ -54,7 +54,7 @@ class DogService(
         )
 
         if (req.dogDetails != null) {
-            val dogDetailJson = createdogDetailJson(
+            val dogDetailJson = createDogDetailJson(
                 dogDescription = req.dogDetails.dogDescription,
                 foodBrand = req.dogDetails.foodBrand,
                 foodName = req.dogDetails.foodName,
@@ -75,7 +75,7 @@ class DogService(
      */
 
     // dog 상세 정보를 JSON으로 변환
-    fun createdogDetailJson(
+    fun createDogDetailJson(
         dogDescription: String,
         foodBrand: String, // ,로 연결
         foodName: String,  // ,로 연결
@@ -116,7 +116,7 @@ class DogService(
         )
     }
 
-    fun finddogProfilesByUserId(userId: String, page: Int, size: Int): List<DogProfileRes>? {
+    fun findDogProfilesByUserId(userId: String, page: Int, size: Int): List<DogProfileRes>? {
         TODO("Not yet implemented")
     }
 
@@ -150,7 +150,7 @@ class DogService(
         dog.age = req.age
         dog.weight = req.weight
         dog.dogDetail = if (req.dogDetails != null) {
-            createdogDetailJson(
+            createDogDetailJson(
                 dogDescription = req.dogDetails.dogDescription,
                 foodBrand = req.dogDetails.foodBrand,
                 foodName = req.dogDetails.foodName,
