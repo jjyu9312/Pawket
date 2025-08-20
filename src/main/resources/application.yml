@@ -81,3 +81,8 @@ clova-ai:
     open-api:
         key: nv-c9cd13ac4f42478f9f471e532d9752f7zMq9
         base-url: https://clovastudio.stream.ntruss.com/
+
+oss:
+  base-url: http://localhost:8080/v1
+  chat-path: /chat/completions
+  model: gpt-oss-20b
