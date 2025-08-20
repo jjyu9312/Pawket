@@ -18,7 +18,7 @@ class WalkRecord(
     val user: User,
 
     @Column(columnDefinition = "CHAR(36)")
-    val petId: String,
+    val dogId: String,
 
     @Column(nullable = false)
     val startedAt: LocalDateTime = LocalDateTime.now(),
@@ -46,12 +46,12 @@ class WalkRecord(
     companion object {
         fun create(
             user: User,
-            petId: String,
+            dogId: String,
             notes: String? = null,
         ): WalkRecord = WalkRecord(
             id = UUID.randomUUID().toString(),
             user = user,
-            petId = petId,
+            dogId = dogId,
             startedAt = LocalDateTime.now(),
             notes = notes,
         )

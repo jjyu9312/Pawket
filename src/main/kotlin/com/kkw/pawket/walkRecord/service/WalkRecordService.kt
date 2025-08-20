@@ -25,7 +25,7 @@ class WalkRecordService (
 
         val walkRecord = WalkRecord.create(
             user = user,
-            petId = req.petId,
+            dogId = req.dogId,
         )
 
         logger.info("WalkRecord created: $walkRecord")
