@@ -235,31 +235,29 @@ class UserService(
             )
         } ?: emptyList()
 
-        if (req.petInfo != null) {
-            val sex = Sex.fromString(req.petInfo.sex)!!
-            val dog = DogType.fromString(req.petInfo.type)?.let {
-                Dog.create(
+        if (req.dogInfo != null) {
+            val sex = Sex.fromString(req.dogInfo.sex)!!
+            val dog = Dog.create(
                     user = user,
-                    registrationNum = req.petInfo.registrationNum,
-                    name = req.petInfo.name,
-                    type = it,
+                    registrationNum = req.dogInfo.registrationNum,
+                    name = req.dogInfo.name,
+                    type = DogType.valueOf(req.dogInfo.type),
                     mainImagePath = dogImageUrls.firstOrNull(), // 리스트가 비어있으면 null
                     imagePaths = dogImageUrls.joinToString(","), // 모든 이미지 URL을 쉼표로 구분
-                    age = req.petInfo.age,
+                    age = req.dogInfo.age,
                     sex = sex,
-                    weight = req.petInfo.weight,
-                    isNeutered = req.petInfo.isNeutered,
-                )
-            }
+                    weight = req.dogInfo.weight,
+                    isNeutered = req.dogInfo.isNeutered,
+            )
 
-            if (req.petInfo.petDetails != null) {
-                val petDetailJson = dogService.createPetDetailJson(
-                    petDescription = req.petInfo.petDetails.petDescription,
-                    foodBrand = req.petInfo.petDetails.foodBrand,
-                    foodName = req.petInfo.petDetails.foodName,
-                    foodType = req.petInfo.petDetails.foodType
+            if (req.dogInfo.dogDetails != null) {
+                val dogDetailJson = dogService.createdogDetailJson(
+                    dogDescription = req.dogInfo.dogDetails.dogDescription,
+                    foodBrand = req.dogInfo.dogDetails.foodBrand,
+                    foodName = req.dogInfo.dogDetails.foodName,
+                    foodType = req.dogInfo.dogDetails.foodType
                 )
-                dog.petDetail = petDetailJson
+                dog.dogDetail = dogDetailJson
             }
 
             dogRepository.save(dog)
