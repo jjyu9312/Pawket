@@ -2,7 +2,7 @@ package com.kkw.pawket.ai.service
 
 import com.kkw.pawket.ai.config.ClovaConfig
 import com.kkw.pawket.ai.model.common.ChatMessage
-import com.kkw.pawket.ai.model.common.PetProfile
+import com.kkw.pawket.ai.model.common.DogProfile
 import com.kkw.pawket.ai.model.common.TokenUsage
 import com.kkw.pawket.ai.model.req.OpenAIReq
 import com.kkw.pawket.ai.model.res.OpenAIRes
@@ -24,10 +24,10 @@ class ClovaAgentService(
     suspend fun generateResponse(
         userMessage: String,
         context: List<ChatMessage> = emptyList(),
-        petProfile: PetProfile? = null
+        dogProfile: DogProfile? = null
     ): Pair<String, TokenUsage?> {
 
-        val systemPrompt = createPetCareSystemPrompt(petProfile)
+        val systemPrompt = createPetCareSystemPrompt(dogProfile)
         val messages = mutableListOf<ChatMessage>().apply {
             add(ChatMessage("system", systemPrompt))
             addAll(context.takeLast(8)) // 최근 8개 메시지만 유지
@@ -92,7 +92,7 @@ class ClovaAgentService(
         return Pair(reply, tokenUsage)
     }
 
-    private fun createPetCareSystemPrompt(petProfile: PetProfile?): String {
+    private fun createPetCareSystemPrompt(dogProfile: DogProfile?): String {
         val basePrompt = """
             당신은 전문적이고 친근한 반려동물 상담사 카리나입니다.
             
@@ -108,16 +108,16 @@ class ClovaAgentService(
             - 응답은 한국어로 작성
         """.trimIndent()
 
-        return if (petProfile != null) {
+        return if (dogProfile != null) {
             basePrompt + """
             
             현재 상담 중인 반려동물 정보:
-            - 이름: ${petProfile.name}
-            - 종류: ${petProfile.type}
-            ${if (petProfile.dogType != null) "- 견종: ${petProfile.dogType}" else ""}
-            - 나이: ${petProfile.age}세
-            ${"- 몸무게: ${petProfile.weight}kg"}
-            ${if (petProfile.petDetail != null) "- 상세 정보: ${petProfile.petDetail}" else ""}
+            - 이름: ${dogProfile.name}
+            - 종류: ${dogProfile.type}
+            ${if (dogProfile.type != null) "- 견종: ${dogProfile.type}" else ""}
+            - 나이: ${dogProfile.age}세
+            ${"- 몸무게: ${dogProfile.weight}kg"}
+            ${if (dogProfile.dogDetail != null) "- 상세 정보: ${dogProfile.dogDetail}" else ""}
             
             위 정보를 바탕으로 이 반려동물에게 특화된 조언을 제공해주세요.
             """.trimIndent()
