@@ -13,16 +13,15 @@ data class TokenUsage(
     val totalTokens: Int
 )
 
-// Pet Profile
-data class PetProfile(
+// Dog Profile
+data class DogProfile(
     val id: String,
     val userId: String,
     val name: String,
-    val type: String,  // "dog", "cat", etc.
-    val dogType: String? = null,
+    val type: String,
     val age: Int,
     val weight: Int,
     val sex: String,
     val isNeutered: Boolean = false,
-    val petDetail: String? = null,
+    val dogDetail: String? = null,
 )
