@@ -36,8 +36,8 @@ data class CreateUserReq (
     val addressInfo: AddressInfo,
 
     @field:Valid
-    @Schema(description = "Information about the user's pet")
-    val petInfo: PetInfo? = null,
+    @Schema(description = "Information about the user's dog")
+    val dogInfo: DogInfo? = null,
 )
 
 @Schema(description = "Address information of the user", name = "AddressInfo")
@@ -58,55 +58,55 @@ data class AddressInfo (
     val lng: Double
 )
 
-@Schema(description = "Information about the user's pet", name = "PetInfo")
-data class PetInfo (
-    @Schema(description = "Pet registration number", example = "A123456")
+@Schema(description = "Information about the user's dog", name = "dogInfo")
+data class DogInfo (
+    @Schema(description = "dog registration number", example = "A123456")
     val registrationNum: String? = null,
 
     @field:NotBlank(message = "반려동물 이름은 필수입니다")
-    @Schema(description = "Name of the pet", example = "Kong-i")
+    @Schema(description = "Name of the dog", example = "Kong-i")
     val name: String,
 
     @Schema(description = "Breed of the dog", example = "Pomeranian")
     val type: String,
 
-    @Schema(description = "List of pet image URLs", example = "[\"https://storage.pawket.com/pets/dog1.jpg\"]")
+    @Schema(description = "List of dog image URLs", example = "[\"https://storage.pawket.com/dogs/dog1.jpg\"]")
     val imageUrls: List<String> = emptyList(),
 
     @field:NotNull(message = "반려동물 나이는 필수입니다")
     @field:Min(value = 0, message = "반려동물 나이는 0 이상이어야 합니다")
-    @Schema(description = "Age of the pet", example = "3")
+    @Schema(description = "Age of the dog", example = "3")
     val age: Int,
 
     @field:NotNull(message = "반려동물 성별은 필수입니다")
-    @Schema(description = "Sex of the pet (MALE/FEMALE)", example = "MALE")
+    @Schema(description = "Sex of the dog (MALE/FEMALE)", example = "MALE")
     val sex: String,
 
     @field:NotNull(message = "반려동물 체중은 필수입니다")
     @field:Min(value = 0, message = "반려동물 체중은 0 이상이어야 합니다")
-    @Schema(description = "Weight of the pet (kg)", example = "5")
+    @Schema(description = "Weight of the dog (kg)", example = "5")
     val weight: Int,
 
     @field:NotNull(message = "중성화 여부는 필수입니다")
-    @Schema(description = "Whether the pet is neutered", example = "true")
+    @Schema(description = "Whether the dog is neutered", example = "true")
     val isNeutered: Boolean,
 
     @field:Valid
-    @Schema(description = "Additional details about the pet")
-    val petDetails: PetDetails? = null,
+    @Schema(description = "Additional details about the dog")
+    val dogDetails: DogDetails? = null,
 )
 
-@Schema(description = "Additional details about the pet", name = "PetDetails")
-data class PetDetails(
-    @Schema(description = "Description of the pet", example = "Loves playing fetch")
-    val petDescription: String,
+@Schema(description = "Additional details about the dog", name = "dogDetails")
+data class DogDetails(
+    @Schema(description = "Description of the dog", example = "Loves playing fetch")
+    val dogDescription: String,
 
-    @Schema(description = "Brand of the pet's food", example = "Royal Canin")
+    @Schema(description = "Brand of the dog's food", example = "Royal Canin")
     val foodBrand: String,
 
-    @Schema(description = "Name of the pet's food", example = "Mini Adult")
+    @Schema(description = "Name of the dog's food", example = "Mini Adult")
     val foodName: String,
 
-    @Schema(description = "Type of the pet's food", example = "Dry food")
+    @Schema(description = "Type of the dog's food", example = "Dry food")
     val foodType: String,
 )
