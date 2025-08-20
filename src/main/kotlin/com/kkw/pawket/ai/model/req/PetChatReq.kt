@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
 
 // Pet Chat - Request
-data class PetChatReq(
+data class DogChatReq(
     @field:NotBlank(message = "메시지는 필수입니다")
     @field:Size(max = 1000, message = "메시지는 1000자를 초과할 수 없습니다")
     @Schema(
@@ -19,7 +19,7 @@ data class PetChatReq(
         description = "반려동물 ID",
         example = "pet-12345"
     )
-    val petId: String,
+    val dogId: String,
 
     @field:NotBlank(message = "사용자 ID는 필수입니다")
     @Schema(
