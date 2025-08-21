@@ -6,12 +6,12 @@ import jakarta.persistence.*
 import java.time.LocalDateTime
 
 @Entity(name = "pet_mission_history")
-data class PetMissionHistory(
+data class DogMissionHistory(
     @EmbeddedId
-    val id: PetMissionHistoryId,
+    val id: DogMissionHistoryId,
 
     @MapsId("petId")
-    @JoinColumn(name = "pet_id", columnDefinition = "CHAR(36)")
+    @JoinColumn(name = "dog_id", columnDefinition = "CHAR(36)")
     @ManyToOne(fetch = FetchType.LAZY)
     val dog: Dog,
 
@@ -37,7 +37,7 @@ data class PetMissionHistory(
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
-        other as PetMissionHistory
+        other as DogMissionHistory
         return id == other.id
     }
 
@@ -48,9 +48,9 @@ data class PetMissionHistory(
             dog: Dog,
             mission: Mission,
             notes: String?,
-        ): PetMissionHistory {
-            return PetMissionHistory(
-                id = PetMissionHistoryId(dog.id, mission.id),
+        ): DogMissionHistory {
+            return DogMissionHistory(
+                id = DogMissionHistoryId(dog.id, mission.id),
                 dog = dog,
                 mission = mission,
                 isSucceed = false,
