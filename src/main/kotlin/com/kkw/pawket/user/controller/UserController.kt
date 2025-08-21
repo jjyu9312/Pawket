@@ -123,10 +123,10 @@ class UserController(
         @AuthenticationPrincipal userId: String,
         @Valid @RequestPart("userData") req: CreateUserReq,
         @RequestPart("profileImage", required = false) profileImage: MultipartFile?,
-        @RequestPart("petImages", required = false) petImages: List<MultipartFile>?
+        @RequestPart("dogImages", required = false) dogImages: List<MultipartFile>?
     ): ResponseEntity<ApiResponse<CreateUserRes>> {
         return try {
-            val user = userService.createUser(userId, req, profileImage, petImages)
+            val user = userService.createUser(userId, req, profileImage, dogImages)
             ApiResponseFactory.success(user)
         } catch (e: BadRequestException) {
             ApiResponseFactory.error(
