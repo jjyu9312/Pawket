@@ -46,7 +46,7 @@ class PointService(
 
         val point = Point.create(
             type = pointType,
-            petPoint = req.point,
+            dogPoint = req.point,
         )
         pointRepository.save(point)
 
