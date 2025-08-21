@@ -178,7 +178,7 @@ class UserService(
         userId: String,
         req: CreateUserReq,
         profileImage: MultipartFile?,
-        petImages: List<MultipartFile>?
+        dogImages: List<MultipartFile>?
     ): CreateUserRes {
         logger.info("Creating user with name: ${req.name}, email: ${req.email}")
 
@@ -228,10 +228,10 @@ class UserService(
             )
         }
 
-        val dogImageUrls = petImages?.let {
+        val dogImageUrls = dogImages?.let {
             s3UploadService.uploadMultipleFiles(
                 it,
-                dirName = "${user.id}/pet-images"
+                dirName = "${user.id}/dog-images"
             )
         } ?: emptyList()
 
@@ -300,9 +300,9 @@ class UserService(
         userOAuthRepository.deleteAll(userOAuth)
 
         // 연관된 엔티티들도 모두 isDeleted true
-        // pet, partner, ad, company, walkRecord, feed, userTermsMapping, partnerVisitHistory, pointHistory, ...
-        val pets = dogRepository.findAllByUserId(userId)
-        pets.forEach { it.isDeleted = true }
+        // dog, partner, ad, company, walkRecord, feed, userTermsMapping, partnerVisitHistory, pointHistory, ...
+        val dogs = dogRepository.findAllByUserId(userId)
+        dogs.forEach { it.isDeleted = true }
 
         val partners = partnerRepository.findAllByUserId(userId)
         partners.forEach { it.isDeleted = true }
