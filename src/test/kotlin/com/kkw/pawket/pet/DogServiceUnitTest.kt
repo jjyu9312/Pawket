@@ -1,8 +1,7 @@
-package com.kkw.pawket.pet
+package com.kkw.pawket.dog
 
 import com.kkw.pawket.common.exception.BadRequestException
 import com.kkw.pawket.common.response.ResponseCode
-import com.kkw.pawket.pet.domain.*
 import com.kkw.pawket.dog.domain.repository.DogRepository
 import com.kkw.pawket.dog.model.req.CreateDogReq
 import com.kkw.pawket.dog.service.DogService
@@ -43,7 +42,7 @@ class DogServiceUnitTest {
 
         // when & then
         val exception = shouldThrow<BadRequestException> {
-            dogService.createPet(userId, req, images)
+            dogService.createDog(userId, req, images)
         }
         exception.responseCode shouldBe ResponseCode.USER_NOT_FOUND
     }
@@ -59,13 +58,12 @@ class DogServiceUnitTest {
         val req = mockk<CreateDogReq> {
             every { name } returns "강아지"
             every { type } returns "invalid"
-            every { dogType } returns null
             every { age } returns 3
             every { weight } returns 5
             every { sex } returns "MALE"
             every { isNeutered } returns false
             every { registrationNum } returns "123"
-            every { petDetails } returns null
+            every { dogDetails } returns null
         }
         val images = listOf<MultipartFile>()
 
@@ -73,9 +71,9 @@ class DogServiceUnitTest {
 
         // when & then
         val exception = shouldThrow<com.kkw.pawket.common.exception.IllegalArgumentException> {
-            dogService.createPet(userId, req, images)
+            dogService.createDog(userId, req, images)
         }
-        exception.responseCode shouldBe ResponseCode.INVALID_PET_TYPE
+        exception.responseCode shouldBe ResponseCode.INVALID_DOG_TYPE
     }
 
     @Test
@@ -87,30 +85,28 @@ class DogServiceUnitTest {
         }
         val req = mockk<CreateDogReq> {
             every { name } returns "강아지"
-            every { type } returns "DOG"
-            every { dogType } returns "MALTESE"
+            every { type } returns "MALTESE"
             every { age } returns 3
             every { weight } returns 5
             every { sex } returns "MALE"
             every { isNeutered } returns false
             every { registrationNum } returns "123"
-            every { petDetails } returns null
+            every { dogDetails } returns null
         }
         val images = listOf<MultipartFile>(mockk(), mockk())
         val imageUrls = listOf("url1", "url2")
         val dog = mockk<Dog> {
-            every { id } returns "pet1"
+            every { id } returns "dog1"
         }
 
         every { userRepository.findByIdAndIsDeletedFalse(userId) } returns user
-        every { s3UploadService.uploadMultipleFiles(images, "$userId/pet-images") } returns imageUrls
+        every { s3UploadService.uploadMultipleFiles(images, "$userId/dog-images") } returns imageUrls
         mockkObject(Dog.Companion)
         every {
             Dog.create(
                 user = user,
                 name = "강아지",
-                type = PetType.DOG,
-                dogType = DogType.MALTESE,
+                type = DogType.MALTESE,
                 mainImagePath = "url1",
                 imagePaths = "url1,url2",
                 age = 3,
@@ -123,10 +119,10 @@ class DogServiceUnitTest {
         every { dogRepository.save(dog) } returns dog
 
         // when
-        val result = dogService.createPet(userId, req, images)
+        val result = dogService.createDog(userId, req, images)
 
         // then
-        result shouldBe "pet1"
+        result shouldBe "dog1"
         verify { dogRepository.save(dog) }
     }
 }
