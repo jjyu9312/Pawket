@@ -16,7 +16,7 @@ data class Post(
     val user: User,
 
     @Column(nullable = false)
-    val petId: String,
+    val dogId: String,
 
     @Column(nullable = false)
     val title: String,
@@ -48,12 +48,12 @@ data class Post(
     companion object {
         fun create(
             user: User,
-            petId: String,
+            dogId: String,
             title: String,
             content: String,
         ): Post = Post(
             user = user,
-            petId = petId,
+            dogId = dogId,
             title = title,
             content = content,
         )
