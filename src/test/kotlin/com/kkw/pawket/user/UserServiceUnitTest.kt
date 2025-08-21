@@ -29,8 +29,8 @@ import com.kkw.pawket.user.domain.repository.UserOAuthRepository
 import com.kkw.pawket.user.domain.repository.UserRepository
 import com.kkw.pawket.user.model.req.AddressInfo
 import com.kkw.pawket.user.model.req.CreateUserReq
-import com.kkw.pawket.user.model.req.PetDetails
-import com.kkw.pawket.user.model.req.PetInfo
+import com.kkw.pawket.user.model.req.DogDetails
+import com.kkw.pawket.user.model.req.DogInfo
 import com.kkw.pawket.user.service.UserService
 import com.kkw.pawket.walkRecord.domain.WalkRecord
 import com.kkw.pawket.walkRecord.domain.repository.WalkRecordRepository
@@ -210,7 +210,7 @@ class UserServiceUnitTest {
             every {
                 s3UploadService.uploadMultipleFiles(
                     null,
-                    "${user.id}/pet-images"
+                    "${user.id}/dog-images"
                 )
             } returns emptyList()
 
@@ -231,7 +231,7 @@ class UserServiceUnitTest {
                     detail = "123-456"
                 ),
                 imageUrl = null,
-                petInfo = null,
+                dogInfo = null,
             )
 
             // when
@@ -244,7 +244,7 @@ class UserServiceUnitTest {
 
         @Test
         @DisplayName("펫 정보가 포함된 유저 생성 테스트")
-        fun createUserWithPetInfoTest() {
+        fun createUserWithDogInfoTest() {
             // given
             val userId = "user-id"
             val user = User.create("test@example.com").apply {
@@ -268,7 +268,7 @@ class UserServiceUnitTest {
             every {
                 s3UploadService.uploadMultipleFiles(
                     listOf(mockMultipartFile),
-                    "${user.id}/pet-images"
+                    "${user.id}/dog-images"
                 )
             } returns listOf("https://example.com/dog1.jpg", "https://example.com/dog2.jpg")
 
@@ -278,33 +278,32 @@ class UserServiceUnitTest {
             every { userRepository.save(any<User>()) } returns user
             every { dogRepository.save(any<Dog>()) } returns mockk()
 
-            // PetService 목킹
+            // DogService 목킹
             every {
-                dogService.createPetDetailJson(
-                    petDescription = any(),
+                dogService.createDogDetailJson(
+                    dogDescription = any(),
                     foodBrand = any(),
                     foodName = any(),
                     foodType = any()
                 )
-            } returns """{"petDescription":"귀여운 강아지","foodBrand":"로얄캐닌","foodName":"미니 어덜트","foodType":"건식"}"""
+            } returns """{"dogDescription":"귀여운 강아지","foodBrand":"로얄캐닌","foodName":"미니 어덜트","foodType":"건식"}"""
 
-            val petDetailsReq = PetDetails(
-                petDescription = "귀여운 강아지",
+            val dogDetailsReq = DogDetails(
+                dogDescription = "귀여운 강아지",
                 foodBrand = "로얄캐닌",
                 foodName = "미니 어덜트",
                 foodType = "건식"
             )
 
-            val petInfoReq = PetInfo(
+            val dogInfoReq = DogInfo(
                 registrationNum = "123456789",
                 name = "초코",
-                type = "DOG",
-                dogType = "MALTESE",
+                type = "MALTESE",
                 age = 3,
                 sex = "MALE",
                 weight = 5,
                 isNeutered = true,
-                petDetails = petDetailsReq,
+                dogDetails = dogDetailsReq,
                 imageUrls = listOf()
             )
 
@@ -320,7 +319,7 @@ class UserServiceUnitTest {
                     lng = 127.0,
                     detail = "123-456"
                 ),
-                petInfo = petInfoReq
+                dogInfo = dogInfoReq
             )
 
             // when
@@ -351,7 +350,7 @@ class UserServiceUnitTest {
                     lng = 127.0,
                     detail = "123-456"
                 ),
-                petInfo = null
+                dogInfo = null
             )
 
             // when & then
