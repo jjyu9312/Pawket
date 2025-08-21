@@ -75,7 +75,7 @@ cloud:
           region: ap-northeast-2
         url-prefix:
           image: https://s3.ap-northeast-2.amazonaws.com/wag/upload/image/
-          pets: https://s3.ap-northeast-2.amazonaws.com/wag/upload/pets/
+          dogs: https://s3.ap-northeast-2.amazonaws.com/wag/upload/dogs/
 
 clova-ai:
     open-api:
