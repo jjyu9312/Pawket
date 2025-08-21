@@ -37,7 +37,7 @@ data class UserPointHistory(
                 point: Point,
             ): UserPointHistory {
                 val beforePoint = user.totalPoint
-                val afterPoint = beforePoint + point.petPoint
+                val afterPoint = beforePoint + point.dogPoint
 
                 return UserPointHistory(
                     id = PointHistoryId(user.id, point.id),
@@ -54,7 +54,7 @@ data class UserPointHistory(
                 point: Point,
             ): UserPointHistory {
                 val beforePoint = user.totalPoint
-                val afterPoint = beforePoint - point.petPoint
+                val afterPoint = beforePoint - point.dogPoint
 
                 return UserPointHistory(
                     id = PointHistoryId(user.id, point.id),
