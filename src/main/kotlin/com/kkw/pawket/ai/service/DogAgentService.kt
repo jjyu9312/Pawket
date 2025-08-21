@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.WebClient
 
 @Service
-class PetAgentService(
+class DogAgentService(
     private val webClient: WebClient,
     private val tools: ToolRegistry
 ) {
