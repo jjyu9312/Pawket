@@ -67,7 +67,7 @@ jwt:
 cloud:
   aws:
       credentials:
-        access-key: AKIA5CVT2MCEW3B6I4EJ
+        access-key: AKIA5CVT2MCEW3B6I4EJJJ
         secret-key: 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
       s3:
         bucket:
