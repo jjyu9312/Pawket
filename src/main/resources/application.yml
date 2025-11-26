@@ -67,8 +67,8 @@ jwt:
 cloud:
   aws:
       credentials:
-        access-key: AKIA5CVT2MCEW3B6I4EJJJ
-        secret-key: lWrn+H5ob6tHGsMLKqFdOaPPijeknOcqsQWMna7h
+        access-key: 
+        secret-key: 
       s3:
         bucket:
           name: wag-s3
